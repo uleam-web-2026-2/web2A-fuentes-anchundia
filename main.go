@@ -11,7 +11,7 @@ import (
 
 func main() {
 	db, err := sql.Open("pgx",
-		"postgres://postgres:SU_CONTRASEÑA@localhost:5432/mesa_ayuda_web2")
+		"postgres://postgres:123456789@localhost:5432/mesa_ayuda_web2")
 	if err != nil {
 		log.Fatal(err)
 	}
