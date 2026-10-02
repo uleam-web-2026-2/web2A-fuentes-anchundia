@@ -25,9 +25,9 @@ API en Go para un programa de fidelización de clientes. El administrador regist
 
 | Documento | Ruta |
 | --- | --- |
-| Ficha del negocio | [`docs/hito1_ficha_del_negocio.md`](docs/hito1_ficha_del_negocio.md) |
-| Addendum técnico | [`docs/hito1_addendum.md`](docs/hito1_addendum.md) |
-| Presentación (5 diapositivas) | [`docs/hito1_presentacion.pdf`](docs/hito1_presentacion.pdf) |
+| Ficha del negocio | [`docs/hito1_ficha_del_negocio.md`](Trabajo_autonomo_LealCaf/docs/hito1_ficha_del_negocio.md) |
+| Addendum técnico | [`docs/hito1_addendum.md`](Trabajo_autonomo_LealCaf/docs/hito1_addendum.md) |
+| Presentación (5 diapositivas) | [`docs/hito1_presentacion.pdf`](Trabajo_autonomo_LealCaf/docs/hito1_presentacion...pdf) |
 
 ## Tecnologías
 
@@ -129,9 +129,9 @@ Debe aparecer `Servidor corriendo en el puerto 8080...`. Al primer arranque se c
 go test ./... -v
 ```
 
-Son 11 pruebas. Usan una base SQLite en memoria, así que no necesitan PostgreSQL. Cubren el saldo, los permisos por rol, los puntos vencidos, las compras y facturas duplicadas, los canjes con puntos insuficientes, el flujo solicitar → confirmar, la transición prohibida y la consulta de un canje propio o ajeno. El detalle de cada una está en el [addendum](docs/hito1_addendum.md).
+Son 11 pruebas. Usan una base SQLite en memoria, así que no necesitan PostgreSQL. Cubren el saldo, los permisos por rol, los puntos vencidos, las compras y facturas duplicadas, los canjes con puntos insuficientes, el flujo solicitar → confirmar, la transición prohibida y la consulta de un canje propio o ajeno. El detalle de cada una está en el [addendum](Trabajo_autonomo_LealCaf/docs/hito1_addendum.md).
 
-![Resultado de go test](docs/hito1_pruebas.png)
+![Resultado de go test](Trabajo_autonomo_LealCaf/docs/hito1_pruebas.png)
 
 ## Roles y autenticación
 
@@ -166,7 +166,7 @@ Sin un `X-Rol` válido responde `401`. Si el rol no tiene permiso para la ruta, 
 | `GET /canjes/{id}` | cliente (el suyo), administrador | `200` el canje con su estado | `400`, `403`, `404` |
 | `PATCH /canjes/{id}/estado` | administrador | `200` canje actualizado | `400`, `403`, `404`, `409` |
 
-La API devuelve JSON. Los errores tienen la forma `{"error": "mensaje"}`. La tabla completa, con lo que valida cada endpoint y la pantalla que lo consume, está en la [ficha, sección 7](docs/hito1_ficha_del_negocio.md#7-mapa-de-endpoints-por-rol).
+La API devuelve JSON. Los errores tienen la forma `{"error": "mensaje"}`. La tabla completa, con lo que valida cada endpoint y la pantalla que lo consume, está en la [ficha, sección 7](Trabajo_autonomo_LealCaf/docs/hito1_ficha_del_negocio.md#7-mapa-de-endpoints-por-rol).
 
 ## Ejemplos de uso (PowerShell)
 
@@ -185,7 +185,7 @@ curl.exe -i -X POST http://localhost:8080/compras -H "Content-Type: application/
 curl.exe -i http://localhost:8080/clientes/1/puntos -H "X-Rol: cliente" -H "X-Cliente-ID: 1"
 ```
 
-![Respuesta correcta](docs/hito1_respuesta_ok.png)
+![Respuesta correcta](Trabajo_autonomo_LealCaf/docs/hito1_respuesta_ok.png)
 
 **Solicitar un canje (cliente):**
 
@@ -196,7 +196,7 @@ curl.exe -i -X POST http://localhost:8080/canjes -H "Content-Type: application/j
 
 Si el cliente no tiene puntos suficientes, responde `400` con `"puntos insuficientes"`:
 
-![Respuesta con error](docs/hito1_respuesta_error.png)
+![Respuesta con error](Trabajo_autonomo_LealCaf/docs/hito1_respuesta_error.png)
 
 **Ver un canje (cliente o administrador):**
 
@@ -222,7 +222,7 @@ Cinco entidades: **Cliente**, **Compra**, **MovimientoPuntos**, **Recompensa** y
 - Una recompensa puede canjearse muchas veces.
 - Un canje confirmado genera un movimiento de canje (puntos negativos).
 
-El diagrama completo y los structs están en la [ficha, sección 4](docs/hito1_ficha_del_negocio.md#4-modelo-de-datos).
+El diagrama completo y los structs están en la [ficha, sección 4](Trabajo_autonomo_LealCaf/docs/hito1_ficha_del_negocio.md#4-modelo-de-datos).
 
 ## Máquina de estados del canje
 
@@ -237,13 +237,13 @@ solicitado ──administrador──▶ confirmado
 - **cancelado:** el administrador rechazó la solicitud; no se descuenta nada.
 - **Transición prohibida:** desde `confirmado` o `cancelado` no se puede pasar a otro estado. La API responde `409`. Se valida en `ActualizarEstadoCanje` (`manejadores.go`).
 
-El diagrama está en la [ficha, sección 5](docs/hito1_ficha_del_negocio.md#5-máquina-de-estados).
+El diagrama está en la [ficha, sección 5](Trabajo_autonomo_LealCaf/docs/hito1_ficha_del_negocio.md#5-máquina-de-estados).
 
 ## Boceto de la pantalla principal
 
-La pantalla principal es **Mis puntos** (rol cliente) y consume `GET /clientes/{id}/puntos`. Los detalles están en el [addendum](docs/hito1_addendum.md).
+La pantalla principal es **Mis puntos** (rol cliente) y consume `GET /clientes/{id}/puntos`. Los detalles están en el [addendum](Trabajo_autonomo_LealCaf/docs/hito1_addendum.md).
 
-![Boceto de la pantalla principal](docs/hito1_boceto.png)
+![Boceto de la pantalla principal](Trabajo_autonomo_LealCaf/docs/hito1_boceto.png)
 
 ## Límites de esta versión
 
