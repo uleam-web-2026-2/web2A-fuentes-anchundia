@@ -1,0 +1,66 @@
+@baseUrl = http://localhost:8080
+
+### 1. POST válido (Crear ticket)
+POST {{baseUrl}}/tickets
+Content-Type: application/json
+
+{
+    "titulo": "Falla en red principal",
+    "prioridad": "alta"
+}
+
+### 2. GET listar todos los tickets
+GET {{baseUrl}}/tickets
+
+### 3. GET consultar ticket por ID
+GET {{baseUrl}}/tickets/1
+
+### 4. GET ID inexistente (404)
+GET {{baseUrl}}/tickets/99
+
+### 5. GET ID no numérico (400)
+GET {{baseUrl}}/tickets/abc
+
+### 6. POST JSON roto (400)
+POST {{baseUrl}}/tickets
+Content-Type: application/json
+
+{
+    "titulo": "Falla incompleta
+
+### 7. POST título corto menor a 5 caracteres (422)
+POST {{baseUrl}}/tickets
+Content-Type: application/json
+
+{
+    "titulo": "Bug",
+    "prioridad": "alta"
+}
+
+### 8. POST prioridad inválida (422)
+POST {{baseUrl}}/tickets
+Content-Type: application/json
+
+{
+    "titulo": "Problema grave",
+    "prioridad": "urgente"
+}
+
+### 9. DELETE no soportado en ruta de recurso (405)
+DELETE {{baseUrl}}/tickets/1
+
+### 10. Ruta inexistente (404)
+GET {{baseUrl}}/usuarios
+
+### 11. Pánico controlado (500)
+GET {{baseUrl}}/explotar
+
+### 12. Campo desconocido en el cuerpo (Rechazado)
+POST {{baseUrl}}/tickets
+Content-Type: application/json
+
+{
+    "titulo": "Pantalla rota",
+    "prioridad": "alta",
+    "estado": "cerrado"
+}
