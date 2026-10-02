@@ -1,0 +1,58 @@
+@baseUrl = http://localhost:8080
+
+### 1. POST válido (Crear canje)
+POST {{baseUrl}}/canjes
+Content-Type: application/json
+
+{
+    "ClienteID": 1,
+    "Recompensa": "Café Americano"
+}
+
+### 2. GET listar todos los canjes
+GET {{baseUrl}}/canjes
+
+### 3. GET filtrar canjes por estado (Ej. solicitado)
+GET {{baseUrl}}/canjes?estado=solicitado
+
+### 4. GET listar clientes (Solución Preload N+1)
+GET {{baseUrl}}/usuarios
+
+### 5. GET ID inexistente (404)
+GET {{baseUrl}}/canjes/999
+
+### 6. GET ID no numérico (400 o error de ruta)
+GET {{baseUrl}}/canjes/abc
+
+### 7. POST JSON roto (400)
+POST {{baseUrl}}/canjes
+Content-Type: application/json
+
+{
+    "ClienteID": 1,
+    "Recompensa": "Café incompleto
+
+### 8. POST con cliente que no existe (422)
+POST {{baseUrl}}/canjes
+Content-Type: application/json
+
+{
+    "ClienteID": 9999,
+    "Recompensa": "Pastel de chocolate"
+}
+
+### 9. RUTA inexistente (404)
+GET {{baseUrl}}/ruta-falsa
+
+### 10. POST intentando inyectar un estado prohibido por seguridad (Debe forzar "solicitado")
+POST {{baseUrl}}/canjes
+Content-Type: application/json
+
+{
+    "ClienteID": 1,
+    "Recompensa": "Torta tres leches",
+    "Estado": "entregado"
+}
+
+### 11. DELETE de un canje existente
+DELETE {{baseUrl}}/canjes/1
