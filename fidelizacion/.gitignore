@@ -1,9 +1,0 @@
-.env
-*.exe
-*.exe~
-*.dll
-*.so
-*.dylib
-bin/
-.DS_Store
-Thumbs.db
