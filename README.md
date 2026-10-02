@@ -1,4 +1,4 @@
-# [Nombre del producto]
+# [LealCafé]
 
 > Reemplacen todo lo que está entre corchetes en su primer commit.
 > Este README es la puerta de entrada del repositorio: en la semana 1 otra pareja debe poder levantar el servidor siguiendo solo lo que dice aquí, y desde la semana 4 es la base de la integración continua.
