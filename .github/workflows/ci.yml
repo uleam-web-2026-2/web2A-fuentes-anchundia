@@ -14,8 +14,11 @@ jobs:
       - uses: actions/setup-go@v5
         with:
           go-version: stable
+          cache-dependency-path: |
+            go.sum
+            hito2/go.sum
 
-      - name: Verificación y pruebas
+      - name: Verificación y pruebas del Hito 1
         run: |
           if [ -f go.mod ]; then
             gofmt -l .
@@ -24,3 +27,8 @@ jobs:
           else
             echo "Aún no hay go.mod — el pipeline queda en espera (se activa como requisito en la semana 4)."
           fi
+
+      - name: Verificación y pruebas del Hito 2
+        run: |
+          go -C hito2 vet ./...
+          go -C hito2 test ./...

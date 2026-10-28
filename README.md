@@ -1,7 +1,30 @@
-# [LealCafé]
+# LealCafé
 
-> Reemplacen todo lo que está entre corchetes en su primer commit.
-> Este README es la puerta de entrada del repositorio: en la semana 1 otra pareja debe poder levantar el servidor siguiendo solo lo que dice aquí, y desde la semana 4 es la base de la integración continua.
+## Hito 2 — entrega actual
+
+El servidor nuevo está separado en **hito2/**. La documentación y las capturas se encuentran en **docs/**, en la raíz del repositorio. El trabajo anterior del Hito 1 se conserva en sus carpetas y en el historial.
+
+Desde la carpeta principal del repositorio:
+
+```powershell
+go -C hito2 test ./...
+npx.cmd @redocly/cli lint docs/openapi.yaml --format=stylish
+.\hito2\Iniciar-Proyecto.cmd
+```
+
+Para iniciar, mantenga PostgreSQL activo y configure localmente **hito2/.env** a partir de **hito2/.env.example**, con su conexión a **fidelizacion_db**. El archivo privado no se publica. El iniciador puede ejecutar Go si no hay un binario local; se requiere la versión indicada en hito2/go.mod.
+
+- [Instrucciones del Hito 2](hito2/README.md).
+- [Hoja del hito y seis peticiones](docs/hito2_hoja.md).
+- [Contrato OpenAPI](docs/openapi.yaml) y [vista HTML](docs/api.html).
+- [Colección Bruno](docs/hito2_bruno/README.md): abrir docs/hito2_bruno y elegir Local.
+- [Capturas actuales](docs/hito2_capturas/) y [verificaciones](docs/validacion.md).
+- [Estructura, decisiones y declaración de IA](docs/decisiones.md).
+- [Guion y preguntas de la demostración](docs/guion_hito2.md).
+
+La exposición utiliza el código de **hito2/**; ejecutar go test ./... en la raíz solo comprueba el módulo antiguo. Cierre Web II A: **29 de octubre de 2026, 23:59**, en el repositorio **uleam-web-2026-2/web2A-fuentes-anchundia**.
+
+## Documentación anterior del Hito 1
 
 **Hilo Servidor · ULEAM · Período 2026-2**
 Aplicaciones Web II (TDI-610) · Aplicación para el Servidor Web (IS-503)

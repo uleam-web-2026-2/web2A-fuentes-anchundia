@@ -1,0 +1,11 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "msedge",
+            "request": "launch",
+            "name": "Contrato OpenAPI (Hito 2)",
+            "file": "${workspaceFolder}/../docs/api.html"
+        }
+    ]
+}

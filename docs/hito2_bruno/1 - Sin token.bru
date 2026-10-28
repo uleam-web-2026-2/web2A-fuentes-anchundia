@@ -1,0 +1,32 @@
+meta {
+  name: 1 · Canje sin token → 401
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/canjes/{{canjeConfirmadoId}}
+  body: none
+  auth: none
+}
+
+script:pre-request {
+  const confirmadoId = Number(bru.getVar("canjeConfirmadoId"));
+  if (!Number.isInteger(confirmadoId) || confirmadoId <= 0) throw new Error("Ejecute la petición 0 antes de este ensayo.");
+  req.setUrl(bru.getEnvVar("baseUrl").replace(/\/$/, "") + "/canjes/" + confirmadoId);
+  req.deleteHeader("Authorization");
+}
+
+assert {
+  res.status: eq 401
+}
+
+tests {
+  test("La ruta protegida rechaza la falta de token", function () {
+    expect(res.getBody().error).to.be.a("string");
+  });
+}
+
+docs {
+  Canje confirmado reservado del cliente demo; el ID se obtiene al preparar. No envía token.
+}

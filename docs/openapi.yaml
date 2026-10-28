@@ -1,0 +1,1172 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "LealCaf · API de fidelización",
+    "version": "2.0.0",
+    "description": "Hito 2: clientes acumulan puntos por compras y solicitan recompensas; administradores registran compras y gestionan canjes. Seis entidades de negocio y Cuenta para autenticación. Los puntos se comparten entre sucursales de la misma cafetería. Las operaciones con summary terminado en (plan) todavía no existen en el servidor. La ejecución actual utiliza PostgreSQL y conserva la base fidelizacion_db del Hito 1. Los IDs de los ejemplos son ilustrativos; Bruno obtiene los IDs reales del cliente y de los canjes al preparar.",
+    "contact": {
+      "name": "Fuentes Cedeño José Miguel · Anchundia Anchundia Luis Antonio",
+      "url": "https://github.com/uleam-web-2026-2/web2A-fuentes-anchundia"
+    },
+    "license": {
+      "name": "Uso académico del proyecto LealCaf",
+      "url": "https://github.com/uleam-web-2026-2/web2A-fuentes-anchundia"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://127.0.0.1:8080",
+      "description": "Servidor local; localhost:8080 apunta a la misma interfaz."
+    }
+  ],
+  "tags": [
+    {
+      "name": "Autenticación",
+      "description": "Inicio de sesión de las cuentas de prueba."
+    },
+    {
+      "name": "Puntos",
+      "description": "Saldo e historial propios del cliente."
+    },
+    {
+      "name": "Recompensas",
+      "description": "Catálogo de recompensas activas."
+    },
+    {
+      "name": "Compras",
+      "description": "Compras registradas por el administrador."
+    },
+    {
+      "name": "Canjes",
+      "description": "Solicitud, consulta y máquina de estados de Canje."
+    },
+    {
+      "name": "Sucursales",
+      "description": "Sucursales del mismo comercio; endpoints futuros."
+    },
+    {
+      "name": "Clientes",
+      "description": "Consulta general de clientes prevista para después del hito."
+    }
+  ],
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "paths": {
+    "/login": {
+      "post": {
+        "tags": [
+          "Autenticación"
+        ],
+        "operationId": "iniciarSesion",
+        "summary": "Iniciar sesión",
+        "description": "Pública. Verifica usuario y contraseña de la cuenta; devuelve un JWT de una hora. No existe registro ni CRUD de cuentas. La cuenta cliente demo está asociada a un cliente dedicado cuyo ID puede ser distinto de 1.",
+        "responses": {
+          "200": {
+            "description": "Operación completada.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginRespuesta"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginSolicitud"
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/clientes/{id}/puntos": {
+      "get": {
+        "tags": [
+          "Puntos"
+        ],
+        "operationId": "consultarPuntos",
+        "summary": "Consultar saldo e historial",
+        "description": "Cliente: solo su propio ID. Administrador: cualquier cliente. El saldo pertenece al cliente y se comparte en las sucursales de esta cafetería.",
+        "responses": {
+          "200": {
+            "description": "Operación completada.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SaldoCliente"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Identificador entero positivo del recurso.",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "example": 1
+            }
+          }
+        ]
+      }
+    },
+    "/recompensas": {
+      "get": {
+        "tags": [
+          "Recompensas"
+        ],
+        "operationId": "listarRecompensas",
+        "summary": "Listar recompensas activas",
+        "description": "Disponible para cliente y administrador autenticados. Solo devuelve las recompensas activas.",
+        "responses": {
+          "200": {
+            "description": "Operación completada.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecompensasRespuesta"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        }
+      }
+    },
+    "/compras": {
+      "post": {
+        "tags": [
+          "Compras"
+        ],
+        "operationId": "registrarCompra",
+        "summary": "Registrar compra y generar puntos",
+        "description": "Solo administrador. Registra una factura única en una sucursal activa. Cada dólar completo genera un punto con vigencia de seis meses.",
+        "responses": {
+          "201": {
+            "description": "Operación completada.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompraRespuesta"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "409": {
+            "$ref": "#/components/responses/Error409"
+          },
+          "422": {
+            "$ref": "#/components/responses/Error422"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompraSolicitud"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/canjes": {
+      "post": {
+        "tags": [
+          "Canjes"
+        ],
+        "operationId": "solicitarCanje",
+        "summary": "Solicitar recompensa",
+        "description": "Solo cliente. La identidad se obtiene del JWT, no del cuerpo. Comprueba cliente, recompensa y sucursal activos y saldo suficiente. Crea el canje solicitado sin descontar puntos.",
+        "responses": {
+          "201": {
+            "description": "Operación completada.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Canje"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "422": {
+            "$ref": "#/components/responses/Error422"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CanjeSolicitud"
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Canjes"
+        ],
+        "operationId": "listarCanjes",
+        "summary": "Listar canjes",
+        "description": "Solo administrador. Lista todos los canjes, con filtro opcional por estado.",
+        "responses": {
+          "200": {
+            "description": "Operación completada.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CanjesRespuesta"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "parameters": [
+          {
+            "name": "estado",
+            "in": "query",
+            "required": false,
+            "description": "Omitir para listar todos. Un valor distinto de los tres estados devuelve 400.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "solicitado",
+                "confirmado",
+                "cancelado"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "/canjes/{id}": {
+      "get": {
+        "tags": [
+          "Canjes"
+        ],
+        "operationId": "verCanje",
+        "summary": "Consultar un canje",
+        "description": "Cliente: solo canjes propios. Administrador: cualquier canje.",
+        "responses": {
+          "200": {
+            "description": "Operación completada.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Canje"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Identificador entero positivo del recurso.",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "example": 1
+            }
+          }
+        ]
+      }
+    },
+    "/canjes/{id}/estado": {
+      "patch": {
+        "tags": [
+          "Canjes"
+        ],
+        "operationId": "cambiarEstadoCanje",
+        "summary": "Confirmar o cancelar un canje",
+        "description": "Solo administrador. Desde solicitado permite confirmado (revalida saldo y descuenta puntos) o cancelado (no descuenta). Confirmado y cancelado son finales. Una transición desde un estado final o hacia solicitado devuelve 422; destino desconocido, 400.",
+        "responses": {
+          "200": {
+            "description": "Operación completada.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Canje"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "422": {
+            "$ref": "#/components/responses/Error422"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EstadoSolicitud"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Identificador entero positivo del recurso.",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "example": 1
+            }
+          }
+        ]
+      }
+    },
+    "/sucursales": {
+      "get": {
+        "tags": [
+          "Sucursales"
+        ],
+        "operationId": "listarSucursalesPlan",
+        "summary": "Listar sucursales (plan)",
+        "description": "Operación futura; no está registrada en el servidor del Hito 2. Se prevé acceso para cliente y administrador autenticados.",
+        "responses": {
+          "200": {
+            "description": "Operación completada.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SucursalesRespuesta"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        }
+      }
+    },
+    "/sucursales/{id}": {
+      "get": {
+        "tags": [
+          "Sucursales"
+        ],
+        "operationId": "verSucursalPlan",
+        "summary": "Consultar sucursal (plan)",
+        "description": "Operación futura; no está registrada en el servidor del Hito 2. Se prevé acceso para cliente y administrador autenticados.",
+        "responses": {
+          "200": {
+            "description": "Operación completada.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sucursal"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Identificador entero positivo del recurso.",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "example": 1
+            }
+          }
+        ]
+      }
+    },
+    "/clientes/{id}": {
+      "get": {
+        "tags": [
+          "Clientes"
+        ],
+        "operationId": "verClientePlan",
+        "summary": "Consultar cliente (plan)",
+        "description": "Operación futura. Cliente: solo sus propios datos; administrador: cualquier cliente. No está registrada en el servidor del Hito 2.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Identificador entero positivo del recurso.",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "example": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Datos del cliente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Cliente"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "description": "Authorization: Bearer <token>. JWT HS256, duración 3600 segundos. El rol válido es cliente o administrador."
+      }
+    },
+    "schemas": {
+      "Error": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string",
+            "example": "transición no permitida"
+          }
+        },
+        "required": [
+          "error"
+        ]
+      },
+      "Cliente": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "minimum": 1,
+            "example": 1
+          },
+          "cedula": {
+            "type": "string",
+            "pattern": "^[0-9]{10}$",
+            "example": "0900000001"
+          },
+          "nombre": {
+            "type": "string",
+            "example": "Cliente de prueba"
+          },
+          "correo": {
+            "type": "string",
+            "format": "email",
+            "example": "cliente@example.org"
+          },
+          "telefono": {
+            "type": "string",
+            "example": "0991234567"
+          },
+          "fecha_registro": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2026-10-27T12:00:00Z"
+          },
+          "activo": {
+            "type": "boolean",
+            "example": true
+          }
+        },
+        "required": [
+          "id",
+          "cedula",
+          "nombre",
+          "correo",
+          "telefono",
+          "fecha_registro",
+          "activo"
+        ]
+      },
+      "Sucursal": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "minimum": 1,
+            "example": 1
+          },
+          "nombre": {
+            "type": "string",
+            "example": "Centro"
+          },
+          "direccion": {
+            "type": "string",
+            "example": "Dirección de ejemplo, Centro"
+          },
+          "activa": {
+            "type": "boolean",
+            "example": true
+          }
+        },
+        "required": [
+          "id",
+          "nombre",
+          "direccion",
+          "activa"
+        ],
+        "description": "Sucursal de la misma cafetería. Los puntos del cliente se comparten entre sucursales."
+      },
+      "Compra": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "minimum": 1,
+            "example": 1
+          },
+          "cliente_id": {
+            "type": "integer",
+            "minimum": 1,
+            "example": 1
+          },
+          "sucursal_id": {
+            "type": "integer",
+            "minimum": 1,
+            "example": 1
+          },
+          "fecha": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2026-10-27T12:00:00Z"
+          },
+          "total": {
+            "type": "number",
+            "format": "double",
+            "example": 50.75
+          },
+          "numero_factura": {
+            "type": "string",
+            "example": "001-001-000000123"
+          }
+        },
+        "required": [
+          "id",
+          "cliente_id",
+          "sucursal_id",
+          "fecha",
+          "total",
+          "numero_factura"
+        ]
+      },
+      "MovimientoPuntos": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "minimum": 1,
+            "example": 1
+          },
+          "cliente_id": {
+            "type": "integer",
+            "minimum": 1,
+            "example": 1
+          },
+          "compra_id": {
+            "type": "integer",
+            "minimum": 1,
+            "nullable": true,
+            "example": null
+          },
+          "canje_id": {
+            "type": "integer",
+            "minimum": 1,
+            "nullable": true,
+            "example": null
+          },
+          "tipo": {
+            "type": "string",
+            "enum": [
+              "acumulacion",
+              "canje"
+            ],
+            "example": "acumulacion"
+          },
+          "puntos": {
+            "type": "integer",
+            "example": 50
+          },
+          "fecha": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2026-10-27T12:00:00Z"
+          },
+          "fecha_vencimiento": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2026-10-27T12:00:00Z",
+            "nullable": true
+          }
+        },
+        "required": [
+          "id",
+          "cliente_id",
+          "compra_id",
+          "canje_id",
+          "tipo",
+          "puntos",
+          "fecha",
+          "fecha_vencimiento"
+        ],
+        "description": "Una acumulación aporta puntos con vencimiento a seis meses; confirmar un canje crea un movimiento negativo."
+      },
+      "Recompensa": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "minimum": 1,
+            "example": 1
+          },
+          "nombre": {
+            "type": "string",
+            "example": "Café americano gratis"
+          },
+          "descripcion": {
+            "type": "string",
+            "example": "Café americano de ejemplo"
+          },
+          "puntos_necesarios": {
+            "type": "integer",
+            "minimum": 1,
+            "example": 40
+          },
+          "activa": {
+            "type": "boolean",
+            "example": true
+          }
+        },
+        "required": [
+          "id",
+          "nombre",
+          "descripcion",
+          "puntos_necesarios",
+          "activa"
+        ]
+      },
+      "Canje": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "minimum": 1,
+            "example": 1
+          },
+          "cliente_id": {
+            "type": "integer",
+            "minimum": 1,
+            "example": 1
+          },
+          "recompensa_id": {
+            "type": "integer",
+            "minimum": 1,
+            "example": 1
+          },
+          "sucursal_id": {
+            "type": "integer",
+            "minimum": 1,
+            "example": 1
+          },
+          "puntos_utilizados": {
+            "type": "integer",
+            "minimum": 1,
+            "example": 40
+          },
+          "fecha": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2026-10-27T12:00:00Z"
+          },
+          "estado": {
+            "type": "string",
+            "enum": [
+              "solicitado",
+              "confirmado",
+              "cancelado"
+            ],
+            "example": "solicitado"
+          }
+        },
+        "required": [
+          "id",
+          "cliente_id",
+          "recompensa_id",
+          "sucursal_id",
+          "puntos_utilizados",
+          "fecha",
+          "estado"
+        ],
+        "description": "Nace solicitado. Solo el administrador confirma o cancela; confirmado y cancelado son finales. Sus identificadores se generan en la base; el ensayo no presupone canje 1."
+      },
+      "LoginSolicitud": {
+        "type": "object",
+        "properties": {
+          "usuario": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100,
+            "example": "cliente"
+          },
+          "password": {
+            "type": "string",
+            "format": "password",
+            "writeOnly": true,
+            "minLength": 1,
+            "example": "cliente-2026",
+            "maxLength": 72
+          }
+        },
+        "required": [
+          "usuario",
+          "password"
+        ],
+        "description": "Credenciales de Cuenta, tabla privada de autenticación; PasswordHash no se expone. No existe CRUD de cuentas."
+      },
+      "LoginRespuesta": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string",
+            "description": "JWT firmado con HS256. Claims: sub, rol, cliente_id, exp, iat, iss=lealcaf, aud=lealcaf-api.",
+            "example": "JWT_DEVUELTO_POR_LOGIN"
+          },
+          "tipo": {
+            "type": "string",
+            "enum": [
+              "Bearer"
+            ],
+            "example": "Bearer"
+          },
+          "expira_en": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Duración configurada en segundos (JWT_TTL); 3600 con la configuración de la entrega.",
+            "example": 3600
+          },
+          "rol": {
+            "type": "string",
+            "enum": [
+              "cliente",
+              "administrador"
+            ],
+            "example": "cliente"
+          },
+          "cliente_id": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "ID de Cliente para rol cliente; 0 para administrador.",
+            "example": 1
+          }
+        },
+        "required": [
+          "token",
+          "tipo",
+          "expira_en",
+          "rol",
+          "cliente_id"
+        ]
+      },
+      "CompraSolicitud": {
+        "type": "object",
+        "properties": {
+          "cliente_id": {
+            "type": "integer",
+            "minimum": 1,
+            "example": 1
+          },
+          "sucursal_id": {
+            "type": "integer",
+            "minimum": 1,
+            "example": 1
+          },
+          "total": {
+            "type": "number",
+            "format": "double",
+            "exclusiveMinimum": true,
+            "minimum": 0,
+            "example": 50.75
+          },
+          "numero_factura": {
+            "type": "string",
+            "example": "001-001-000000123"
+          }
+        },
+        "required": [
+          "cliente_id",
+          "sucursal_id",
+          "total",
+          "numero_factura"
+        ]
+      },
+      "CompraRespuesta": {
+        "type": "object",
+        "properties": {
+          "compra": {
+            "$ref": "#/components/schemas/Compra"
+          },
+          "puntos_generados": {
+            "type": "integer",
+            "minimum": 0,
+            "example": 50
+          },
+          "fecha_vencimiento": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2026-10-27T12:00:00Z"
+          }
+        },
+        "required": [
+          "compra",
+          "puntos_generados",
+          "fecha_vencimiento"
+        ]
+      },
+      "CanjeSolicitud": {
+        "type": "object",
+        "properties": {
+          "recompensa_id": {
+            "type": "integer",
+            "minimum": 1,
+            "example": 1
+          },
+          "sucursal_id": {
+            "type": "integer",
+            "minimum": 1,
+            "example": 1
+          }
+        },
+        "required": [
+          "recompensa_id",
+          "sucursal_id"
+        ]
+      },
+      "EstadoSolicitud": {
+        "type": "object",
+        "properties": {
+          "estado": {
+            "type": "string",
+            "enum": [
+              "solicitado",
+              "confirmado",
+              "cancelado"
+            ],
+            "description": "confirmado o cancelado son destinos válidos desde solicitado. solicitado es un valor conocido, pero no es destino permitido y devuelve 422. Un valor desconocido devuelve 400.",
+            "example": "confirmado"
+          }
+        },
+        "required": [
+          "estado"
+        ]
+      },
+      "SaldoCliente": {
+        "type": "object",
+        "properties": {
+          "cliente_id": {
+            "$ref": "#/components/schemas/Cliente/properties/id"
+          },
+          "cedula": {
+            "$ref": "#/components/schemas/Cliente/properties/cedula"
+          },
+          "nombre": {
+            "$ref": "#/components/schemas/Cliente/properties/nombre"
+          },
+          "saldo": {
+            "type": "integer",
+            "example": 960
+          },
+          "movimientos": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MovimientoPuntos"
+            }
+          }
+        },
+        "required": [
+          "cliente_id",
+          "cedula",
+          "nombre",
+          "saldo",
+          "movimientos"
+        ]
+      },
+      "RecompensasRespuesta": {
+        "type": "object",
+        "properties": {
+          "recompensas": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Recompensa"
+            }
+          }
+        },
+        "required": [
+          "recompensas"
+        ]
+      },
+      "CanjesRespuesta": {
+        "type": "object",
+        "properties": {
+          "canjes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Canje"
+            }
+          }
+        },
+        "required": [
+          "canjes"
+        ]
+      },
+      "SucursalesRespuesta": {
+        "type": "object",
+        "properties": {
+          "sucursales": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Sucursal"
+            }
+          }
+        },
+        "required": [
+          "sucursales"
+        ]
+      }
+    },
+    "responses": {
+      "Error400": {
+        "description": "JSON, identificador, filtro o estado de destino desconocido inválido.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "Error401": {
+        "description": "Token ausente, inválido, alterado o vencido; en login, credenciales incorrectas.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "Error403": {
+        "description": "Token válido sin el rol requerido, o recurso de otro cliente.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "Error404": {
+        "description": "El recurso solicitado o relacionado no existe.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "Error409": {
+        "description": "Número de factura ya registrado.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "Error422": {
+        "description": "Regla del negocio incumplida: transición prohibida, puntos insuficientes o recurso inactivo.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "Error500": {
+        "description": "No se pudo completar la operación por un error interno.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      }
+    }
+  }
+}

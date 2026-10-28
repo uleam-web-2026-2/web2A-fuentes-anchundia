@@ -1,0 +1,49 @@
+meta {
+  name: 2 · Login cliente → token
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/login
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "usuario": "cliente",
+    "password": "cliente-2026"
+  }
+}
+
+script:post-response {
+  const sesion = res.getBody();
+  if (res.getStatus() !== 200 || !sesion.token) {
+    throw new Error("El login no devolvió un token.");
+  }
+  bru.setVar("tokenCliente", sesion.token);
+}
+
+assert {
+  res.status: eq 200
+}
+
+tests {
+  test("Token Bearer de cliente con duración de una hora", function () {
+    const sesion = res.getBody();
+    expect(sesion.token).to.be.a("string");
+    expect(sesion.tipo).to.equal("Bearer");
+    expect(sesion.expira_en).to.equal(3600);
+    expect(sesion.rol).to.equal("cliente");
+    expect(sesion.cliente_id).to.equal(Number(bru.getVar("clienteId")));
+  });
+}
+
+docs {
+  Credenciales exclusivamente de prueba. Renueva tokenCliente sin escribirlo en archivos.
+}

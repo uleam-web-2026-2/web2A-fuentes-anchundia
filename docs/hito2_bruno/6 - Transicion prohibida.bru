@@ -1,0 +1,44 @@
+meta {
+  name: 6 · Confirmado a cancelado → 422
+  type: http
+  seq: 7
+}
+
+patch {
+  url: {{baseUrl}}/canjes/{{canjeConfirmadoId}}/estado
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "estado": "cancelado"
+  }
+}
+
+script:pre-request {
+  const confirmadoId = Number(bru.getVar("canjeConfirmadoId"));
+  if (!Number.isInteger(confirmadoId) || confirmadoId <= 0) throw new Error("Ejecute la petición 0 antes de este ensayo.");
+  req.setUrl(bru.getEnvVar("baseUrl").replace(/\/$/, "") + "/canjes/" + confirmadoId + "/estado");
+  const token = bru.getVar("tokenAdmin");
+  if (!token) throw new Error("Ejecute antes la petición 0; y la 2 si renovará la sesión cliente.");
+  req.setHeader("Authorization", "Bearer " + token);
+}
+
+assert {
+  res.status: eq 422
+}
+
+tests {
+  test("La regla impide cancelar un canje confirmado", function () {
+    expect(res.getBody().error).to.be.a("string");
+  });
+}
+
+docs {
+  Canje confirmado propio del cliente demo, localizado en la preparación 0. El rechazo conserva su estado y no modifica puntos.
+}

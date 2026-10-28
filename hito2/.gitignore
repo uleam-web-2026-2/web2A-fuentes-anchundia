@@ -1,0 +1,13 @@
+.env
+.env.*
+!.env.example
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+bin/
+data/
+node_modules/
+.DS_Store
+Thumbs.db

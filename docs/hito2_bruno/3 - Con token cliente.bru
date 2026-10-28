@@ -1,0 +1,32 @@
+meta {
+  name: 3 · Canje propio con token → 200
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/canjes/{{canjeConfirmadoId}}
+  body: none
+  auth: none
+}
+
+script:pre-request {
+  const confirmadoId = Number(bru.getVar("canjeConfirmadoId"));
+  if (!Number.isInteger(confirmadoId) || confirmadoId <= 0) throw new Error("Ejecute la petición 0 antes de este ensayo.");
+  req.setUrl(bru.getEnvVar("baseUrl").replace(/\/$/, "") + "/canjes/" + confirmadoId);
+  const token = bru.getVar("tokenCliente");
+  if (!token) throw new Error("Ejecute antes la petición 0; y la 2 si renovará la sesión cliente.");
+  req.setHeader("Authorization", "Bearer " + token);
+}
+
+assert {
+  res.status: eq 200
+}
+
+tests {
+  test("El cliente consulta su canje confirmado", function () {
+    expect(res.getBody().id).to.equal(Number(bru.getVar("canjeConfirmadoId")));
+    expect(res.getBody().cliente_id).to.equal(Number(bru.getVar("clienteId")));
+    expect(res.getBody().estado).to.equal("confirmado");
+  });
+}

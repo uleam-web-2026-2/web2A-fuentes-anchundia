@@ -5,3 +5,11 @@ bin/
 .env.*
 .DS_Store
 *.log
+!.env.example
+data/
+node_modules/
+*.dll
+*.dump
+*.pem
+*.key
+/hito2/archivos.sha256

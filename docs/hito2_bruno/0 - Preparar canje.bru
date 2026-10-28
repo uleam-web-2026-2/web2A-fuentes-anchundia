@@ -1,0 +1,96 @@
+meta {
+  name: 0 · Preparar tokens y canje nuevo
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/canjes
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "recompensa_id": 1,
+    "sucursal_id": 2
+  }
+}
+
+script:pre-request {
+  const baseUrl = bru.getEnvVar("baseUrl").replace(/\/$/, "");
+  for (const nombre of ["tokenAdmin", "tokenCliente", "clienteId", "canjeConfirmadoId", "recompensaId", "canjeId"]) {
+    bru.deleteVar(nombre);
+  }
+  const admin = await bru.sendRequest({
+    method: "POST", url: baseUrl + "/login",
+    headers: { "Content-Type": "application/json" },
+    data: { usuario: "admin", password: "admin-2026" }
+  });
+  if (admin.status !== 200 || !admin.data.token) {
+    throw new Error("No se pudo iniciar sesión como administrador de prueba.");
+  }
+  const cliente = await bru.sendRequest({
+    method: "POST", url: baseUrl + "/login",
+    headers: { "Content-Type": "application/json" },
+    data: { usuario: "cliente", password: "cliente-2026" }
+  });
+  const clienteId = Number(cliente.data.cliente_id);
+  if (cliente.status !== 200 || !cliente.data.token || !Number.isInteger(clienteId) || clienteId <= 0) {
+    throw new Error("No se pudo identificar al cliente de demostración.");
+  }
+  const catalogo = await bru.sendRequest({
+    method: "GET", url: baseUrl + "/recompensas",
+    headers: { Authorization: "Bearer " + cliente.data.token }
+  });
+  if (catalogo.status !== 200 || !Array.isArray(catalogo.data.recompensas)) {
+    throw new Error("No se pudo consultar el catálogo de recompensas activas.");
+  }
+  const disponibles = catalogo.data.recompensas.filter(r => r.activa && Number(r.puntos_necesarios) > 0);
+  disponibles.sort((a, b) => Number(a.puntos_necesarios) - Number(b.puntos_necesarios) || Number(a.id) - Number(b.id));
+  if (!disponibles.length) throw new Error("Falta una recompensa activa para el ensayo.");
+  const recompensaId = Number(disponibles[0].id);
+  const lista = await bru.sendRequest({
+    method: "GET", url: baseUrl + "/canjes",
+    headers: { Authorization: "Bearer " + admin.data.token }
+  });
+  if (lista.status !== 200 || !Array.isArray(lista.data.canjes)) {
+    throw new Error("No se pudo consultar el canje confirmado de demostración.");
+  }
+  const confirmados = lista.data.canjes.filter(c => Number(c.cliente_id) === clienteId && c.estado === "confirmado");
+  confirmados.sort((a, b) => Number(a.id) - Number(b.id));
+  if (!confirmados.length) {
+    throw new Error("Falta el canje confirmado del cliente demo. Inicie el proyecto con DEMO_DATA=true para preparar sus datos sin modificar el historial anterior.");
+  }
+  bru.setVar("tokenAdmin", admin.data.token);
+  bru.setVar("tokenCliente", cliente.data.token);
+  bru.setVar("clienteId", clienteId);
+  bru.setVar("canjeConfirmadoId", Number(confirmados[0].id));
+  bru.setVar("recompensaId", recompensaId);
+  req.setUrl(baseUrl + "/canjes");
+  req.setHeader("Authorization", "Bearer " + cliente.data.token);
+  req.setBody({ recompensa_id: recompensaId, sucursal_id: 2 });
+}
+
+script:post-response {
+  const canje = res.getBody();
+  if (res.getStatus() !== 201 || !canje.id || canje.estado !== "solicitado") {
+    throw new Error("Preparación fallida: no hay un canje nuevo solicitado.");
+  }
+  if (Number(canje.cliente_id) !== Number(bru.getVar("clienteId"))) {
+    throw new Error("El canje creado no pertenece al cliente autenticado.");
+  }
+  bru.setVar("canjeId", Number(canje.id));
+}
+
+assert {
+  res.status: eq 201
+}
+
+docs {
+  Ejecutar ANTES del turno y de cada ensayo. Hace ambos logins, obtiene una recompensa activa y localiza el canje confirmado del cliente demo. Después crea un canje nuevo en Norte. Usa IDs reales, no presupone que cliente o canje tengan ID 1. Guarda tokens e IDs solo en memoria. No forma parte de las seis peticiones calificadas.
+}

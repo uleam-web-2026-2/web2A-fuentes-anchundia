@@ -1,0 +1,2 @@
+?   	fidelizacion	[no test files]
+ok  	fidelizacion/internal/fidelizacion	8.807s

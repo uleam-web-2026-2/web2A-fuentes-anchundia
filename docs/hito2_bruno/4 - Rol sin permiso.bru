@@ -1,0 +1,40 @@
+meta {
+  name: 4 · Cliente intenta confirmar → 403
+  type: http
+  seq: 5
+}
+
+patch {
+  url: {{baseUrl}}/canjes/{{canjeId}}/estado
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "estado": "confirmado"
+  }
+}
+
+script:pre-request {
+  const token = bru.getVar("tokenCliente");
+  if (!token) throw new Error("Ejecute antes la petición 0; y la 2 si renovará la sesión cliente.");
+  req.setHeader("Authorization", "Bearer " + token);
+  const canjeId = bru.getVar("canjeId");
+  if (!canjeId) throw new Error("Ejecute la petición 0 antes de este ensayo.");
+  req.setUrl(bru.getEnvVar("baseUrl").replace(/\/$/, "") + "/canjes/" + canjeId + "/estado");
+}
+
+assert {
+  res.status: eq 403
+}
+
+tests {
+  test("El rol cliente no puede confirmar", function () {
+    expect(res.getBody().error).to.be.a("string");
+  });
+}
