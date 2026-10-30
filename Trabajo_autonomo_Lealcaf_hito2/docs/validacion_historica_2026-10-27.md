@@ -9,7 +9,7 @@
 - El iniciador Windows generó .env.demo y el login respondió 200 con un token válido en el puerto 8080.
 - Se compiló bin/lealcaf.exe para Windows de 64 bits desde el código final.
 - Sucursal está en los modelos y en ambas bases: Centro y Norte. Compra y Canje llevan sucursal_id; los puntos se comparten.
-- Las pruebas incluyen migrar datos de Hito 1 sin sucursal_id, conservarlos y asignarlos a Centro; datos demo idempotentes; tokens alterados/vencidos; rechazos sin doble descuento.
+- Las pruebas incluyen migrar datos de esquemas anteriores sin sucursal_id, conservarlos y asignarlos a Centro; datos demo idempotentes; tokens alterados/vencidos; rechazos sin doble descuento.
 
 ## Evidencias
 
@@ -19,9 +19,9 @@ api.html fue generado desde el contrato y usa el archivo local assets/redoc.stan
 
 ## Antes de exponer
 
-Abrir el proyecto en el equipo de exposición, usar Iniciar-Demo.cmd, abrir Bruno y entorno Local, ejecutar preparación 0 y las seis peticiones, go test ./... y el validador. Ensayar con reloj y tomar también capturas propias de Bruno si se desean evidencias de su interfaz.
+Abrir el proyecto en el equipo de exposición, usar Iniciar-Proyecto.cmd, abrir Bruno y entorno Local, ejecutar preparación 0 y las seis peticiones, go test ./... y el validador. Ensayar con reloj y tomar también capturas propias de Bruno si se desean evidencias de su interfaz.
 
-Los integrantes deben revisar el código y poder explicar las seis preguntas. La presentación PDF de Hito 1 se conserva como histórica; la ficha y el addendum ya describen la versión actual. Solo las operaciones rotuladas (plan) están pendientes de programar.
+Los integrantes deben revisar el código y poder explicar las seis preguntas. El modelo y la guía técnica vigentes están en hito2_modelo.md y hito2_tecnico.md. Solo las operaciones rotuladas (plan) están pendientes de programar.
 
 ## Estado de Git y datos privados
 

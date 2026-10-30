@@ -5,7 +5,7 @@
             "type": "msedge",
             "request": "launch",
             "name": "Contrato OpenAPI (Hito 2)",
-            "file": "${workspaceFolder}/../docs/api.html"
+            "file": "${workspaceFolder}/docs/api.html"
         }
     ]
 }

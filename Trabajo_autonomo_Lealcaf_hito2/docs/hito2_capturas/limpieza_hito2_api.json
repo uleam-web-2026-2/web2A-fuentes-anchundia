@@ -1,0 +1,50 @@
+{
+  "baseUrl": "http://localhost:8080",
+  "rutas_sin_token": [
+    {
+      "method": "GET",
+      "path": "/clientes/1/puntos",
+      "status": 401
+    },
+    {
+      "method": "GET",
+      "path": "/recompensas",
+      "status": 401
+    },
+    {
+      "method": "POST",
+      "path": "/compras",
+      "status": 401
+    },
+    {
+      "method": "POST",
+      "path": "/canjes",
+      "status": 401
+    },
+    {
+      "method": "GET",
+      "path": "/canjes",
+      "status": 401
+    },
+    {
+      "method": "GET",
+      "path": "/canjes/1",
+      "status": 401
+    },
+    {
+      "method": "PATCH",
+      "path": "/canjes/1/estado",
+      "status": 401
+    }
+  ],
+  "login_cliente": 200,
+  "puntos_y_catalogo": 200,
+  "listado_cliente_rechazado": 403,
+  "login_admin": 200,
+  "listado_admin": 200,
+  "consulta_canje_propio": 200,
+  "documentos_hito1_restantes": 0,
+  "capturas_bruno_conservadas": 8,
+  "api_acciones": "solo login y consultas; sin crear ni confirmar canjes durante la limpieza",
+  "codigo_y_base": "sin modificaciones por la limpieza"
+}

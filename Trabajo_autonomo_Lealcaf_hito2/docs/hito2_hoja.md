@@ -37,6 +37,8 @@ Solo cuentas de prueba. PostgreSQL: **fidelizacion_db**. Preparación **0**: obt
 
 ## 4 · Recuadro de cumplimiento
 
-Comprobado: ☑ structs y tablas de seis entidades y Cuenta · ☑ validador sin errores ni avisos · ☑ colección 0–6 · ☑ respuestas 401/200/200/403/200/422 · ☑ pruebas en verde, con integración · ☑ capas y decisiones · ☑ capturas directas actuales. Historial revisado: ☑ commits reales de ambos integrantes. A cargo de la pareja: ☐ lectura y ensayo de ambos. Entrega: publicar y comprobar el repositorio de la organización antes del cierre.
+☑ seis entidades y Cuenta: siete tablas y nueve FK verificadas en PostgreSQL real · ☑ OpenAPI sin errores ni avisos · ☑ Bruno 0–6 aprobado en interfaz y Runner · ☑ pruebas en verde con integración; concurrencia PostgreSQL aprobada en instancia aislada · ☑ capas y decisiones · ☑ ocho capturas nuevas bruno_ui_*.jpg · ☑ .env privado excluido de Git.
 
-Desde la raíz: servidor **hito2/Iniciar-Proyecto.cmd**, pruebas **go -C hito2 test ./...**, contrato **npx.cmd @redocly/cli lint docs/openapi.yaml --format=stylish**. Evidencias actuales del alumno: **docs/hito2_capturas/**; detalle e historial: **docs/validacion.md**. Cierre Web II A: **29/10/2026, 23:59**; repositorio de **uleam-web-2026-2**.
+Pendientes: ☐ ensayo de ambos con reloj · ☐ commit y push autorizados · ☐ comprobar publicación y CI. Se conserva docs/ dentro del proyecto por decisión del alumno; su ubicación difiere de la raíz Git pedida por el enunciado. El README principal enlaza a todos los entregables.
+
+Desde **Trabajo_autonomo_Lealcaf_hito2/**: **Iniciar-Proyecto.cmd**, **go test ./...** y **npx.cmd @redocly/cli lint docs/openapi.yaml --format=stylish**. Evidencias: **docs/hito2_capturas/index.html**; detalle: **docs/validacion.md**. Cierre Web II A: **29/10/2026, 23:59**, repositorio institucional.

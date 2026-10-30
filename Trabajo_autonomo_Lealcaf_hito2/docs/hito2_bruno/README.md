@@ -1,6 +1,6 @@
 # Colección Bruno · LealCaf con PostgreSQL
 
-1. Inicie el proyecto con **Iniciar-Proyecto.cmd**. El arranque usa PostgreSQL y la misma base **fidelizacion_db** del Hito 1.
+1. Inicie el proyecto con **Iniciar-Proyecto.cmd**. El arranque usa PostgreSQL y la base **fidelizacion_db** del proyecto.
 2. Abra esta carpeta como colección en Bruno y seleccione **Local**.
 3. Antes del turno envíe **0 · Preparar tokens y canje nuevo**. Debe responder 201. El script inicia sesión con ambas cuentas, identifica al cliente demo por la respuesta del login, consulta el catálogo y encuentra un canje confirmado propio. Crea un canje solicitado nuevo para 4 y 5.
 4. En el turno envíe **1 → 2 → 3 → 4 → 5 → 6**. Deben responder **401, 200 con token, 200, 403, 200 y 422**.
@@ -18,4 +18,6 @@ Al cerrar Bruno o vencer el token, ejecute nuevamente 0. No hay que pegar tokens
 
 Los scripts usan las APIs integradas oficiales [`bru.sendRequest`, `req.setUrl`, `req.setBody` y variables de ejecución](https://docs.usebruno.com/testing/script/javascript-reference). El cuerpo JSON de 0 se establece en el script con un objeto para usar la recompensa real; no depende de cuándo se interpolen las variables de la interfaz. No requieren paquetes npm, filesystem ni Developer Mode.
 
-Comprobación opcional con CLI desde esta carpeta: `bru run --env Local`. El recorrido debe ejecutarse completo en una misma ejecución. Los resultados de la migración actual se registrarán en docs/validacion.md después de comprobarlos; las evidencias SQLite antiguas se conservan como históricas.
+Comprobación opcional con CLI desde esta carpeta: `npx.cmd --yes @usebruno/cli@4.3.0 run --env Local`. El recorrido debe ejecutarse completo en una misma ejecución. La revisión del 29/10/2026 pasó 7/7 peticiones, 6/6 pruebas y 7/7 aserciones sobre PostgreSQL temporal. Resultados y límites en `../validacion.md`; los PNG anteriores se conservan como respaldo.
+
+Si el servidor de ensayo usa otro puerto, añadir `--env-var baseUrl=http://127.0.0.1:18082`. Para guardar un informe sin tokens ni contraseñas, usar `--reporter-json resultados.json --reporter-skip-all-headers --reporter-skip-body`. La colección crea y confirma un canje: usar los datos ficticios dedicados y recordar que se consumen puntos.

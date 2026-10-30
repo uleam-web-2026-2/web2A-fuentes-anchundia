@@ -1,7 +1,5 @@
 # Addendum técnico vigente · Hito 2
 
-> Actualizado para Hito 2. El PDF hito1_presentacion.pdf y las imágenes hito1_* conservan la presentación histórica; pueden mostrar encabezados y códigos anteriores.
-
 **Pareja:** Fuentes Cedeño José Miguel · Anchundia Anchundia Luis Antonio · Web II A, grupo P.
 
 ## A. Estructura
@@ -18,7 +16,7 @@
 | repositorio.go | Consultas y transacciones GORM. |
 | *_test.go | Pruebas de negocio, autenticación, dominio, integración y migración. |
 | docs/ | OpenAPI, HTML, hoja, Bruno, capturas, decisiones y guion. |
-| Iniciar-Proyecto.cmd, Iniciar-Demo.cmd y scripts/iniciar-demo.ps1 | Arranque en Windows usando la configuración PostgreSQL de .env. |
+| Iniciar-Proyecto.cmd y scripts/iniciar-demo.ps1 | El iniciador principal llama al script interno para arrancar en Windows usando la configuración PostgreSQL de .env. |
 
 ## B. Configuración y secretos
 
@@ -34,11 +32,11 @@ La plantilla .env.example no contiene contraseña ni secreto de firma. La config
 | JWT_TTL | Duración del token; 1h para coincidir con la entrega. |
 | DEMO_DATA | true carga datos ficticios una sola vez; otro valor no crea cuentas/clientes demo. |
 
-La migración atribuye las compras y canjes antiguos a Sucursal 1 Centro. El nombre/dirección son datos iniciales que se deben revisar. La demostración prepara Norte y un cliente ficticio dedicado, utiliza una recompensa activa y crea un canje confirmado propio con ID generado por la base. Conserva el historial del Hito 1. Reiniciar no vuelve a acreditar puntos, no renueva fechas y no reinicia estados.
+La migración atribuye las compras y canjes antiguos a Sucursal 1 Centro. El nombre/dirección son datos iniciales que se deben revisar. La demostración prepara Norte y un cliente ficticio dedicado, utiliza una recompensa activa y crea un canje confirmado propio con ID generado por la base. Conserva los registros existentes. Reiniciar no vuelve a acreditar puntos, no renueva fechas y no reinicia estados.
 
 ## C. Pruebas
 
-Las pruebas están en internal/fidelizacion/*_test.go y usan SQLite aislado. Comprueban negocio, autenticación, permisos, firma y vencimiento, estados, puntos entre sucursales, rechazos sin descuentos parciales, migración desde Hito 1 y siembra idempotente.
+Las pruebas normales están en internal/fidelizacion/*_test.go y usan SQLite aislado. La prueba opcional postgres_test.go comprueba concurrencia e idempotencia con PostgreSQL cuando se configura LEALCAF_TEST_POSTGRES_DSN en una base desechable. Comprueban negocio, autenticación, permisos, firma y vencimiento, estados, puntos entre sucursales, rechazos sin descuentos parciales, migración de esquemas anteriores y siembra idempotente.
 
 ```powershell
 go test ./...
@@ -79,4 +77,4 @@ sequenceDiagram
 
 Abrir docs/hito2_bruno y entorno Local. Petición 0 obtiene ambos tokens y crea un canje nuevo; durante el turno se envían 1–6: 401, 200 con token, 200, 403, 200, 422. Tokens e ID se guardan solo en memoria. Preparar de nuevo antes de repetir. La transición prohibida usa canjeConfirmadoId, localizado por propietario y estado; no lo modifica ni presume que tenga ID 1.
 
-Las evidencias están en docs/hito2_capturas/. Los integrantes deben tomar capturas nuevas de la versión PostgreSQL. Las capturas de Hito 1 y los reportes de la antigua demostración SQLite se conservan como históricos y no prueban la conexión actual. docs/decisiones.md explica las capas, sucursales y uso de IA; docs/guion_hito2.md prepara las preguntas. Las contribuciones humanas y el push deben realizarse con las cuentas reales de ambos integrantes.
+Las evidencias están en docs/hito2_capturas/. Las capturas nuevas de Bruno Desktop sobre PostgreSQL local están en bruno_ui_0.jpg a bruno_ui_6.jpg y bruno_ui_resumen.jpg; el índice identifica los archivos históricos por separado. Los reportes de ensayos anteriores del Hito 2 se identifican como tales; las imágenes bruno_ui_*.jpg son las capturas nuevas de la interfaz. docs/decisiones.md explica las capas, sucursales y uso de IA; docs/guion_hito2.md prepara las preguntas. Las contribuciones humanas y el push deben realizarse con las cuentas reales de ambos integrantes.

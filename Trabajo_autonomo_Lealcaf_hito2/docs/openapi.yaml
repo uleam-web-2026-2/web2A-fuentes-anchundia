@@ -3,7 +3,7 @@
   "info": {
     "title": "LealCaf · API de fidelización",
     "version": "2.0.0",
-    "description": "Hito 2: clientes acumulan puntos por compras y solicitan recompensas; administradores registran compras y gestionan canjes. Seis entidades de negocio y Cuenta para autenticación. Los puntos se comparten entre sucursales de la misma cafetería. Las operaciones con summary terminado en (plan) todavía no existen en el servidor. La ejecución actual utiliza PostgreSQL y conserva la base fidelizacion_db del Hito 1. Los IDs de los ejemplos son ilustrativos; Bruno obtiene los IDs reales del cliente y de los canjes al preparar.",
+    "description": "Hito 2: clientes acumulan puntos por compras y solicitan recompensas; administradores registran compras y gestionan canjes. Seis entidades de negocio y Cuenta para autenticación. Los puntos se comparten entre sucursales de la misma cafetería. Las operaciones con summary terminado en (plan) todavía no existen en el servidor. La ejecución actual utiliza PostgreSQL y conserva la base fidelizacion_db existente. Los IDs de los ejemplos son ilustrativos; Bruno obtiene los IDs reales del cliente y de los canjes al preparar.",
     "contact": {
       "name": "Fuentes Cedeño José Miguel · Anchundia Anchundia Luis Antonio",
       "url": "https://github.com/uleam-web-2026-2/web2A-fuentes-anchundia"

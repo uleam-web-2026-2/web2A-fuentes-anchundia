@@ -1,0 +1,343 @@
+[
+  {
+    "iterationIndex": 0,
+    "results": [
+      {
+        "test": {
+          "filename": "0 - Preparar canje.bru"
+        },
+        "request": {
+          "method": "POST",
+          "url": "http://localhost:8080/canjes",
+          "headers": {}
+        },
+        "response": {
+          "status": 201,
+          "statusText": "Created",
+          "headers": {},
+          "url": "http://localhost/canjes",
+          "responseTime": 25,
+          "duration": 25,
+          "size": 146
+        },
+        "error": null,
+        "status": "pass",
+        "assertionResults": [
+          {
+            "uid": "r0PxRKS20-NT4XRsUaLi6",
+            "lhsExpr": "res.status",
+            "rhsExpr": "eq 201",
+            "rhsOperand": "201",
+            "operator": "eq",
+            "status": "pass"
+          }
+        ],
+        "testResults": [],
+        "preRequestTestResults": [],
+        "postResponseTestResults": [],
+        "shouldStopRunnerExecution": false,
+        "runDuration": 1.3136969,
+        "name": "0 · Preparar tokens y canje nuevo",
+        "suitename": "C:\\Users\\anchu\\Documents\\2.- Sexto Semestre\\1.- Aplicaciones-web-2A\\web2A-fuentes-anchundia\\Trabajo_autonomo_Lealcaf_hito2\\docs\\hito2_bruno\\0 - Preparar canje",
+        "path": "0 - Preparar canje",
+        "iterationIndex": 0
+      },
+      {
+        "test": {
+          "filename": "1 - Sin token.bru"
+        },
+        "request": {
+          "method": "GET",
+          "url": "http://localhost:8080/canjes/1",
+          "headers": {}
+        },
+        "response": {
+          "status": 401,
+          "statusText": "Unauthorized",
+          "headers": {},
+          "url": "http://localhost/canjes/1",
+          "responseTime": 5,
+          "duration": 5,
+          "size": 39
+        },
+        "error": null,
+        "status": "pass",
+        "assertionResults": [
+          {
+            "uid": "JftEKaVTtMREz8XwJC6rU",
+            "lhsExpr": "res.status",
+            "rhsExpr": "eq 401",
+            "rhsOperand": "401",
+            "operator": "eq",
+            "status": "pass"
+          }
+        ],
+        "testResults": [
+          {
+            "description": "La ruta protegida rechaza la falta de token",
+            "status": "pass",
+            "uid": "5MOCwV9vwfwTHcflgZZX7"
+          }
+        ],
+        "preRequestTestResults": [],
+        "postResponseTestResults": [],
+        "shouldStopRunnerExecution": false,
+        "runDuration": 0.3689658,
+        "name": "1 · Canje sin token → 401",
+        "suitename": "C:\\Users\\anchu\\Documents\\2.- Sexto Semestre\\1.- Aplicaciones-web-2A\\web2A-fuentes-anchundia\\Trabajo_autonomo_Lealcaf_hito2\\docs\\hito2_bruno\\1 - Sin token",
+        "path": "1 - Sin token",
+        "iterationIndex": 0
+      },
+      {
+        "test": {
+          "filename": "2 - Login cliente.bru"
+        },
+        "request": {
+          "method": "POST",
+          "url": "http://localhost:8080/login",
+          "headers": {}
+        },
+        "response": {
+          "status": 200,
+          "statusText": "OK",
+          "headers": {},
+          "url": "http://localhost/login",
+          "responseTime": 124,
+          "duration": 124,
+          "size": 309
+        },
+        "error": null,
+        "status": "pass",
+        "assertionResults": [
+          {
+            "uid": "fvWSSOiyHms2AiXwTXz2R",
+            "lhsExpr": "res.status",
+            "rhsExpr": "eq 200",
+            "rhsOperand": "200",
+            "operator": "eq",
+            "status": "pass"
+          }
+        ],
+        "testResults": [
+          {
+            "description": "Token Bearer de cliente con duración de una hora",
+            "status": "pass",
+            "uid": "fHwUKET36UFadAlKlld3I"
+          }
+        ],
+        "preRequestTestResults": [],
+        "postResponseTestResults": [],
+        "shouldStopRunnerExecution": false,
+        "runDuration": 0.4711591,
+        "name": "2 · Login cliente → token",
+        "suitename": "C:\\Users\\anchu\\Documents\\2.- Sexto Semestre\\1.- Aplicaciones-web-2A\\web2A-fuentes-anchundia\\Trabajo_autonomo_Lealcaf_hito2\\docs\\hito2_bruno\\2 - Login cliente",
+        "path": "2 - Login cliente",
+        "iterationIndex": 0
+      },
+      {
+        "test": {
+          "filename": "3 - Con token cliente.bru"
+        },
+        "request": {
+          "method": "GET",
+          "url": "http://localhost:8080/canjes/1",
+          "headers": {}
+        },
+        "response": {
+          "status": 200,
+          "statusText": "OK",
+          "headers": {},
+          "url": "http://localhost/canjes/1",
+          "responseTime": 6,
+          "duration": 6,
+          "size": 145
+        },
+        "error": null,
+        "status": "pass",
+        "assertionResults": [
+          {
+            "uid": "myfp7Rutcbmdn8NESVzaw",
+            "lhsExpr": "res.status",
+            "rhsExpr": "eq 200",
+            "rhsOperand": "200",
+            "operator": "eq",
+            "status": "pass"
+          }
+        ],
+        "testResults": [
+          {
+            "description": "El cliente consulta su canje confirmado",
+            "status": "pass",
+            "uid": "6bFV4ClW7MrnLCKip1MQF"
+          }
+        ],
+        "preRequestTestResults": [],
+        "postResponseTestResults": [],
+        "shouldStopRunnerExecution": false,
+        "runDuration": 0.3707443,
+        "name": "3 · Canje propio con token → 200",
+        "suitename": "C:\\Users\\anchu\\Documents\\2.- Sexto Semestre\\1.- Aplicaciones-web-2A\\web2A-fuentes-anchundia\\Trabajo_autonomo_Lealcaf_hito2\\docs\\hito2_bruno\\3 - Con token cliente",
+        "path": "3 - Con token cliente",
+        "iterationIndex": 0
+      },
+      {
+        "test": {
+          "filename": "4 - Rol sin permiso.bru"
+        },
+        "request": {
+          "method": "PATCH",
+          "url": "http://localhost:8080/canjes/2/estado",
+          "headers": {}
+        },
+        "response": {
+          "status": 403,
+          "statusText": "Forbidden",
+          "headers": {},
+          "url": "http://localhost/canjes/2/estado",
+          "responseTime": 5,
+          "duration": 5,
+          "size": 53
+        },
+        "error": null,
+        "status": "pass",
+        "assertionResults": [
+          {
+            "uid": "MADHaO-8x8MZji8qBlR6e",
+            "lhsExpr": "res.status",
+            "rhsExpr": "eq 403",
+            "rhsOperand": "403",
+            "operator": "eq",
+            "status": "pass"
+          }
+        ],
+        "testResults": [
+          {
+            "description": "El rol cliente no puede confirmar",
+            "status": "pass",
+            "uid": "0fjnwoAkuBJjAId6gBtaN"
+          }
+        ],
+        "preRequestTestResults": [],
+        "postResponseTestResults": [],
+        "shouldStopRunnerExecution": false,
+        "runDuration": 0.3597669,
+        "name": "4 · Cliente intenta confirmar → 403",
+        "suitename": "C:\\Users\\anchu\\Documents\\2.- Sexto Semestre\\1.- Aplicaciones-web-2A\\web2A-fuentes-anchundia\\Trabajo_autonomo_Lealcaf_hito2\\docs\\hito2_bruno\\4 - Rol sin permiso",
+        "path": "4 - Rol sin permiso",
+        "iterationIndex": 0
+      },
+      {
+        "test": {
+          "filename": "5 - Rol autorizado.bru"
+        },
+        "request": {
+          "method": "PATCH",
+          "url": "http://localhost:8080/canjes/2/estado",
+          "headers": {}
+        },
+        "response": {
+          "status": 200,
+          "statusText": "OK",
+          "headers": {},
+          "url": "http://localhost/canjes/2/estado",
+          "responseTime": 28,
+          "duration": 28,
+          "size": 145
+        },
+        "error": null,
+        "status": "pass",
+        "assertionResults": [
+          {
+            "uid": "yqYIQfl93--3r3XAX-sex",
+            "lhsExpr": "res.status",
+            "rhsExpr": "eq 200",
+            "rhsOperand": "200",
+            "operator": "eq",
+            "status": "pass"
+          }
+        ],
+        "testResults": [
+          {
+            "description": "La confirmación cambia el canje nuevo",
+            "status": "pass",
+            "uid": "rOtouPJJoppRDgEI1ylAX"
+          }
+        ],
+        "preRequestTestResults": [],
+        "postResponseTestResults": [],
+        "shouldStopRunnerExecution": false,
+        "runDuration": 0.3711958,
+        "name": "5 · Administrador confirma → 200",
+        "suitename": "C:\\Users\\anchu\\Documents\\2.- Sexto Semestre\\1.- Aplicaciones-web-2A\\web2A-fuentes-anchundia\\Trabajo_autonomo_Lealcaf_hito2\\docs\\hito2_bruno\\5 - Rol autorizado",
+        "path": "5 - Rol autorizado",
+        "iterationIndex": 0
+      },
+      {
+        "test": {
+          "filename": "6 - Transicion prohibida.bru"
+        },
+        "request": {
+          "method": "PATCH",
+          "url": "http://localhost:8080/canjes/1/estado",
+          "headers": {}
+        },
+        "response": {
+          "status": 422,
+          "statusText": "Unprocessable Entity",
+          "headers": {},
+          "url": "http://localhost/canjes/1/estado",
+          "responseTime": 6,
+          "duration": 6,
+          "size": 63
+        },
+        "error": null,
+        "status": "pass",
+        "assertionResults": [
+          {
+            "uid": "Izxez0Njxt-KRWSfcWDu4",
+            "lhsExpr": "res.status",
+            "rhsExpr": "eq 422",
+            "rhsOperand": "422",
+            "operator": "eq",
+            "status": "pass"
+          }
+        ],
+        "testResults": [
+          {
+            "description": "La regla impide cancelar un canje confirmado",
+            "status": "pass",
+            "uid": "5PUElc_eF9gbcLfFR4UKC"
+          }
+        ],
+        "preRequestTestResults": [],
+        "postResponseTestResults": [],
+        "shouldStopRunnerExecution": false,
+        "runDuration": 0.374029,
+        "name": "6 · Confirmado a cancelado → 422",
+        "suitename": "C:\\Users\\anchu\\Documents\\2.- Sexto Semestre\\1.- Aplicaciones-web-2A\\web2A-fuentes-anchundia\\Trabajo_autonomo_Lealcaf_hito2\\docs\\hito2_bruno\\6 - Transicion prohibida",
+        "path": "6 - Transicion prohibida",
+        "iterationIndex": 0
+      }
+    ],
+    "summary": {
+      "totalRequests": 7,
+      "passedRequests": 7,
+      "failedRequests": 0,
+      "errorRequests": 0,
+      "skippedRequests": 0,
+      "skippedByBail": 0,
+      "totalAssertions": 7,
+      "passedAssertions": 7,
+      "failedAssertions": 0,
+      "totalTests": 6,
+      "passedTests": 6,
+      "failedTests": 0,
+      "totalPreRequestTests": 0,
+      "passedPreRequestTests": 0,
+      "failedPreRequestTests": 0,
+      "totalPostResponseTests": 0,
+      "passedPostResponseTests": 0,
+      "failedPostResponseTests": 0
+    }
+  }
+]

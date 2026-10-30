@@ -2,15 +2,15 @@
 
 ## Semana 8 · estructura
 
-El código de esta entrega está en `hito2/`; `docs/` y `redocly.yaml` están en la raíz del repositorio. Desde esa raíz se ejecuta `go -C hito2 test ./...`. El módulo Go anterior se conserva y se verifica por separado.
+El módulo Go de esta copia está directamente en `Trabajo_autonomo_Lealcaf_hito2/`, junto con `docs/`, `scripts/` y `redocly.yaml`. Desde esa carpeta se ejecuta `go test ./...`. No hay una subcarpeta `hito2/`.
 
-Elegimos capas lógicas dentro de `hito2/internal/fidelizacion`, conservando un solo paquete Go para un proyecto pequeño. Los archivos separan responsabilidades; no necesitamos un paquete por cada archivo.
+Elegimos capas lógicas dentro de `internal/fidelizacion`, conservando un solo paquete Go para un proyecto pequeño. Los archivos separan responsabilidades; no necesitamos un paquete por cada archivo.
 
 | Archivo | Responsabilidad |
 |---|---|
 | `modelos.go` | Entidades, relaciones, roles y estados del dominio. |
 | `db.go` | Conexión PostgreSQL, migración conservadora de las seis entidades y Cuenta, y carga opcional de datos de demostración. |
-| `autenticacion.go` | Contraseñas con hash, emisión/verificación del JWT, identidad autenticada y autorización por rol. |
+| `autenticacion.go` | Contraseñas con hash, emisión/verificación del JWT e identidad autenticada. La autorización por rol se aplica con SoloRol en manejadores.go. |
 | `rutas.go` | Registro de rutas, grupo protegido y asociación con manejadores. |
 | `manejadores.go` | Recibir HTTP, leer ID/cuerpo, llamar al servicio y convertir el resultado a JSON y código HTTP. No consulta la base directamente. |
 | `servicio.go` | Casos de uso y reglas de negocio: puntos vigentes, permisos de propiedad y transiciones de Canje. No conoce Gin ni códigos HTTP. |
@@ -42,11 +42,11 @@ La cafetería sigue siendo un único comercio con varias sucursales, no un progr
 
 Los puntos son compartidos entre sucursales: pertenecen al cliente. La sucursal registra dónde ocurrió la compra o se pidió la recompensa y debe existir y estar activa. No dividimos el saldo por sucursal. El catálogo de recompensas es común. Las rutas para listar/ver sucursales están declaradas como `(plan)` en OpenAPI, sin programar un CRUD adicional para este hito.
 
-## Alcance y compatibilidad con Hito 1
+## Alcance del Hito 2 y conservación de datos
 
-Canje es la entidad principal evaluada. Conservamos las rutas de compras, puntos y recompensas que ya existían en Hito 1; la incorporación de Sucursal no añade endpoints implementados. El contrato incluye todo el mapa existente y distingue los planes futuros.
+Canje es la entidad principal evaluada. Conservamos las rutas de compras, puntos y recompensas ya implementadas; la incorporación de Sucursal no añade endpoints implementados. El contrato incluye todo el mapa existente y distingue los planes futuros.
 
-La configuración está fuera del código en .env. El motor de ejecución es PostgreSQL y se mantiene la base **fidelizacion_db** del Hito 1 en localhost:5432. La variante SQLite anterior queda histórica para el arranque; SQLite solo se conserva en pruebas automáticas aisladas.
+La configuración está fuera del código en .env. El motor de ejecución es PostgreSQL y se mantiene la base **fidelizacion_db** existente en localhost:5432. La variante SQLite anterior queda histórica para el arranque; SQLite solo se conserva en pruebas automáticas aisladas.
 
 La preparación de esquema y datos se ejecuta de forma transaccional. Conserva los registros anteriores y agrega las tablas y columnas necesarias. Los datos ficticios se cargan solo con DEMO_DATA=true, en un cliente dedicado de correo cliente.hito2@example.invalid. No se presume que un ID anterior esté libre ni se cambian estados o saldos de clientes históricos. Reiniciar no duplica los puntos demo ni renueva su fecha de vencimiento.
 
@@ -54,4 +54,14 @@ Bruno obtiene clienteId del login, recompensaId del catálogo y canjeConfirmadoI
 
 ## Declaración de IA · Hito 2
 
+En la revisión del 29/10/2026 se corrigieron las referencias heredadas a `hito2/`: el módulo está directamente en la carpeta abierta. El iniciador ahora ejecuta siempre `go run .` para evitar demostrar un binario antiguo. Se conservan funcionalidades, reglas y datos.
+
+`TestPostgresConfirmacionesConcurrentes`, en `postgres_test.go`, comprueba sobre una base desechable la migración idempotente y dos confirmaciones simultáneas con saldo para una sola: una se acepta, otra se rechaza, queda saldo 20 y un único descuento. Usa un esquema propio y limpia solo ese esquema. Se activa con `LEALCAF_TEST_POSTGRES_DSN` en formato clave=valor; sin esa variable se omite explícitamente.
+
+La concurrencia se verificó en PostgreSQL 18.6 temporal, con API en 18082. Después de configurar el entorno privado se verificaron PostgreSQL local y la API en localhost:8080. Los registros, resultados y límites se describen en `validacion.md`.
+
 **OpenAI Codex:** apoyo en implementación, reorganización de capas, autenticación, ampliación con Sucursal, pruebas, contrato OpenAPI, colección Bruno y revisión de documentación. Los integrantes deben leer, verificar y comprender el resultado, adaptar las decisiones y poder explicarlas. Esta declaración no acredita commits ni participación que no hayan ocurrido.
+
+## Documentación de esta entrega
+
+El modelo y mapa vigentes están en [hito2_modelo.md](hito2_modelo.md) y la configuración técnica en [hito2_tecnico.md](hito2_tecnico.md). Se retiraron la presentación, boceto y capturas de la entrega anterior; esta limpieza no elimina entidades, reglas, pruebas de migración ni datos PostgreSQL. ChatGPT y Claude fueron declarados como apoyo en el trabajo inicial; OpenAI Codex apoyó la revisión y preparación del Hito 2.

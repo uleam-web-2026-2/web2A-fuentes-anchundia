@@ -1,0 +1,23 @@
+{
+  "fecha": "2026-10-29",
+  "descarga_dependencias": "aprobada",
+  "build": "aprobado",
+  "vet": "aprobado",
+  "go_tests_pass": 36,
+  "go_tests_skip": 1,
+  "postgres_concurrencia": "aprobada anteriormente en PostgreSQL temporal; omitida en esta repeticion sin DSN",
+  "openapi": "sin errores ni advertencias",
+  "enlaces_locales_rotos": [],
+  "capturas_bruno_nuevas": 8,
+  "base_real": "7 tablas, 9 FK, dos cuentas por rol; consultas solo lectura",
+  "secretos_privados_en_archivos_de_entrega": 0,
+  "env_privado": "excluido de Git",
+  "ci": "rutas corregidas; ejecucion remota pendiente de commit y push",
+  "docs": "conservada en la carpeta del proyecto por decision del usuario",
+  "pendientes": [
+    "ensayo humano de ambos integrantes",
+    "commit y push autorizado",
+    "comprobar ejecucion remota de CI despues de publicar",
+    "confirmar aceptacion docente de ubicacion anidada de docs"
+  ]
+}

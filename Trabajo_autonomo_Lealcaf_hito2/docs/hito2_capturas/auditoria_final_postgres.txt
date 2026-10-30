@@ -1,0 +1,22 @@
+    table_name     
+-------------------
+ canjes
+ clientes
+ compras
+ cuenta
+ movimiento_puntos
+ recompensas
+ sucursals
+(7 rows)
+
+ relaciones_fk 
+---------------
+             9
+(1 row)
+
+      rol      | count 
+---------------+-------
+ administrador |     1
+ cliente       |     1
+(2 rows)
+

@@ -1,0 +1,46 @@
+{
+  "baseUrl": "http://localhost:8080",
+  "sin_token": [
+    {
+      "method": "GET",
+      "path": "/clientes/1/puntos",
+      "status": 401
+    },
+    {
+      "method": "GET",
+      "path": "/recompensas",
+      "status": 401
+    },
+    {
+      "method": "POST",
+      "path": "/compras",
+      "status": 401
+    },
+    {
+      "method": "POST",
+      "path": "/canjes",
+      "status": 401
+    },
+    {
+      "method": "GET",
+      "path": "/canjes",
+      "status": 401
+    },
+    {
+      "method": "GET",
+      "path": "/canjes/1",
+      "status": 401
+    },
+    {
+      "method": "PATCH",
+      "path": "/canjes/1/estado",
+      "status": 401
+    }
+  ],
+  "login_cliente": 200,
+  "consulta_puntos": 200,
+  "saldo_demo": 99840,
+  "coste_minimo": 40,
+  "permite_otro_ensayo": true,
+  "acciones": "solo lecturas y login; no se crearon ni confirmaron canjes"
+}

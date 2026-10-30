@@ -21,11 +21,7 @@ $env:DB_DRIVER = 'postgres'
 Write-Host 'LealCaf - Hito 2 - PostgreSQL'
 Write-Host 'La conexion se lee de .env. La base SQLite anterior no se utiliza.'
 Write-Host 'Mantén esta ventana abierta. Ctrl+C detiene el servidor.'
-$executable = Join-Path $projectRoot 'bin\lealcaf-postgres.exe'
-if (Test-Path -LiteralPath $executable) {
-    & $executable
-} else {
-    if (-not (Get-Command go -ErrorAction SilentlyContinue)) { throw 'Se necesita Go o bin/lealcaf-postgres.exe.' }
-    & go run .
-}
+# Compilar siempre el código actual evita demostrar un ejecutable desactualizado.
+if (-not (Get-Command go -ErrorAction SilentlyContinue)) { throw 'Se necesita Go 1.27.1 o posterior compatible.' }
+& go run .
 if ($LASTEXITCODE -ne 0) { throw 'El servidor termino con un error. Revisa el mensaje anterior.' }

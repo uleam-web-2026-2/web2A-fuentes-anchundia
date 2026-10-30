@@ -1,0 +1,33 @@
+                                 version                                 
+-------------------------------------------------------------------------
+ PostgreSQL 18.6 on x86_64-windows, compiled by msvc-19.44.35228, 64-bit
+(1 row)
+
+    table_name     
+-------------------
+ canjes
+ clientes
+ compras
+ cuenta
+ movimiento_puntos
+ recompensas
+ sucursals
+(7 rows)
+
+       tabla       |           relacion           |                       definicion                       
+-------------------+------------------------------+--------------------------------------------------------
+ compras           | fk_compras_cliente           | FOREIGN KEY (cliente_id) REFERENCES clientes(id)
+ compras           | fk_compras_sucursal          | FOREIGN KEY (sucursal_id) REFERENCES sucursals(id)
+ canjes            | fk_canjes_cliente            | FOREIGN KEY (cliente_id) REFERENCES clientes(id)
+ canjes            | fk_canjes_recompensa         | FOREIGN KEY (recompensa_id) REFERENCES recompensas(id)
+ canjes            | fk_canjes_sucursal           | FOREIGN KEY (sucursal_id) REFERENCES sucursals(id)
+ movimiento_puntos | fk_movimiento_puntos_canje   | FOREIGN KEY (canje_id) REFERENCES canjes(id)
+ movimiento_puntos | fk_movimiento_puntos_cliente | FOREIGN KEY (cliente_id) REFERENCES clientes(id)
+ movimiento_puntos | fk_movimiento_puntos_compra  | FOREIGN KEY (compra_id) REFERENCES compras(id)
+ cuenta            | fk_cuenta_cliente            | FOREIGN KEY (cliente_id) REFERENCES clientes(id)
+(9 rows)
+
+ nspname 
+---------
+(0 rows)
+

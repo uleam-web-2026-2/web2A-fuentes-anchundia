@@ -1,100 +1,108 @@
-# LealCaf · Hito 2 de Aplicaciones Web II
+# LealCaf · Hito 2
 
-API de fidelización para una cafetería con sucursales Centro y Norte. El cliente acumula un punto por dólar completo, consulta su saldo vigente por seis meses y solicita recompensas. El administrador registra compras y confirma o cancela solicitudes. Los puntos se comparten entre sucursales del mismo comercio.
+API de fidelización de una cafetería desarrollada con Go, Gin, GORM y PostgreSQL. Conserva el trabajo existente: compras generan un punto por dólar completo, puntos vigentes seis meses y canjes compartidos entre sucursales Centro y Norte.
 
-**Pareja:** Fuentes Cedeño José Miguel · Anchundia Anchundia Luis Antonio · Web II A · Grupo P.
+**Integrantes:** Fuentes Cedeño José Miguel y Anchundia Anchundia Luis Antonio · Web II A.
 
-## Ubicación y comandos
+## Carpeta correcta
 
-El código de esta versión está en **hito2/** y la documentación está en **docs/**, en la raíz del repositorio. Los comandos de este documento se ejecutan desde esa raíz. El módulo Go de la raíz conserva trabajo anterior; para verificar Hito 2 use siempre **go -C hito2**.
+Todos los comandos siguientes se ejecutan dentro de **Trabajo_autonomo_Lealcaf_hito2**, donde están `main.go`, `go.mod`, `docs/` y `redocly.yaml`. Esta copia no contiene una subcarpeta `hito2/`. El repositorio Git está un nivel arriba y contiene otros trabajos: no ejecutar Go desde ese nivel para evaluar esta entrega.
 
-## Base de datos y arranque
+```text
+Trabajo_autonomo_Lealcaf_hito2/
+├── main.go                   # Configuración y arranque
+├── internal/fidelizacion/    # HTTP, servicio, repositorio, modelos y pruebas
+├── scripts/iniciar-demo.ps1  # Iniciador Windows
+├── docs/                    # Contrato, hoja, Bruno, evidencias y guion
+├── .env.example
+└── redocly.yaml
+```
 
-El proyecto actual utiliza **PostgreSQL**, con la misma base del Hito 1: **fidelizacion_db**, en **localhost:5432**. La conexión se configura en el archivo privado **.env**. La aplicación ya no arranca contra el archivo SQLite de la demostración anterior. SQLite se mantiene únicamente como herramienta para pruebas automáticas aisladas.
+## Iniciar desde cero
 
-1. Mantenga PostgreSQL iniciado y la base **fidelizacion_db** disponible.
-2. Prepare el archivo privado **hito2/.env** a partir de **hito2/.env.example** si aún no existe. El repositorio incluye únicamente la plantilla. Complete DB_USER y DB_PASSWORD con su conexión local; revise DB_HOST, DB_PORT y DB_NAME. Las credenciales reales se mantienen fuera de Git.
-3. Ejecute **.\hito2\Iniciar-Proyecto.cmd** o haga doble clic en **hito2/Iniciar-Proyecto.cmd**. El iniciador genera una clave JWT local aleatoria si falta; JWT_TTL=1h corresponde al ensayo. **hito2/Iniciar-Demo.cmd** también ejecuta ese iniciador.
-4. Mantenga abierta la ventana del servidor mientras prueba en Bruno. Dirección predeterminada: **http://localhost:8080**.
-5. Si el puerto HTTP cambia, actualice PORT en **hito2/.env** y baseUrl en Bruno antes de preparar el ensayo. DB_PORT identifica PostgreSQL, no la API.
-
-Para crear la configuración sin reemplazar una que ya exista, desde la raíz:
+1. Instalar **Go 1.27.1** o posterior compatible, PostgreSQL y Bruno. Node.js con npm se requiere para Redocly y Bruno CLI. `go version` debe coincidir con la versión mínima de `go.mod`.
+2. Iniciar el servicio PostgreSQL. Usar la base existente **fidelizacion_db**. Solo en una instalación nueva, crear una base vacía con ese nombre en pgAdmin; no borrar, restaurar encima ni recrear una base con datos.
+3. Crear el archivo privado sin reemplazar configuraciones anteriores:
 
 ```powershell
-if (-not (Test-Path -LiteralPath '.\hito2\.env')) {
-    Copy-Item -LiteralPath '.\hito2\.env.example' -Destination '.\hito2\.env'
+if (-not (Test-Path -LiteralPath '.env')) {
+    Copy-Item -LiteralPath '.env.example' -Destination '.env'
 }
 ```
 
-Después de completar la conexión privada, inicie con `.\hito2\Iniciar-Proyecto.cmd`. El repositorio entrega el código fuente y requiere Go para compilarlo; binarios y configuración privada se excluyen. La clave JWT configurada manualmente debe tener al menos 32 bytes aleatorios. Para ejecutar directamente con Go entre primero en **hito2/**, prepare JWT_SECRET y use `go run .`.
-
-## Migración que conserva el Hito 1
-
-El arranque aplica la preparación de la base de manera transaccional e idempotente. Mantiene los registros originales de clientes, compras, recompensas, puntos y canjes, agrega Sucursal y Cuenta, y añade sucursal_id a Compra y Canje. Los registros anteriores se atribuyen a la sucursal principal Centro (ID 1); la dirección inicial debe revisarse como dato académico.
-
-Con **DEMO_DATA=true** prepara los datos ficticios del ensayo aparte del historial anterior. Crea un cliente dedicado de correo **cliente.hito2@example.invalid**, cuentas de prueba, puntos de demostración y un canje confirmado propio. Utiliza identificadores generados por la base: no presume que el cliente ni el canje tengan ID 1. Conserva las recompensas ya existentes y no cambia estados ni puntos de los clientes anteriores. Repetir el arranque no renueva fechas de acumulación ni vuelve a acreditar los mismos puntos.
-
-El nombre de la base es **fidelizacion_db**; no debe crearse una segunda base final para la entrega. Los respaldos, las verificaciones previas y las capturas actuales del alumno se describen en [validacion.md](../docs/validacion.md).
-
-## Ver las tablas en pgAdmin
-
-Abra **PostgreSQL 18 → Databases → fidelizacion_db → Schemas → public → Tables** y actualice la lista después del arranque. Las tablas del modelo son clientes, compras, recompensas, canjes, movimiento_puntos, sucursals y cuenta. El nombre físico sucursals corresponde al struct Sucursal. En compras y canjes debe existir sucursal_id.
-
-## Cuentas de demostración: dos roles
-
-| Usuario | Contraseña de prueba | Rol | Identidad |
-|---|---|---|---|
-| cliente | cliente-2026 | cliente | Cliente ficticio dedicado; ID real devuelto por login |
-| admin | admin-2026 | administrador | Sin Cliente asociado |
-
-Son datos ficticios. El login entrega un JWT Bearer de una hora. La API obtiene la identidad del token firmado, no de X-Rol ni X-Cliente-ID. Las contraseñas se almacenan como hash bcrypt y no se devuelven en JSON. Una cuenta existente que entre en conflicto requiere revisión; la preparación no debe reemplazar silenciosamente su identidad o clave.
-
-## Preparar las seis peticiones
-
-Abra **docs/hito2_bruno**, en la raíz del repositorio, como colección Bruno y elija el entorno **Local**. Antes del turno envíe **0 · Preparar tokens y canje nuevo**. Hace ambos logins, obtiene una recompensa activa y localiza el canje confirmado propio del cliente demo; después crea un canje solicitado nuevo para las peticiones 4 y 5.
-
-En el turno envíe **1 a 6**: **401 → 200 con token → 200 → 403 → 200 → 422**. Las peticiones 1, 3 y 6 usan **canjeConfirmadoId**, obtenido del servidor. Las peticiones 4 y 5 usan **canjeId**, creado por 0. Repita la preparación antes de cada ensayo. Tokens e identificadores permanecen en memoria, sin editar archivos durante el turno. Consulte el [detalle de la colección](../docs/hito2_bruno/README.md).
-
-## Rutas implementadas y plan
-
-Todas requieren token salvo login.
-
-| Ruta | Acceso |
-|---|---|
-| POST /login | Público |
-| GET /clientes/{id}/puntos | Cliente propio / administrador |
-| GET /recompensas | Cliente / administrador |
-| POST /compras | Administrador |
-| POST /canjes | Cliente |
-| GET /canjes | Administrador; filtro estado opcional |
-| GET /canjes/{id} | Cliente propio / administrador |
-| PATCH /canjes/{id}/estado | Administrador |
-
-GET /clientes/{id}, GET /sucursales y GET /sucursales/{id} están declarados como **(plan)** en el contrato, sin ruta implementada. Se conservan las operaciones existentes del Hito 1; esta actualización cambia el motor de ejecución y la preparación de datos. Canje sigue siendo la entidad principal evaluada.
-
-Canje nace solicitado. El administrador confirma con puntos suficientes o cancela. Confirmado y cancelado son finales. Una transición prohibida produce 422; falta de autenticación, 401; falta de permiso, 403. Factura duplicada produce 409.
-
-## Verificaciones y evidencias
-
-Desde la raíz del repositorio:
+4. Editar `.env`: completar `DB_USER` y `DB_PASSWORD` localmente; revisar `DB_HOST=localhost`, `DB_PORT=5432` y `DB_NAME=fidelizacion_db`. `PORT=8080` es el puerto HTTP. No compartir contraseñas ni subir `.env`.
+5. Descargar y verificar dependencias:
 
 ```powershell
-go -C hito2 test ./...
+go mod download
+go build ./...
+go vet ./...
+go test ./...
+```
+
+6. Ejecutar `.\Iniciar-Proyecto.cmd` o abrirlo con doble clic. Requiere Go y ejecuta siempre el código actual; genera una clave JWT aleatoria en `.env` cuando falta. Mantener abierta la terminal. Dirección: **http://localhost:8080**. Ctrl+C detiene el servidor.
+
+Para usar `go run .` directamente, completar antes `JWT_SECRET` con al menos 32 bytes aleatorios. `JWT_TTL=1h` da tokens de una hora. Las variables de entorno del proceso tienen prioridad sobre `.env`; revisar las antiguas si la conexión no coincide. `ENV_FILE` permite elegir otra configuración privada.
+
+**Estado local actualizado:** el alumno configuró `.env` e inició PostgreSQL y la API. La colección Bruno 0–6 pasó contra `localhost:8080`: 7/7 peticiones, 6/6 pruebas y 7/7 aserciones. Creó y confirmó un canje del cliente de demostración. El archivo privado no se distribuye; en otra computadora se debe configurar nuevamente la conexión. La verificación temporal anterior se conserva por separado.
+
+## Datos y reglas
+
+El arranque migra las seis entidades de negocio (Cliente, Compra, Recompensa, Canje, MovimientoPuntos y Sucursal) y Cuenta. Conserva registros existentes y atribuye las compras/canjes antiguos a Centro. `DEMO_DATA=true` añade un cliente ficticio dedicado, cuentas, puntos y un canje confirmado para el ensayo, dentro de una transacción. Reiniciar no duplica puntos ni renueva vencimientos. Un conflicto de cuentas aborta la preparación sin reemplazar credenciales.
+
+| Usuario de prueba | Contraseña ficticia | Rol |
+|---|---|---|
+| cliente | cliente-2026 | cliente |
+| admin | admin-2026 | administrador |
+
+Las contraseñas se guardan con bcrypt. El JWT HS256 incluye identidad, rol, emisor, audiencia y caducidad; la API comprueba firma y cuenta vigente. `X-Rol` y `X-Cliente-ID` no autentican.
+
+```mermaid
+stateDiagram-v2
+    [*] --> solicitado
+    solicitado --> confirmado: administrador y saldo suficiente
+    solicitado --> cancelado: administrador
+    confirmado --> [*]
+    cancelado --> [*]
+```
+
+Confirmar descuenta puntos de forma atómica. Los bloqueos por cliente evitan gastar dos veces el saldo entre canjes simultáneos. Estados finales no se reabren: transición prohibida → **422**; JSON/destino inválido → **400**; sin token válido → **401**; rol sin permiso → **403**.
+
+## Bruno y demostración
+
+Abrir **docs/hito2_bruno/** como colección y seleccionar **Local**. Con servidor iniciado y `DEMO_DATA=true`, enviar **0** antes de cada ensayo: obtiene tokens e IDs reales y crea otro canje solicitado. Luego enviar **1, 2, 3, 4, 5 y 6** en orden: **401 → 200 con token → 200 → 403 → 200 → 422**. No pegar tokens ni cambiar IDs manualmente. Cada petición 5 consume puntos; la preparación 0 debe repetirse. Si cambia PORT, cambiar `baseUrl` antes del ensayo.
+
+```powershell
 npx.cmd @redocly/cli lint docs/openapi.yaml --format=stylish
 ```
 
-Node.js es necesario para el validador. En PowerShell se usa npx.cmd para ejecutar la entrada de Windows. Ejecútelo antes del turno para descargar Redocly si hace falta. El archivo redocly.yaml de la raíz mantiene security-defined activa; el resultado debe tener cero errores y cero avisos. El alumno ejecutó las pruebas y Redocly CLI 2.72.0 y tomó las capturas actuales; ver [validacion.md](../docs/validacion.md).
+Abrir [docs/api.html](docs/api.html) para visualizar el contrato incluso sin conexión. `redocly.yaml` activa `security-defined`. El contrato conserva las operaciones existentes y marca con **(plan)** las tres rutas futuras, sin implementarlas.
 
-- [Contrato OpenAPI](../docs/openapi.yaml) y [vista del contrato](../docs/api.html).
-- [Hoja del hito](../docs/hito2_hoja.md): usuarios, peticiones, permisos y cumplimiento.
-- [Estructura y decisiones](../docs/decisiones.md): capas, Sucursal, PostgreSQL y declaración de IA.
-- [Guion y seis preguntas](../docs/guion_hito2.md): ensayo de cinco minutos.
-- **docs/hito2_capturas/**, en la raíz: capturas directas tomadas por el alumno el 28 de octubre: 0_respuesta.png a 6_respuesta.png, pruebas.png y contrato.png. Los HTML y reportes anteriores se conservan como históricos y se distinguen de estas capturas actuales.
+La demostración sigue el sorteo oficial: un integrante hace contrato y autenticación; el otro permisos, estados/pruebas y capas. El detalle de cinco minutos y las seis respuestas oficiales están en [el guion](docs/guion_hito2.md). Para defender las capas: `API.ActualizarEstadoCanje` interpreta HTTP, `Servicio.ActualizarEstadoCanje` y `ValidarTransicion` aplican reglas, `Repositorio.CambiarEstadoCanje` persiste.
 
-La ficha y el addendum describen la versión vigente; el PDF del Hito 1 y sus imágenes se conservan como documentos históricos.
+## Pruebas y entrega
 
-## Entrega
+Las pruebas normales usan SQLite en memoria para aislar cada caso. La prueba adicional de concurrencia PostgreSQL se omite explícitamente si no se configura una conexión de pruebas. Para ejecutarla, usar exclusivamente una base desechable y un DSN en formato clave=valor:
 
-Cierre Web II A: **jueves 29 de octubre de 2026, 23:59**. Grupo P: **viernes 30, 09:40**, bloque 09:30–10:00. La entrega válida es el repositorio de la pareja dentro de **uleam-web-2026-2**. Los integrantes deben revisar el código, realizar contribuciones y commits reales, declarar IA, ensayar las preguntas y hacer push cuando decidan entregar. Esta actualización no realiza commits ni subidas a Git.
+```powershell
+$env:LEALCAF_TEST_POSTGRES_DSN = 'host=127.0.0.1 port=15432 user=postgres dbname=fidelizacion_db sslmode=disable connect_timeout=5'
+go test -count=1 -v ./...
+Remove-Item Env:LEALCAF_TEST_POSTGRES_DSN
+```
 
-**IA en Hito 2:** OpenAI Codex apoyó implementación, reorganización, autenticación, pruebas, contrato, Bruno, documentación y adaptación conservadora a la base PostgreSQL original. Los integrantes deben comprender y verificar el resultado antes de exponer.
+El puerto 15432 anterior corresponde a la instancia temporal de verificación, detenida al finalizar; no es un servidor que deba permanecer instalado. La prueba crea y limpia solo su esquema único `lealcaf_test_*`; no migra las tablas de `public`. La prueba comprueba migración idempotente y dos confirmaciones concurrentes con saldo para una.
+
+- [Informe y matriz de cumplimiento](docs/validacion.md): estado inicial, cambios, comandos, resultados y pendientes.
+- [Hoja del hito](docs/hito2_hoja.md): cuentas, peticiones, permisos y cumplimiento.
+- [Modelo y API](docs/hito2_modelo.md): entidades, relaciones, estados y mapa de endpoints.
+- [Guía técnica](docs/hito2_tecnico.md): configuración, pruebas y flujo de las solicitudes.
+- [Decisiones](docs/decisiones.md): estructura, reglas y declaración de IA.
+- [Colección Bruno](docs/hito2_bruno/README.md): pasos y variables.
+- [Evidencias](docs/hito2_capturas/index.html): ocho capturas nuevas de Bruno Desktop, PNG anteriores y registros de pruebas, con procedencia diferenciada.
+
+
+
+## Declaración de uso de herramientas de IA
+
+Durante el desarrollo del proyecto LealCaf — Hito 2 se utilizó inteligencia artificial como herramienta de apoyo para revisar el código, detectar errores y proponer correcciones y mejoras.
+
