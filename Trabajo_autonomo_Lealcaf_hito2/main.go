@@ -61,7 +61,17 @@ func main() {
 	r := gin.Default()
 	_ = r.SetTrustedProxies(nil)
 	r.Use(func(c *gin.Context) { c.Request.Body = http.MaxBytesReader(c.Writer, c.Request.Body, 1<<20); c.Next() })
-	fidelizacion.ConfigurarRutas(r, db, auth)
+	// El servicio y el transporte solo reciben el puerto del negocio.
+	var repo fidelizacion.Repositorio
+	switch adaptador := os.Getenv("REPOSITORY_ADAPTER"); adaptador {
+	case "", "sqlc":
+		repo = fidelizacion.NuevoRepositorioSqlc(&fidelizacion.RepositorioGORM{DB: db}, sqlDB)
+	case "gorm":
+		repo = &fidelizacion.RepositorioGORM{DB: db}
+	default:
+		log.Fatal("REPOSITORY_ADAPTER debe ser sqlc o gorm")
+	}
+	fidelizacion.ConfigurarRutasConRepositorio(r, repo, auth)
 	servidor := &http.Server{Addr: "127.0.0.1:" + puerto, Handler: r, ReadHeaderTimeout: 5 * time.Second, ReadTimeout: 10 * time.Second, WriteTimeout: 20 * time.Second, IdleTimeout: 60 * time.Second}
 	log.Printf("LealCaf listo en http://localhost:%s", puerto)
 	if err := servidor.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {

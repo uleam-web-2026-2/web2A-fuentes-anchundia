@@ -1,0 +1,6 @@
+sqlc version: v1.31.1
+sqlc generate: exit 0
+Segunda generación idéntica a la incluida (SHA-256):
+consultas.sql.go acd63293dca3d12ba55107006cc35dfe611640086344cb85651e3d478ad3d003
+db.go 82f7216961766a257d73b56eedf6bfb50962a8101c6447dc2ed407fa27234e1d
+models.go 46134ab779d0aeb9d204a6a736139b206c0c2ad0e8e013b12adf8c09f71ff2d2
