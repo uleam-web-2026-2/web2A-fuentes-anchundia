@@ -1,28 +1,19 @@
 # LealCaf · Hito 2
 
-API de fidelización de una cafetería desarrollada con Go, Gin, GORM y PostgreSQL. Conserva el trabajo existente: compras generan un punto por dólar completo, puntos vigentes seis meses y canjes compartidos entre sucursales Centro y Norte.
+API de fidelización de cafetería con Go, Gin, GORM, PostgreSQL y consultas generadas por sqlc. La entidad principal es **Canje**. Las compras generan puntos con vigencia de seis meses y los canjes se comparten entre sucursales.
 
 **Integrantes:** Fuentes Cedeño José Miguel y Anchundia Anchundia Luis Antonio · Web II A.
 
-## Carpeta correcta
+## Carpeta del módulo y requisitos
 
-Todos los comandos siguientes se ejecutan dentro de **Trabajo_autonomo_Lealcaf_hito2**, donde están `main.go`, `go.mod`, `docs/` y `redocly.yaml`. Esta copia no contiene una subcarpeta `hito2/`. El repositorio Git está un nivel arriba y contiene otros trabajos: no ejecutar Go desde ese nivel para evaluar esta entrega.
+Ejecuta los comandos dentro de `Trabajo_autonomo_Lealcaf_hito2/`, junto a `go.mod`, `main.go`, `sqlc.yaml` y `docs/`. La carpeta superior contiene otros trabajos: ejecutar Go desde allí no verifica esta API.
 
-```text
-Trabajo_autonomo_Lealcaf_hito2/
-├── main.go                   # Configuración y arranque
-├── internal/fidelizacion/    # HTTP, servicio, repositorio, modelos y pruebas
-├── scripts/iniciar-demo.ps1  # Iniciador Windows
-├── docs/                    # Contrato, hoja, Bruno, evidencias y guion
-├── .env.example
-└── redocly.yaml
-```
+Se requiere Go 1.27.1 o posterior compatible con `go.mod`, PostgreSQL y sqlc **1.31.1**. Node.js/npm sirven para validar OpenAPI y Bruno para repetir las peticiones del Hito 2.
 
-## Iniciar desde cero
+## Configuración y arranque
 
-1. Instalar **Go 1.27.1** o posterior compatible, PostgreSQL y Bruno. Node.js con npm se requiere para Redocly y Bruno CLI. `go version` debe coincidir con la versión mínima de `go.mod`.
-2. Iniciar el servicio PostgreSQL. Usar la base existente **fidelizacion_db**. Solo en una instalación nueva, crear una base vacía con ese nombre en pgAdmin; no borrar, restaurar encima ni recrear una base con datos.
-3. Crear el archivo privado sin reemplazar configuraciones anteriores:
+1. Inicia PostgreSQL y usa la base del proyecto. En una instalación nueva crea una base vacía; conserva las bases que ya tengan datos.
+2. Copia `.env.example` a `.env` si todavía no existe:
 
 ```powershell
 if (-not (Test-Path -LiteralPath '.env')) {
@@ -30,79 +21,55 @@ if (-not (Test-Path -LiteralPath '.env')) {
 }
 ```
 
-4. Editar `.env`: completar `DB_USER` y `DB_PASSWORD` localmente; revisar `DB_HOST=localhost`, `DB_PORT=5432` y `DB_NAME=fidelizacion_db`. `PORT=8080` es el puerto HTTP. No compartir contraseñas ni subir `.env`.
-5. Descargar y verificar dependencias:
+3. Completa localmente `DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASSWORD`, `DB_NAME` y `JWT_SECRET`. La clave JWT debe tener al menos 32 bytes aleatorios; el iniciador Windows puede generarla si falta. `PORT` selecciona el puerto HTTP y `JWT_TTL` la duración del token. No distribuyas `.env`.
+4. Usa `REPOSITORY_ADAPTER=sqlc` para el adaptador SQL generado. `REPOSITORY_ADAPTER=gorm` selecciona el otro adaptador sin cambiar reglas, rutas ni manejadores. Ambos utilizan la conexión PostgreSQL abierta por GORM.
+5. Si `DEMO_DATA=true`, completa `DEMO_CLIENT_PASSWORD` y `DEMO_ADMIN_PASSWORD` con las contraseñas locales de las cuentas `cliente` y `admin`. No hay contraseñas demo por defecto en el código. Si las cuentas ya existen, usa sus contraseñas actuales: el sembrado comprueba identidad y no sobrescribe credenciales. `DEMO_DATA=false` desactiva esos datos.
+6. Genera y comprueba desde la carpeta del módulo:
 
 ```powershell
+sqlc version
+sqlc generate
 go mod download
 go build ./...
-go vet ./...
 go test ./...
 ```
 
-6. Ejecutar `.\Iniciar-Proyecto.cmd` o abrirlo con doble clic. Requiere Go y ejecuta siempre el código actual; genera una clave JWT aleatoria en `.env` cuando falta. Mantener abierta la terminal. Dirección: **http://localhost:8080**. Ctrl+C detiene el servidor.
+`sqlc version` debe indicar `v1.31.1`. El código generado se incluye para compilar; repite `sqlc generate` cuando cambien consultas o esquema descriptivo. Consulta la [instalación oficial de sqlc](https://docs.sqlc.dev/en/latest/overview/install.html).
 
-Para usar `go run .` directamente, completar antes `JWT_SECRET` con al menos 32 bytes aleatorios. `JWT_TTL=1h` da tokens de una hora. Las variables de entorno del proceso tienen prioridad sobre `.env`; revisar las antiguas si la conexión no coincide. `ENV_FILE` permite elegir otra configuración privada.
+7. Ejecuta `.\Iniciar-Proyecto.cmd` en Windows o `go run .` con la configuración completa. El servidor usa `http://localhost:8080` salvo que cambies `PORT`; Ctrl+C lo detiene. `ENV_FILE` permite escoger otra configuración privada y las variables del proceso tienen prioridad sobre `.env`.
 
-**Estado local actualizado:** el alumno configuró `.env` e inició PostgreSQL y la API. La colección Bruno 0–6 pasó contra `localhost:8080`: 7/7 peticiones, 6/6 pruebas y 7/7 aserciones. Creó y confirmó un canje del cliente de demostración. El archivo privado no se distribuye; en otra computadora se debe configurar nuevamente la conexión. La verificación temporal anterior se conserva por separado.
+La base de datos se prepara con AutoMigrate. `db/schema.sql` solo describe las tablas para sqlc: **no se ejecuta como migración**.
 
-## Datos y reglas
+## Arquitectura
 
-El arranque migra las seis entidades de negocio (Cliente, Compra, Recompensa, Canje, MovimientoPuntos y Sucursal) y Cuenta. Conserva registros existentes y atribuye las compras/canjes antiguos a Centro. `DEMO_DATA=true` añade un cliente ficticio dedicado, cuentas, puntos y un canje confirmado para el ensayo, dentro de una transacción. Reiniciar no duplica puntos ni renueva vencimientos. Un conflicto de cuentas aborta la preparación sin reemplazar credenciales.
+- El servicio depende de interfaces del negocio y no importa GORM ni `database/sql`.
+- `Canje` no tiene etiquetas JSON. `dtos.go` define peticiones y respuestas, incluidas listas y datos anidados. El POST no permite controlar ID, cliente, puntos, fecha o estado desde el cuerpo: nace `solicitado` y la identidad viene del token.
+- `RepositorioSqlc` realiza la búsqueda por ID y el cambio de estado del canje; las demás operaciones fuera de transacciones continúan con GORM.
+- Confirmar guarda juntos estado y descuento; registrar una compra guarda juntos compra y acumulación. Cada adaptador usa su propia transacción. sqlc utiliza `WithTx` sin llamadas GORM dentro del callback.
+- El estado del canje cambia mediante `PATCH /canjes/{id}/estado`.
 
-| Usuario de prueba | Contraseña ficticia | Rol |
-|---|---|---|
-| cliente | cliente-2026 | cliente |
-| admin | admin-2026 | administrador |
+Las alternativas y la decisión están en [docs/decisiones.md](docs/decisiones.md), sección Semana 10.
 
-Las contraseñas se guardan con bcrypt. El JWT HS256 incluye identidad, rol, emisor, audiencia y caducidad; la API comprueba firma y cuenta vigente. `X-Rol` y `X-Cliente-ID` no autentican.
+## Bruno y contrato
 
-```mermaid
-stateDiagram-v2
-    [*] --> solicitado
-    solicitado --> confirmado: administrador y saldo suficiente
-    solicitado --> cancelado: administrador
-    confirmado --> [*]
-    cancelado --> [*]
-```
+Abre `docs/hito2_bruno/` como colección y selecciona **Local**. Completa localmente `clientePassword` y `adminPassword` con los mismos valores de `DEMO_CLIENT_PASSWORD` y `DEMO_ADMIN_PASSWORD`; ajusta `baseUrl` si cambias el puerto. No publiques esos valores.
 
-Confirmar descuenta puntos de forma atómica. Los bloqueos por cliente evitan gastar dos veces el saldo entre canjes simultáneos. Estados finales no se reabren: transición prohibida → **422**; JSON/destino inválido → **400**; sin token válido → **401**; rol sin permiso → **403**.
-
-## Bruno y demostración
-
-Abrir **docs/hito2_bruno/** como colección y seleccionar **Local**. Con servidor iniciado y `DEMO_DATA=true`, enviar **0** antes de cada ensayo: obtiene tokens e IDs reales y crea otro canje solicitado. Luego enviar **1, 2, 3, 4, 5 y 6** en orden: **401 → 200 con token → 200 → 403 → 200 → 422**. No pegar tokens ni cambiar IDs manualmente. Cada petición 5 consume puntos; la preparación 0 debe repetirse. Si cambia PORT, cambiar `baseUrl` antes del ensayo.
+Con los datos demo habilitados, ejecuta **0** para obtener tokens e IDs reales y preparar un canje. Después ejecuta **1 a 6**: deben conservar **401, 200, 200, 403, 200 y 422**. Repite 0 antes de cada ensayo porque confirmar consume puntos.
 
 ```powershell
-npx.cmd @redocly/cli lint docs/openapi.yaml --format=stylish
+npx.cmd --yes @redocly/cli@2.54.3 lint docs/openapi.yaml
 ```
 
-Abrir [docs/api.html](docs/api.html) para visualizar el contrato incluso sin conexión. `redocly.yaml` activa `security-defined`. El contrato conserva las operaciones existentes y marca con **(plan)** las tres rutas futuras, sin implementarlas.
+El contrato está en `docs/openapi.yaml` y la vista en `docs/api.html`. Las operaciones futuras conservan **(plan)**; esa documentación no crea rutas.
 
-La demostración sigue el sorteo oficial: un integrante hace contrato y autenticación; el otro permisos, estados/pruebas y capas. El detalle de cinco minutos y las seis respuestas oficiales están en [el guion](docs/guion_hito2.md). Para defender las capas: `API.ActualizarEstadoCanje` interpreta HTTP, `Servicio.ActualizarEstadoCanje` y `ValidarTransicion` aplican reglas, `Repositorio.CambiarEstadoCanje` persiste.
+## Pruebas y evidencias
 
-## Pruebas y entrega
+`go test ./...` incluye pruebas con SQLite en memoria y casos del servicio con un repositorio falso sin base. Las pruebas PostgreSQL se omiten explícitamente si falta `LEALCAF_TEST_POSTGRES_DSN`.
 
-Las pruebas normales usan SQLite en memoria para aislar cada caso. La prueba adicional de concurrencia PostgreSQL se omite explícitamente si no se configura una conexión de pruebas. Para ejecutarla, usar exclusivamente una base desechable y un DSN en formato clave=valor:
+Para comprobar ambos adaptadores y el rollback, usa una base PostgreSQL de pruebas desechable con permiso para crear esquemas. Configura localmente `LEALCAF_TEST_POSTGRES_DSN` en formato `host=... port=... user=... password=... dbname=... sslmode=disable`, y ejecuta:
 
 ```powershell
-$env:LEALCAF_TEST_POSTGRES_DSN = 'host=127.0.0.1 port=15432 user=postgres dbname=fidelizacion_db sslmode=disable connect_timeout=5'
-go test -count=1 -v ./...
-Remove-Item Env:LEALCAF_TEST_POSTGRES_DSN
+go test -count=1 -v ./internal/fidelizacion -run 'TestTaller10|TestPostgres'
 ```
 
-El puerto 15432 anterior corresponde a la instancia temporal de verificación, detenida al finalizar; no es un servidor que deba permanecer instalado. La prueba crea y limpia solo su esquema único `lealcaf_test_*`; no migra las tablas de `public`. La prueba comprueba migración idempotente y dos confirmaciones concurrentes con saldo para una.
-
-- [Informe y matriz de cumplimiento](docs/validacion.md): estado inicial, cambios, comandos, resultados y pendientes.
-- [Hoja del hito](docs/hito2_hoja.md): cuentas, peticiones, permisos y cumplimiento.
-- [Modelo y API](docs/hito2_modelo.md): entidades, relaciones, estados y mapa de endpoints.
-- [Guía técnica](docs/hito2_tecnico.md): configuración, pruebas y flujo de las solicitudes.
-- [Decisiones](docs/decisiones.md): estructura, reglas y declaración de IA.
-- [Colección Bruno](docs/hito2_bruno/README.md): pasos y variables.
-- [Evidencias](docs/hito2_capturas/index.html): ocho capturas nuevas de Bruno Desktop, PNG anteriores y registros de pruebas, con procedencia diferenciada.
-
-
-
-## Declaración de uso de herramientas de IA
-
-Durante el desarrollo del proyecto LealCaf — Hito 2 se utilizó inteligencia artificial como herramienta de apoyo para revisar el código, detectar errores y proponer correcciones y mejoras.
-
+Las pruebas crean sus propios esquemas y los limpian al terminar. Las evidencias se guardan en `docs/taller10/`: peticiones antes/después, pruebas Go, Redocly y fallo forzado con GORM y sqlc. Los registros de `docs/hito2_capturas/` pertenecen al Hito 2 y no sustituyen las comprobaciones actuales.

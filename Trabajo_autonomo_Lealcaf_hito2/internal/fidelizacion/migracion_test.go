@@ -211,7 +211,7 @@ func conteosDemo(t *testing.T, db *gorm.DB) []int64 {
 
 func TestSembrarDemoEsIdempotenteYPreparaLasCredenciales(t *testing.T) {
 	e := nuevoEntorno(t)
-	t.Setenv("DEMO_DATA", "true")
+	configurarDemoPrueba(t)
 	if err := PrepararBase(e.db); err != nil {
 		t.Fatal(err)
 	}
@@ -267,7 +267,7 @@ func TestSembrarDemoEsIdempotenteYPreparaLasCredenciales(t *testing.T) {
 func TestPrepararBaseConIdsOcupadosConservaTodoElHito1(t *testing.T) {
 	db := baseConDatosDelHito1(t)
 	anteriores := leerRegistrosHito1(t, db)
-	t.Setenv("DEMO_DATA", "true")
+	configurarDemoPrueba(t)
 	if err := PrepararBase(db); err != nil {
 		t.Fatal(err)
 	}
@@ -317,7 +317,7 @@ func TestConflictoDeCuentaDemoConservaCredencialesYReviertePreparacion(t *testin
 	original := e.cuenta("cliente", "clave-anterior", RolCliente, legado.ID)
 	anteriores := leerRegistrosHito1(t, e.db)
 	conteos := conteosDemo(t, e.db)
-	t.Setenv("DEMO_DATA", "true")
+	configurarDemoPrueba(t)
 	if err := PrepararBase(e.db); err == nil {
 		t.Fatal("se aceptó apropiarse de una cuenta cliente anterior")
 	}
@@ -367,7 +367,7 @@ func TestPreparacionFallidaRevierteTambienElEsquema(t *testing.T) {
 	if db.Migrator().HasTable(&Sucursal{}) || db.Migrator().HasColumn(&compraHito1{}, "sucursal_id") {
 		t.Fatal("la base legacy ya contenía el esquema nuevo")
 	}
-	t.Setenv("DEMO_DATA", "true")
+	configurarDemoPrueba(t)
 	if err := PrepararBase(db); err == nil {
 		t.Fatal("la cuenta previa incompatible debió impedir la preparación")
 	}
@@ -382,4 +382,26 @@ func TestPreparacionFallidaRevierteTambienElEsquema(t *testing.T) {
 	if guardada.PasswordHash != cuenta.PasswordHash || guardada.ClienteID == nil || *guardada.ClienteID != id {
 		t.Fatal("la cuenta anterior cambió")
 	}
+}
+
+// Credenciales ficticias exclusivas de las pruebas; el servidor las lee del entorno.
+func configurarDemoPrueba(t *testing.T) {
+    t.Helper()
+    t.Setenv("DEMO_DATA", "true")
+    t.Setenv("DEMO_CLIENT_PASSWORD", "cliente-2026")
+    t.Setenv("DEMO_ADMIN_PASSWORD", "admin-2026")
+}
+
+func TestDemoSinPasswordsReviertePreparacion(t *testing.T) {
+    e := nuevoEntorno(t)
+    t.Setenv("DEMO_DATA", "true")
+    t.Setenv("DEMO_CLIENT_PASSWORD", "")
+    t.Setenv("DEMO_ADMIN_PASSWORD", "")
+    antes := conteosDemo(t, e.db)
+    if err := PrepararBase(e.db); err == nil {
+        t.Fatal("se aceptó sembrar cuentas sin contraseñas configuradas")
+    }
+    if despues := conteosDemo(t, e.db); !reflect.DeepEqual(antes, despues) {
+        t.Fatalf("la preparación fallida dejó filas: %v -> %v", antes, despues)
+    }
 }

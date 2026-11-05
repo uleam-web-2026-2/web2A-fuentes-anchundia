@@ -49,6 +49,8 @@ func TestPostgresConfirmacionesConcurrentes(t *testing.T) {
 	}
 	t.Cleanup(func() { _ = isolatedPool.Close() })
 	t.Setenv("DEMO_DATA", "true")
+	t.Setenv("DEMO_CLIENT_PASSWORD", "cliente-2026")
+	t.Setenv("DEMO_ADMIN_PASSWORD", "admin-2026")
 	if err := PrepararBase(isolated); err != nil {
 		t.Fatal(err)
 	}

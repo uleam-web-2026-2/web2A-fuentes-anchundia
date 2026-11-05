@@ -2,8 +2,8 @@
   "openapi": "3.0.3",
   "info": {
     "title": "LealCaf · API de fidelización",
-    "version": "2.0.0",
-    "description": "Hito 2: clientes acumulan puntos por compras y solicitan recompensas; administradores registran compras y gestionan canjes. Seis entidades de negocio y Cuenta para autenticación. Los puntos se comparten entre sucursales de la misma cafetería. Las operaciones con summary terminado en (plan) todavía no existen en el servidor. La ejecución actual utiliza PostgreSQL y conserva la base fidelizacion_db existente. Los IDs de los ejemplos son ilustrativos; Bruno obtiene los IDs reales del cliente y de los canjes al preparar.",
+    "version": "2.1.0",
+    "description": "Semana 10: API de LealCaf con DTO separados del dominio y adaptadores GORM/sqlc intercambiables. Seis entidades de negocio y Cuenta para autenticación. Los puntos se comparten entre sucursales de la misma cafetería. Las operaciones con (plan) todavía no están implementadas. Los IDs de ejemplos son ilustrativos; Bruno obtiene los IDs reales al preparar.",
     "contact": {
       "name": "Fuentes Cedeño José Miguel · Anchundia Anchundia Luis Antonio",
       "url": "https://github.com/uleam-web-2026-2/web2A-fuentes-anchundia"
@@ -238,7 +238,7 @@
         ],
         "operationId": "solicitarCanje",
         "summary": "Solicitar recompensa",
-        "description": "Solo cliente. La identidad se obtiene del JWT, no del cuerpo. Comprueba cliente, recompensa y sucursal activos y saldo suficiente. Crea el canje solicitado sin descontar puntos.",
+        "description": "Cliente autenticado. Recibe únicamente recompensa_id y sucursal_id; el cliente proviene del JWT. El ID, fecha, puntos y estado inicial solicitado los decide el servidor. Los campos adicionales no se trasladan al dominio. Solicitar no descuenta puntos; se comprueban y descuentan al confirmar.",
         "responses": {
           "201": {
             "description": "Operación completada.",
@@ -386,7 +386,7 @@
         ],
         "operationId": "cambiarEstadoCanje",
         "summary": "Confirmar o cancelar un canje",
-        "description": "Solo administrador. Desde solicitado permite confirmado (revalida saldo y descuenta puntos) o cancelado (no descuenta). Confirmado y cancelado son finales. Una transición desde un estado final o hacia solicitado devuelve 422; destino desconocido, 400.",
+        "description": "Solo administrador. Permite solicitado a confirmado o cancelado. Confirmar bloquea el cliente, vuelve a comprobar el saldo y guarda estado y movimiento negativo en una única transacción. Si falla la escritura del movimiento se revierte el estado. Una transición desde un estado final devuelve 422. Destino desconocido devuelve 400.",
         "responses": {
           "200": {
             "description": "Operación completada.",
@@ -860,7 +860,7 @@
           "fecha",
           "estado"
         ],
-        "description": "Nace solicitado. Solo el administrador confirma o cancela; confirmado y cancelado son finales. Sus identificadores se generan en la base; el ensayo no presupone canje 1."
+        "description": "DTO de salida de Canje: campos públicos en snake_case, sin asociaciones GORM. Nace solicitado; el administrador solo puede confirmar o cancelar una vez. El estado solo cambia por PATCH /canjes/{id}/estado; no existe PUT."
       },
       "LoginSolicitud": {
         "type": "object",
@@ -960,7 +960,8 @@
           "sucursal_id",
           "total",
           "numero_factura"
-        ]
+        ],
+        "description": "DTO de entrada independiente de Compra; no recibe id ni fecha. El servidor genera la fecha y los puntos. El registro de compra y su movimiento de acumulación se confirman juntos."
       },
       "CompraRespuesta": {
         "type": "object",
@@ -1002,7 +1003,8 @@
         "required": [
           "recompensa_id",
           "sucursal_id"
-        ]
+        ],
+        "description": "DTO de entrada: solo recompensa_id y sucursal_id. El servidor obtiene cliente_id del JWT, genera id y fecha, toma los puntos de la recompensa y fija estado=solicitado. Campos adicionales enviados, como id o estado, se ignoran y no se asignan al dominio."
       },
       "EstadoSolicitud": {
         "type": "object",
@@ -1020,7 +1022,8 @@
         },
         "required": [
           "estado"
-        ]
+        ],
+        "description": "DTO exclusivo del cambio de estado; esta es la operación que admite estado, con autorización de administrador."
       },
       "SaldoCliente": {
         "type": "object",

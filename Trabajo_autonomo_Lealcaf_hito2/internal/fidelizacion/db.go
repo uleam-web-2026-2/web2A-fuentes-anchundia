@@ -68,7 +68,7 @@ func bloquearPreparacion(tx *gorm.DB) error {
 	return tx.Exec("SELECT pg_advisory_xact_lock(20261028, 2)").Error
 }
 
-// Migrar agrega las relaciones nuevas sin borrar ni recrear tablas de Hito 1.
+// Migrar actualiza el esquema sin borrar ni recrear las tablas existentes.
 func Migrar(db *gorm.DB) error {
 	return db.Transaction(func(tx *gorm.DB) error {
 		if err := bloquearPreparacion(tx); err != nil {
@@ -107,6 +107,14 @@ func Sembrar(db *gorm.DB) error {
 }
 
 func sembrarDentro(tx *gorm.DB) error {
+	passwordCliente := os.Getenv("DEMO_CLIENT_PASSWORD")
+	passwordAdmin := os.Getenv("DEMO_ADMIN_PASSWORD")
+	if strings.TrimSpace(passwordCliente) == "" || strings.TrimSpace(passwordAdmin) == "" {
+		return errors.New("DEMO_DATA=true requiere DEMO_CLIENT_PASSWORD y DEMO_ADMIN_PASSWORD en el entorno")
+	}
+	if len(passwordCliente) > 72 || len(passwordAdmin) > 72 {
+		return errors.New("las contraseñas de demostración no pueden superar 72 bytes")
+	}
 	norte := Sucursal{ID: 2, Nombre: "Norte", Direccion: "Local Norte de demostración", Activa: true}
 	if err := tx.Where("id = ?", 2).FirstOrCreate(&norte).Error; err != nil {
 		return err
@@ -126,8 +134,8 @@ func sembrarDentro(tx *gorm.DB) error {
 		usuario, password, rol string
 		clienteID              *uint
 	}{
-		{"cliente", "cliente-2026", RolCliente, &cliente.ID},
-		{"admin", "admin-2026", RolAdministrador, nil},
+		{"cliente", passwordCliente, RolCliente, &cliente.ID},
+		{"admin", passwordAdmin, RolAdministrador, nil},
 	} {
 		if err := asegurarCuentaDemo(tx, dato.usuario, dato.password, dato.rol, dato.clienteID); err != nil {
 			return err

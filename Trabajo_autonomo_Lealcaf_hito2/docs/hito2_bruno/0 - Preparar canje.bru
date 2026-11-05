@@ -29,7 +29,7 @@ script:pre-request {
   const admin = await bru.sendRequest({
     method: "POST", url: baseUrl + "/login",
     headers: { "Content-Type": "application/json" },
-    data: { usuario: "admin", password: "admin-2026" }
+    data: { usuario: "admin", password: bru.getEnvVar("adminPassword") }
   });
   if (admin.status !== 200 || !admin.data.token) {
     throw new Error("No se pudo iniciar sesión como administrador de prueba.");
@@ -37,7 +37,7 @@ script:pre-request {
   const cliente = await bru.sendRequest({
     method: "POST", url: baseUrl + "/login",
     headers: { "Content-Type": "application/json" },
-    data: { usuario: "cliente", password: "cliente-2026" }
+    data: { usuario: "cliente", password: bru.getEnvVar("clientePassword") }
   });
   const clienteId = Number(cliente.data.cliente_id);
   if (cliente.status !== 200 || !cliente.data.token || !Number.isInteger(clienteId) || clienteId <= 0) {
