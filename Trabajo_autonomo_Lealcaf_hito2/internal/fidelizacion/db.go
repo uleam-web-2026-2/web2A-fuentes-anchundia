@@ -176,7 +176,7 @@ func sembrarDentro(tx *gorm.DB) error {
 	var confirmado Canje
 	err = tx.Where("cliente_id = ? AND estado = ?", cliente.ID, EstadoConfirmado).Order("id").First(&confirmado).Error
 	if errors.Is(err, gorm.ErrRecordNotFound) {
-		saldo, err := (&Repositorio{DB: tx}).Saldo(cliente.ID)
+		saldo, err := (&RepositorioGORM{DB: tx}).Saldo(cliente.ID)
 		if err != nil {
 			return err
 		}

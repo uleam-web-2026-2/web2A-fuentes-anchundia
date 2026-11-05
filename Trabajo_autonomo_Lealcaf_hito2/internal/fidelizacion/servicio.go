@@ -50,7 +50,7 @@ func ValidarTransicion(actual, destino string) error {
 	return nil
 }
 
-type Servicio struct{ Repo *Repositorio }
+type Servicio struct{ Repo Repositorio }
 type EntradaCompra struct {
 	ClienteID     uint    `json:"cliente_id" binding:"required"`
 	SucursalID    uint    `json:"sucursal_id" binding:"required"`
@@ -95,7 +95,11 @@ func (s *Servicio) ConsultarPuntos(id uint, rol string, clienteID uint) (Consult
 }
 func (s *Servicio) ListarRecompensas() ([]Recompensa, error) { return s.Repo.RecompensasActivas() }
 func (s *Servicio) sucursalActiva(id uint) error {
-	sucursal, err := s.Repo.Sucursal(id)
+	return validarSucursalActiva(s.Repo, id)
+}
+
+func validarSucursalActiva(repo interface{ Sucursal(uint) (Sucursal, error) }, id uint) error {
+	sucursal, err := repo.Sucursal(id)
 	if err != nil {
 		return err
 	}
@@ -112,7 +116,7 @@ func (s *Servicio) RegistrarCompra(entrada EntradaCompra) (ResultadoCompra, erro
 	if entrada.ClienteID == 0 || entrada.SucursalID == 0 || entrada.NumeroFactura == "" || entrada.Total <= 0 || math.IsNaN(entrada.Total) || math.IsInf(entrada.Total, 0) || entrada.Total >= float64(int(^uint(0)>>1)) {
 		return resultado, ErrDatosInvalidos
 	}
-	err := s.Repo.EnTransaccion(func(repo *Repositorio) error {
+	err := s.Repo.EnTransaccion(func(repo RepositorioTransaccion) error {
 		cliente, err := repo.Cliente(entrada.ClienteID, true)
 		if err != nil {
 			return err
@@ -120,7 +124,7 @@ func (s *Servicio) RegistrarCompra(entrada EntradaCompra) (ResultadoCompra, erro
 		if !cliente.Activo {
 			return ErrClienteInactivo
 		}
-		if err := (&Servicio{Repo: repo}).sucursalActiva(entrada.SucursalID); err != nil {
+		if err := validarSucursalActiva(repo, entrada.SucursalID); err != nil {
 			return err
 		}
 		existe, err := repo.ExisteFactura(entrada.NumeroFactura)
@@ -204,7 +208,7 @@ func (s *Servicio) ActualizarEstadoCanje(id uint, destino string) (Canje, error)
 	if destino != EstadoSolicitado && destino != EstadoConfirmado && destino != EstadoCancelado {
 		return resultado, ErrEstadoInvalido
 	}
-	err := s.Repo.EnTransaccion(func(repo *Repositorio) error {
+	err := s.Repo.EnTransaccion(func(repo RepositorioTransaccion) error {
 		canje, err := repo.Canje(id, false)
 		if err != nil {
 			return err

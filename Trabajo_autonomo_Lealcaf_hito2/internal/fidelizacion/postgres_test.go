@@ -76,7 +76,7 @@ func TestPostgresConfirmacionesConcurrentes(t *testing.T) {
 	if err := isolated.Create(&credit).Error; err != nil {
 		t.Fatal(err)
 	}
-	service := &Servicio{Repo: &Repositorio{DB: isolated}}
+	service := &Servicio{Repo: &RepositorioGORM{DB: isolated}}
 	first, err := service.SolicitarCanje(client.ID, EntradaCanje{RecompensaID: reward.ID, SucursalID: 1})
 	if err != nil {
 		t.Fatal(err)
