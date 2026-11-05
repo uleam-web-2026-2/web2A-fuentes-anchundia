@@ -1,0 +1,6 @@
+Verificación ejecutada el 2026-11-05 en la copia del taller.
+
+go build (binario temporal de la API para Bruno): exit 0
+go vet ./...: exit 0
+El binario compilado fue el que respondió la colección Bruno en 18081, adaptador sqlc.
+No se distribuyen binarios ni archivos .env.

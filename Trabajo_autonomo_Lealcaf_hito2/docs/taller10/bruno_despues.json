@@ -1,0 +1,164 @@
+[
+  {
+    "peticion": "0 - Preparar canje.bru",
+    "metodo": "POST",
+    "url": "http://127.0.0.1:18081/canjes",
+    "codigo": 201,
+    "resultado": "pass",
+    "pruebas": [],
+    "aserciones": [
+      {
+        "uid": "FUL9SG8vkimHw_pp6kGIG",
+        "lhsExpr": "res.status",
+        "rhsExpr": "eq 201",
+        "rhsOperand": "201",
+        "operator": "eq",
+        "status": "pass"
+      }
+    ]
+  },
+  {
+    "peticion": "1 - Sin token.bru",
+    "metodo": "GET",
+    "url": "http://127.0.0.1:18081/canjes/1",
+    "codigo": 401,
+    "resultado": "pass",
+    "pruebas": [
+      {
+        "description": "La ruta protegida rechaza la falta de token",
+        "status": "pass",
+        "uid": "n_2w_Sw23_9n3OLCzA4nF"
+      }
+    ],
+    "aserciones": [
+      {
+        "uid": "RlrAsAtCeXPfnGqbvOTrU",
+        "lhsExpr": "res.status",
+        "rhsExpr": "eq 401",
+        "rhsOperand": "401",
+        "operator": "eq",
+        "status": "pass"
+      }
+    ]
+  },
+  {
+    "peticion": "2 - Login cliente.bru",
+    "metodo": "POST",
+    "url": "http://127.0.0.1:18081/login",
+    "codigo": 200,
+    "resultado": "pass",
+    "pruebas": [
+      {
+        "description": "Token Bearer de cliente con duración de una hora",
+        "status": "pass",
+        "uid": "oRJSBzc-QaNu6_kWO7fpa"
+      }
+    ],
+    "aserciones": [
+      {
+        "uid": "xl0vue6CRAfhU0Cblxz7G",
+        "lhsExpr": "res.status",
+        "rhsExpr": "eq 200",
+        "rhsOperand": "200",
+        "operator": "eq",
+        "status": "pass"
+      }
+    ]
+  },
+  {
+    "peticion": "3 - Con token cliente.bru",
+    "metodo": "GET",
+    "url": "http://127.0.0.1:18081/canjes/1",
+    "codigo": 200,
+    "resultado": "pass",
+    "pruebas": [
+      {
+        "description": "El cliente consulta su canje confirmado",
+        "status": "pass",
+        "uid": "EtHDnLacDQYOxpbLNDiNW"
+      }
+    ],
+    "aserciones": [
+      {
+        "uid": "Gvd-uWe4R1Z1Xx3x-URWi",
+        "lhsExpr": "res.status",
+        "rhsExpr": "eq 200",
+        "rhsOperand": "200",
+        "operator": "eq",
+        "status": "pass"
+      }
+    ]
+  },
+  {
+    "peticion": "4 - Rol sin permiso.bru",
+    "metodo": "PATCH",
+    "url": "http://127.0.0.1:18081/canjes/2/estado",
+    "codigo": 403,
+    "resultado": "pass",
+    "pruebas": [
+      {
+        "description": "El rol cliente no puede confirmar",
+        "status": "pass",
+        "uid": "-0Fs2vlhA3DfldQ6b7giG"
+      }
+    ],
+    "aserciones": [
+      {
+        "uid": "MgAIGBr1jiItHks53wLG2",
+        "lhsExpr": "res.status",
+        "rhsExpr": "eq 403",
+        "rhsOperand": "403",
+        "operator": "eq",
+        "status": "pass"
+      }
+    ]
+  },
+  {
+    "peticion": "5 - Rol autorizado.bru",
+    "metodo": "PATCH",
+    "url": "http://127.0.0.1:18081/canjes/2/estado",
+    "codigo": 200,
+    "resultado": "pass",
+    "pruebas": [
+      {
+        "description": "La confirmación cambia el canje nuevo",
+        "status": "pass",
+        "uid": "1KZEvU2zAZaOFVtqOix57"
+      }
+    ],
+    "aserciones": [
+      {
+        "uid": "ATWdxg6Sb1fxa1l2yOSLR",
+        "lhsExpr": "res.status",
+        "rhsExpr": "eq 200",
+        "rhsOperand": "200",
+        "operator": "eq",
+        "status": "pass"
+      }
+    ]
+  },
+  {
+    "peticion": "6 - Transicion prohibida.bru",
+    "metodo": "PATCH",
+    "url": "http://127.0.0.1:18081/canjes/1/estado",
+    "codigo": 422,
+    "resultado": "pass",
+    "pruebas": [
+      {
+        "description": "La regla impide cancelar un canje confirmado",
+        "status": "pass",
+        "uid": "iAmv-jBNYho28qKCbomKu"
+      }
+    ],
+    "aserciones": [
+      {
+        "uid": "a_rlFSnmv_Oj4NMEqDC7o",
+        "lhsExpr": "res.status",
+        "rhsExpr": "eq 422",
+        "rhsOperand": "422",
+        "operator": "eq",
+        "status": "pass"
+      }
+    ]
+  }
+]

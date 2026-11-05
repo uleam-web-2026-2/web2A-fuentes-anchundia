@@ -1,0 +1,49 @@
+0 - Preparar canje (201 Created) - 23 ms
+Assertions
+   ✓ res.status: eq 201
+1 - Sin token (401 Unauthorized) - 3 ms
+Tests
+   ✓ La ruta protegida rechaza la falta de token
+Assertions
+   ✓ res.status: eq 401
+2 - Login cliente (200 OK) - 147 ms
+Tests
+   ✓ Token Bearer de cliente con duración de una hora
+Assertions
+   ✓ res.status: eq 200
+3 - Con token cliente (200 OK) - 5 ms
+Tests
+   ✓ El cliente consulta su canje confirmado
+Assertions
+   ✓ res.status: eq 200
+4 - Rol sin permiso (403 Forbidden) - 4 ms
+Tests
+   ✓ El rol cliente no puede confirmar
+Assertions
+   ✓ res.status: eq 403
+5 - Rol autorizado (200 OK) - 14 ms
+Tests
+   ✓ La confirmación cambia el canje nuevo
+Assertions
+   ✓ res.status: eq 200
+6 - Transicion prohibida (422 Unprocessable Entity) - 5 ms
+Tests
+   ✓ La regla impide cancelar un canje confirmado
+Assertions
+   ✓ res.status: eq 422
+
+📊 Execution Summary
+┌───────────────┬──────────────┐
+│ Metric        │    Result    │
+├───────────────┼──────────────┤
+│ Status        │    ✓ PASS    │
+├───────────────┼──────────────┤
+│ Requests      │ 7 (7 Passed) │
+├───────────────┼──────────────┤
+│ Tests         │     6/6      │
+├───────────────┼──────────────┤
+│ Assertions    │     7/7      │
+├───────────────┼──────────────┤
+│ Duration (ms) │     732      │
+└───────────────┴──────────────┘
+Wrote json results to C:\Users\FC\Documents\Codex\2026-11-05\tengo-q-hacer-este-deber-2\work\bruno_despues.json

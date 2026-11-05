@@ -1,0 +1,36 @@
+    table_name     |    column_name    |        data_type         | is_nullable 
+-------------------+-------------------+--------------------------+-------------
+ canjes            | sucursal_id       | bigint                   | NO
+ canjes            | id                | bigint                   | NO
+ canjes            | cliente_id        | bigint                   | NO
+ canjes            | recompensa_id     | bigint                   | NO
+ canjes            | puntos_utilizados | bigint                   | NO
+ canjes            | fecha             | timestamp with time zone | NO
+ canjes            | estado            | text                     | NO
+ clientes          | id                | bigint                   | NO
+ clientes          | cedula            | character varying        | NO
+ clientes          | nombre            | text                     | NO
+ clientes          | correo            | text                     | NO
+ clientes          | telefono          | text                     | YES
+ clientes          | fecha_registro    | timestamp with time zone | YES
+ clientes          | activo            | boolean                  | NO
+ compras           | sucursal_id       | bigint                   | NO
+ compras           | id                | bigint                   | NO
+ compras           | cliente_id        | bigint                   | NO
+ compras           | fecha             | timestamp with time zone | NO
+ compras           | total             | numeric                  | NO
+ compras           | numero_factura    | text                     | NO
+ movimiento_puntos | id                | bigint                   | NO
+ movimiento_puntos | cliente_id        | bigint                   | NO
+ movimiento_puntos | compra_id         | bigint                   | YES
+ movimiento_puntos | canje_id          | bigint                   | YES
+ movimiento_puntos | tipo              | text                     | NO
+ movimiento_puntos | puntos            | bigint                   | NO
+ movimiento_puntos | fecha             | timestamp with time zone | NO
+ movimiento_puntos | fecha_vencimiento | timestamp with time zone | YES
+ sucursals         | id                | bigint                   | NO
+ sucursals         | nombre            | text                     | NO
+ sucursals         | direccion         | text                     | NO
+ sucursals         | activa            | boolean                  | NO
+(32 rows)
+

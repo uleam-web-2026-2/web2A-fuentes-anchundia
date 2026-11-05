@@ -1,0 +1,153 @@
+?   	fidelizacion	[no test files]
+?   	fidelizacion/internal/almacen/filas	[no test files]
+=== RUN   TestTodasLasRutasDelNegocioExigenToken
+=== RUN   TestTodasLasRutasDelNegocioExigenToken/GET/clientes/1/puntos
+=== RUN   TestTodasLasRutasDelNegocioExigenToken/GET/recompensas
+=== RUN   TestTodasLasRutasDelNegocioExigenToken/POST/compras
+=== RUN   TestTodasLasRutasDelNegocioExigenToken/POST/canjes
+=== RUN   TestTodasLasRutasDelNegocioExigenToken/GET/canjes
+=== RUN   TestTodasLasRutasDelNegocioExigenToken/GET/canjes/1
+=== RUN   TestTodasLasRutasDelNegocioExigenToken/PATCH/canjes/1/estado
+--- PASS: TestTodasLasRutasDelNegocioExigenToken (0.01s)
+    --- PASS: TestTodasLasRutasDelNegocioExigenToken/GET/clientes/1/puntos (0.00s)
+    --- PASS: TestTodasLasRutasDelNegocioExigenToken/GET/recompensas (0.00s)
+    --- PASS: TestTodasLasRutasDelNegocioExigenToken/POST/compras (0.00s)
+    --- PASS: TestTodasLasRutasDelNegocioExigenToken/POST/canjes (0.00s)
+    --- PASS: TestTodasLasRutasDelNegocioExigenToken/GET/canjes (0.00s)
+    --- PASS: TestTodasLasRutasDelNegocioExigenToken/GET/canjes/1 (0.00s)
+    --- PASS: TestTodasLasRutasDelNegocioExigenToken/PATCH/canjes/1/estado (0.00s)
+=== RUN   TestEncabezadosDelHito1NoSuplantanUnaSesion
+--- PASS: TestEncabezadosDelHito1NoSuplantanUnaSesion (0.00s)
+=== RUN   TestLoginCorrectoYCredencialesInvalidas
+--- PASS: TestLoginCorrectoYCredencialesInvalidas (0.46s)
+=== RUN   TestTokenManipuladoNoElevaPermisos
+--- PASS: TestTokenManipuladoNoElevaPermisos (0.01s)
+=== RUN   TestTokensInvalidosYVencidosSeRechazan
+=== RUN   TestTokensInvalidosYVencidosSeRechazan/token_0
+=== RUN   TestTokensInvalidosYVencidosSeRechazan/token_1
+=== RUN   TestTokensInvalidosYVencidosSeRechazan/token_2
+--- PASS: TestTokensInvalidosYVencidosSeRechazan (0.01s)
+    --- PASS: TestTokensInvalidosYVencidosSeRechazan/token_0 (0.00s)
+    --- PASS: TestTokensInvalidosYVencidosSeRechazan/token_1 (0.00s)
+    --- PASS: TestTokensInvalidosYVencidosSeRechazan/token_2 (0.00s)
+=== RUN   TestConfiguracionYCuentaInvalidasNoGeneranTokens
+--- PASS: TestConfiguracionYCuentaInvalidasNoGeneranTokens (0.00s)
+=== RUN   TestListadoDeCanjesSoloParaAdministrador
+--- PASS: TestListadoDeCanjesSoloParaAdministrador (0.01s)
+=== RUN   TestCuentaEliminadaRevocaAcceso
+--- PASS: TestCuentaEliminadaRevocaAcceso (0.01s)
+=== RUN   TestTokenRequiereExpiracionYClaimsDeLaAplicacion
+=== RUN   TestTokenRequiereExpiracionYClaimsDeLaAplicacion/sin_expiracion
+=== RUN   TestTokenRequiereExpiracionYClaimsDeLaAplicacion/sin_fecha_emision
+=== RUN   TestTokenRequiereExpiracionYClaimsDeLaAplicacion/otro_emisor
+=== RUN   TestTokenRequiereExpiracionYClaimsDeLaAplicacion/otra_audiencia
+=== RUN   TestTokenRequiereExpiracionYClaimsDeLaAplicacion/emision_futura
+=== RUN   TestTokenRequiereExpiracionYClaimsDeLaAplicacion/cuenta_invalida
+--- PASS: TestTokenRequiereExpiracionYClaimsDeLaAplicacion (0.01s)
+    --- PASS: TestTokenRequiereExpiracionYClaimsDeLaAplicacion/sin_expiracion (0.00s)
+    --- PASS: TestTokenRequiereExpiracionYClaimsDeLaAplicacion/sin_fecha_emision (0.00s)
+    --- PASS: TestTokenRequiereExpiracionYClaimsDeLaAplicacion/otro_emisor (0.00s)
+    --- PASS: TestTokenRequiereExpiracionYClaimsDeLaAplicacion/otra_audiencia (0.00s)
+    --- PASS: TestTokenRequiereExpiracionYClaimsDeLaAplicacion/emision_futura (0.00s)
+    --- PASS: TestTokenRequiereExpiracionYClaimsDeLaAplicacion/cuenta_invalida (0.00s)
+=== RUN   TestTokenNoAceptaAlgoritmoNoneNiOtroAlgoritmo
+=== RUN   TestTokenNoAceptaAlgoritmoNoneNiOtroAlgoritmo/none
+=== RUN   TestTokenNoAceptaAlgoritmoNoneNiOtroAlgoritmo/HS384
+--- PASS: TestTokenNoAceptaAlgoritmoNoneNiOtroAlgoritmo (0.01s)
+    --- PASS: TestTokenNoAceptaAlgoritmoNoneNiOtroAlgoritmo/none (0.00s)
+    --- PASS: TestTokenNoAceptaAlgoritmoNoneNiOtroAlgoritmo/HS384 (0.00s)
+=== RUN   TestValidarTransicionDelCanje
+=== RUN   TestValidarTransicionDelCanje/solicitado_a_confirmado
+=== RUN   TestValidarTransicionDelCanje/solicitado_a_cancelado
+=== RUN   TestValidarTransicionDelCanje/solicitado_a_solicitado
+=== RUN   TestValidarTransicionDelCanje/confirmado_a_cancelado
+=== RUN   TestValidarTransicionDelCanje/confirmado_a_solicitado
+=== RUN   TestValidarTransicionDelCanje/confirmado_a_confirmado
+=== RUN   TestValidarTransicionDelCanje/cancelado_a_confirmado
+=== RUN   TestValidarTransicionDelCanje/cancelado_a_solicitado
+=== RUN   TestValidarTransicionDelCanje/cancelado_a_cancelado
+=== RUN   TestValidarTransicionDelCanje/solicitado_a_desconocido
+=== RUN   TestValidarTransicionDelCanje/desconocido_a_confirmado
+--- PASS: TestValidarTransicionDelCanje (0.00s)
+    --- PASS: TestValidarTransicionDelCanje/solicitado_a_confirmado (0.00s)
+    --- PASS: TestValidarTransicionDelCanje/solicitado_a_cancelado (0.00s)
+    --- PASS: TestValidarTransicionDelCanje/solicitado_a_solicitado (0.00s)
+    --- PASS: TestValidarTransicionDelCanje/confirmado_a_cancelado (0.00s)
+    --- PASS: TestValidarTransicionDelCanje/confirmado_a_solicitado (0.00s)
+    --- PASS: TestValidarTransicionDelCanje/confirmado_a_confirmado (0.00s)
+    --- PASS: TestValidarTransicionDelCanje/cancelado_a_confirmado (0.00s)
+    --- PASS: TestValidarTransicionDelCanje/cancelado_a_solicitado (0.00s)
+    --- PASS: TestValidarTransicionDelCanje/cancelado_a_cancelado (0.00s)
+    --- PASS: TestValidarTransicionDelCanje/solicitado_a_desconocido (0.00s)
+    --- PASS: TestValidarTransicionDelCanje/desconocido_a_confirmado (0.00s)
+=== RUN   TestDTOCanjeIgnoraCamposQueDecideElServidor
+--- PASS: TestDTOCanjeIgnoraCamposQueDecideElServidor (0.01s)
+=== RUN   TestDTORespuestasAnidadasConservanContrato
+--- PASS: TestDTORespuestasAnidadasConservanContrato (0.01s)
+=== RUN   TestDTOCanjeNoTieneEtiquetasJSON
+--- PASS: TestDTOCanjeNoTieneEtiquetasJSON (0.00s)
+=== RUN   TestConsultarPuntos
+--- PASS: TestConsultarPuntos (0.01s)
+=== RUN   TestClienteNoPuedeVerPuntosAjenos
+--- PASS: TestClienteNoPuedeVerPuntosAjenos (0.01s)
+=== RUN   TestPuntosVencidosNoCuentanEnElSaldo
+--- PASS: TestPuntosVencidosNoCuentanEnElSaldo (0.01s)
+=== RUN   TestRegistrarCompraGeneraPuntosConVencimiento
+--- PASS: TestRegistrarCompraGeneraPuntosConVencimiento (0.01s)
+=== RUN   TestRegistrarCompraConFacturaDuplicada
+--- PASS: TestRegistrarCompraConFacturaDuplicada (0.01s)
+=== RUN   TestClienteNoPuedeRegistrarCompras
+--- PASS: TestClienteNoPuedeRegistrarCompras (0.01s)
+=== RUN   TestCanjeConPuntosInsuficientes
+--- PASS: TestCanjeConPuntosInsuficientes (0.01s)
+=== RUN   TestCanjeCorrectoDescuentaPuntosAlConfirmar
+--- PASS: TestCanjeCorrectoDescuentaPuntosAlConfirmar (0.01s)
+=== RUN   TestTransicionProhibidaDeConfirmadoACancelado
+--- PASS: TestTransicionProhibidaDeConfirmadoACancelado (0.01s)
+=== RUN   TestRecompensasSoloMuestraLasActivas
+--- PASS: TestRecompensasSoloMuestraLasActivas (0.01s)
+=== RUN   TestVerCanjePropioYNoAjeno
+--- PASS: TestVerCanjePropioYNoAjeno (0.01s)
+=== RUN   TestIntegracionSeisPeticionesHito2
+--- PASS: TestIntegracionSeisPeticionesHito2 (0.02s)
+=== RUN   TestPuntosCompartidosEntreSucursales
+--- PASS: TestPuntosCompartidosEntreSucursales (0.01s)
+=== RUN   TestSucursalObligatoriaExistenteYActiva
+=== RUN   TestSucursalObligatoriaExistenteYActiva/sin_sucursal
+=== RUN   TestSucursalObligatoriaExistenteYActiva/sucursal_inexistente
+=== RUN   TestSucursalObligatoriaExistenteYActiva/sucursal_inactiva
+--- PASS: TestSucursalObligatoriaExistenteYActiva (0.03s)
+    --- PASS: TestSucursalObligatoriaExistenteYActiva/sin_sucursal (0.01s)
+    --- PASS: TestSucursalObligatoriaExistenteYActiva/sucursal_inexistente (0.01s)
+    --- PASS: TestSucursalObligatoriaExistenteYActiva/sucursal_inactiva (0.01s)
+=== RUN   TestCancelarSolicitadoNoDescuentaPuntos
+--- PASS: TestCancelarSolicitadoNoDescuentaPuntos (0.01s)
+=== RUN   TestCanjeConfirmadoNoSeModificaNiSeDescuentaDosVeces
+--- PASS: TestCanjeConfirmadoNoSeModificaNiSeDescuentaDosVeces (0.01s)
+=== RUN   TestConfirmacionRevalidaSaldoYNoDejaCambiosParciales
+--- PASS: TestConfirmacionRevalidaSaldoYNoDejaCambiosParciales (0.01s)
+=== RUN   TestEstadosYDatosInvalidos
+--- PASS: TestEstadosYDatosInvalidos (0.01s)
+=== RUN   TestMigrarConservaDatosHito1YAsignaSucursalPrincipal
+--- PASS: TestMigrarConservaDatosHito1YAsignaSucursalPrincipal (0.03s)
+=== RUN   TestSembrarSoloCargaDatosConOpcionExplicita
+--- PASS: TestSembrarSoloCargaDatosConOpcionExplicita (0.00s)
+=== RUN   TestSembrarDemoEsIdempotenteYPreparaLasCredenciales
+--- PASS: TestSembrarDemoEsIdempotenteYPreparaLasCredenciales (1.41s)
+=== RUN   TestPrepararBaseConIdsOcupadosConservaTodoElHito1
+--- PASS: TestPrepararBaseConIdsOcupadosConservaTodoElHito1 (0.58s)
+=== RUN   TestConflictoDeCuentaDemoConservaCredencialesYReviertePreparacion
+--- PASS: TestConflictoDeCuentaDemoConservaCredencialesYReviertePreparacion (0.02s)
+=== RUN   TestConectarRechazaSQLiteSinCrearUnaBase
+--- PASS: TestConectarRechazaSQLiteSinCrearUnaBase (0.02s)
+=== RUN   TestPreparacionFallidaRevierteTambienElEsquema
+--- PASS: TestPreparacionFallidaRevierteTambienElEsquema (0.04s)
+=== RUN   TestPostgresConfirmacionesConcurrentes
+    postgres_test.go:20: configure LEALCAF_TEST_POSTGRES_DSN con una base PostgreSQL de pruebas
+--- SKIP: TestPostgresConfirmacionesConcurrentes (0.00s)
+=== RUN   TestServicioConfirmacionConFalsoSinBase
+--- PASS: TestServicioConfirmacionConFalsoSinBase (0.00s)
+=== RUN   TestServicioCompraConFalsoSinBase
+--- PASS: TestServicioCompraConFalsoSinBase (0.00s)
+PASS
+ok  	fidelizacion/internal/fidelizacion	3.517s
