@@ -15,6 +15,12 @@ import (
 // Esta prueba es opcional: necesita una base desechable autorizada explícitamente.
 // Usa un esquema propio; nunca migra ni elimina las tablas del esquema public.
 func TestPostgresConfirmacionesConcurrentes(t *testing.T) {
+	for _, adaptador := range []string{"gorm", "sqlc"} {
+		t.Run(adaptador, func(t *testing.T) { probarConfirmacionesConcurrentes(t, adaptador) })
+	}
+}
+
+func probarConfirmacionesConcurrentes(t *testing.T, adaptador string) {
 	dsn := os.Getenv("LEALCAF_TEST_POSTGRES_DSN")
 	if dsn == "" {
 		t.Skip("configure LEALCAF_TEST_POSTGRES_DSN con una base PostgreSQL de pruebas")
@@ -78,7 +84,7 @@ func TestPostgresConfirmacionesConcurrentes(t *testing.T) {
 	if err := isolated.Create(&credit).Error; err != nil {
 		t.Fatal(err)
 	}
-	service := &Servicio{Repo: &RepositorioGORM{DB: isolated}}
+	service := &Servicio{Repo: repositorioPrueba(t, isolated, adaptador)}
 	first, err := service.SolicitarCanje(client.ID, EntradaCanje{RecompensaID: reward.ID, SucursalID: 1})
 	if err != nil {
 		t.Fatal(err)

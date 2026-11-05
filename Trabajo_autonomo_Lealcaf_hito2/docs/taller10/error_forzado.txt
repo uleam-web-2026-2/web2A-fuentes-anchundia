@@ -1,0 +1,18 @@
+Extraído de go_test.txt: go test -count=1 -v ./... con PostgreSQL de pruebas.
+
+=== RUN   TestTaller10TransaccionesPostgres
+=== RUN   TestTaller10TransaccionesPostgres/gorm
+    taller10_postgres_test.go:115: adaptador=gorm fallo forzado SQLSTATE=23514: estado=solicitado movimientos_canje=0 saldo=100; rollback completo
+    taller10_postgres_test.go:129: adaptador=gorm reintento válido: movimientos_canje=1 saldo=60; commit completo
+    taller10_postgres_test.go:148: adaptador=gorm compra fallo SQLSTATE=23514: compras=0 saldo=60; rollback completo
+    taller10_postgres_test.go:160: adaptador=gorm reintento compra: puntos_generados=50 saldo=110; commit completo
+=== RUN   TestTaller10TransaccionesPostgres/sqlc
+    taller10_postgres_test.go:115: adaptador=sqlc fallo forzado SQLSTATE=23514: estado=solicitado movimientos_canje=0 saldo=100; rollback completo
+    taller10_postgres_test.go:129: adaptador=sqlc reintento válido: movimientos_canje=1 saldo=60; commit completo
+    taller10_postgres_test.go:148: adaptador=sqlc compra fallo SQLSTATE=23514: compras=0 saldo=60; rollback completo
+    taller10_postgres_test.go:160: adaptador=sqlc reintento compra: puntos_generados=50 saldo=110; commit completo
+--- PASS: TestTaller10TransaccionesPostgres (1.64s)
+    --- PASS: TestTaller10TransaccionesPostgres/gorm (0.84s)
+    --- PASS: TestTaller10TransaccionesPostgres/sqlc (0.80s)
+PASS
+ok  	fidelizacion/internal/fidelizacion	9.585s
