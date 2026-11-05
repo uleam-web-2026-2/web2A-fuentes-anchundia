@@ -1,0 +1,44 @@
+[
+  {
+    "version": "antes",
+    "codigo": 201,
+    "entrada": {
+      "id": 777777,
+      "estado": "confirmado",
+      "cliente_id": 999999,
+      "puntos_utilizados": 1,
+      "recompensa_id": 1,
+      "sucursal_id": 2
+    },
+    "salida": {
+      "sucursal_id": 2,
+      "id": 3,
+      "cliente_id": 1,
+      "recompensa_id": 1,
+      "puntos_utilizados": 40,
+      "fecha": "2026-11-05T15:06:41.6190288+01:00",
+      "estado": "solicitado"
+    }
+  },
+  {
+    "version": "despues",
+    "codigo": 201,
+    "entrada": {
+      "id": 777777,
+      "estado": "confirmado",
+      "cliente_id": 999999,
+      "puntos_utilizados": 1,
+      "recompensa_id": 1,
+      "sucursal_id": 2
+    },
+    "salida": {
+      "id": 3,
+      "sucursal_id": 2,
+      "cliente_id": 1,
+      "recompensa_id": 1,
+      "puntos_utilizados": 40,
+      "fecha": "2026-11-05T15:06:41.788749+01:00",
+      "estado": "solicitado"
+    }
+  }
+]

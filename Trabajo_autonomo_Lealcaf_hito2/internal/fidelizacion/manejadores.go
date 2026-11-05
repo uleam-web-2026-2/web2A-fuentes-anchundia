@@ -69,7 +69,7 @@ func (a *API) ConsultarPuntos(c *gin.Context) {
 		responderError(c, err)
 		return
 	}
-	c.JSON(http.StatusOK, resultado)
+	c.JSON(http.StatusOK, nuevaConsultaPuntosRespuesta(resultado))
 }
 
 func (a *API) ListarRecompensas(c *gin.Context) {
@@ -78,35 +78,35 @@ func (a *API) ListarRecompensas(c *gin.Context) {
 		responderError(c, err)
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{"recompensas": recompensas})
+	c.JSON(http.StatusOK, gin.H{"recompensas": nuevasRecompensasRespuesta(recompensas)})
 }
 
 func (a *API) RegistrarCompra(c *gin.Context) {
-	var entrada EntradaCompra
+	var entrada CompraPeticion
 	if err := c.ShouldBindJSON(&entrada); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "datos inválidos: cliente_id, sucursal_id, total (> 0) y numero_factura son obligatorios"})
 		return
 	}
-	resultado, err := a.Servicio.RegistrarCompra(entrada)
+	resultado, err := a.Servicio.RegistrarCompra(entrada.aEntrada())
 	if err != nil {
 		responderError(c, err)
 		return
 	}
-	c.JSON(http.StatusCreated, resultado)
+	c.JSON(http.StatusCreated, nuevoResultadoCompraRespuesta(resultado))
 }
 
 func (a *API) SolicitarCanje(c *gin.Context) {
-	var entrada EntradaCanje
+	var entrada CanjePeticion
 	if err := c.ShouldBindJSON(&entrada); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "datos inválidos: recompensa_id y sucursal_id son obligatorios"})
 		return
 	}
-	canje, err := a.Servicio.SolicitarCanje(c.GetUint("cliente_id"), entrada)
+	canje, err := a.Servicio.SolicitarCanje(c.GetUint("cliente_id"), entrada.aEntrada())
 	if err != nil {
 		responderError(c, err)
 		return
 	}
-	c.JSON(http.StatusCreated, canje)
+	c.JSON(http.StatusCreated, nuevaCanjeRespuesta(canje))
 }
 
 func (a *API) ListarCanjes(c *gin.Context) {
@@ -115,7 +115,7 @@ func (a *API) ListarCanjes(c *gin.Context) {
 		responderError(c, err)
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{"canjes": canjes})
+	c.JSON(http.StatusOK, gin.H{"canjes": nuevasCanjesRespuesta(canjes)})
 }
 
 func (a *API) ObtenerCanje(c *gin.Context) {
@@ -128,7 +128,7 @@ func (a *API) ObtenerCanje(c *gin.Context) {
 		responderError(c, err)
 		return
 	}
-	c.JSON(http.StatusOK, canje)
+	c.JSON(http.StatusOK, nuevaCanjeRespuesta(canje))
 }
 
 func (a *API) ActualizarEstadoCanje(c *gin.Context) {
@@ -136,9 +136,7 @@ func (a *API) ActualizarEstadoCanje(c *gin.Context) {
 	if !ok {
 		return
 	}
-	var entrada struct {
-		Estado string `json:"estado" binding:"required"`
-	}
+	var entrada EstadoCanjePeticion
 	if err := c.ShouldBindJSON(&entrada); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "datos inválidos: estado es obligatorio"})
 		return
@@ -148,5 +146,5 @@ func (a *API) ActualizarEstadoCanje(c *gin.Context) {
 		responderError(c, err)
 		return
 	}
-	c.JSON(http.StatusOK, canje)
+	c.JSON(http.StatusOK, nuevaCanjeRespuesta(canje))
 }

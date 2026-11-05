@@ -52,26 +52,26 @@ func ValidarTransicion(actual, destino string) error {
 
 type Servicio struct{ Repo Repositorio }
 type EntradaCompra struct {
-	ClienteID     uint    `json:"cliente_id" binding:"required"`
-	SucursalID    uint    `json:"sucursal_id" binding:"required"`
-	Total         float64 `json:"total" binding:"required,gt=0"`
-	NumeroFactura string  `json:"numero_factura" binding:"required"`
+	ClienteID     uint
+	SucursalID    uint
+	Total         float64
+	NumeroFactura string
 }
 type EntradaCanje struct {
-	RecompensaID uint `json:"recompensa_id" binding:"required"`
-	SucursalID   uint `json:"sucursal_id" binding:"required"`
+	RecompensaID uint
+	SucursalID   uint
 }
 type ResultadoCompra struct {
-	Compra           Compra    `json:"compra"`
-	PuntosGenerados  int       `json:"puntos_generados"`
-	FechaVencimiento time.Time `json:"fecha_vencimiento"`
+	Compra           Compra
+	PuntosGenerados  int
+	FechaVencimiento time.Time
 }
 type ConsultaPuntos struct {
-	ClienteID   uint               `json:"cliente_id"`
-	Cedula      string             `json:"cedula"`
-	Nombre      string             `json:"nombre"`
-	Saldo       int                `json:"saldo"`
-	Movimientos []MovimientoPuntos `json:"movimientos"`
+	ClienteID   uint
+	Cedula      string
+	Nombre      string
+	Saldo       int
+	Movimientos []MovimientoPuntos
 }
 
 func (s *Servicio) ConsultarPuntos(id uint, rol string, clienteID uint) (ConsultaPuntos, error) {

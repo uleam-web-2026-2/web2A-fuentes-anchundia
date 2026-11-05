@@ -68,16 +68,16 @@ type Recompensa struct {
 }
 
 type Canje struct {
-	SucursalID       uint       `gorm:"not null;default:1;index" json:"sucursal_id"`
-	Sucursal         Sucursal   `gorm:"foreignKey:SucursalID" json:"-"`
-	ID               uint       `gorm:"primaryKey" json:"id"`
-	ClienteID        uint       `gorm:"not null" json:"cliente_id"`
-	Cliente          Cliente    `gorm:"foreignKey:ClienteID" json:"-"`
-	RecompensaID     uint       `gorm:"not null" json:"recompensa_id"`
-	Recompensa       Recompensa `gorm:"foreignKey:RecompensaID" json:"-"`
-	PuntosUtilizados int        `gorm:"not null" json:"puntos_utilizados"`
-	Fecha            time.Time  `gorm:"not null" json:"fecha"`
-	Estado           string     `gorm:"not null;default:solicitado" json:"estado"`
+	SucursalID       uint       `gorm:"not null;default:1;index"`
+	Sucursal         Sucursal   `gorm:"foreignKey:SucursalID"`
+	ID               uint       `gorm:"primaryKey"`
+	ClienteID        uint       `gorm:"not null"`
+	Cliente          Cliente    `gorm:"foreignKey:ClienteID"`
+	RecompensaID     uint       `gorm:"not null"`
+	Recompensa       Recompensa `gorm:"foreignKey:RecompensaID"`
+	PuntosUtilizados int        `gorm:"not null"`
+	Fecha            time.Time  `gorm:"not null"`
+	Estado           string     `gorm:"not null;default:solicitado"`
 }
 
 type MovimientoPuntos struct {
