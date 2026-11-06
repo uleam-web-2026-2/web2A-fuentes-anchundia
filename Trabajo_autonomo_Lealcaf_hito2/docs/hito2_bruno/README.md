@@ -23,3 +23,12 @@ Los scripts usan las APIs integradas oficiales [`bru.sendRequest`, `req.setUrl`,
 Comprobación opcional con CLI desde esta carpeta: `npx.cmd --yes @usebruno/cli@4.3.0 run --env Local`. El recorrido debe ejecutarse completo en una misma ejecución. Como antecedente histórico, la revisión del 29/10/2026 pasó 7/7 peticiones, 6/6 pruebas y 7/7 aserciones sobre PostgreSQL temporal. Resultados y límites en `../validacion.md`; los PNG anteriores se conservan como respaldo. Las evidencias nuevas corresponden a `../taller10/`.
 
 Si el servidor de ensayo usa otro puerto, añadir `--env-var baseUrl=http://127.0.0.1:18082`. Para guardar un informe sin tokens ni contraseñas, usar `--reporter-json resultados.json --reporter-skip-all-headers --reporter-skip-body`. La colección crea y confirma un canje: usar los datos ficticios dedicados y recordar que se consumen puntos.
+
+## Ejecutar la colección completa en Bruno Desktop
+
+1. Con la API iniciada, selecciona el entorno `Local` y comprueba que `baseUrl` tenga el puerto de la API y que las dos contraseñas demo estén configuradas localmente.
+2. Abre **Runner** desde el icono de la barra superior. Selecciona las siete peticiones, desde la preparación 0 hasta la petición 6, y deja desactivada la ejecución en paralelo. Las siguientes peticiones usan el token y el ID del canje que prepara la primera.
+3. Pulsa **Run 7 Requests**. La preparación debe dar `201`. Luego, en orden, se esperan `401, 200, 200, 403, 200, 422`. El resultado completo debe mostrar **7 aprobadas, 0 fallidas, 0 omitidas**.
+4. Si la preparación falla, revisa primero los logins demo y la URL. Si el cliente se queda sin puntos por varias confirmaciones, repite el ensayo en otra base de demostración vacía.
+
+La [captura del Runner](../taller10/bruno_runner_final.jpg) muestra los códigos y las aserciones. Para compartirla, deja cerrados los cuerpos de respuesta para que el JWT del login quede fuera de la imagen.
