@@ -17,3 +17,16 @@ Verificación real sobre la copia recibida en coweb.zip y su solución, el 5 de 
 | entorno.txt / windows.md | Versiones, entorno aislado y observaciones Windows. |
 
 Para repetir las pruebas PostgreSQL, configure una base desechable con LEALCAF_TEST_POSTGRES_DSN y ejecute el comando documentado en README.md. Sin esa variable las dos pruebas PostgreSQL se omiten de forma explícita. Los datos, puertos y resultados de esta carpeta describen esta verificación; no acreditan todavía una ejecución en la computadora del alumno ni una entrega por Git.
+
+## Repetir únicamente la prueba de rollback
+
+Desde `Trabajo_autonomo_Lealcaf_hito2`, usa una base PostgreSQL desechable con permisos para crear esquemas. Ajusta el DSN a tu entorno. Si requiere contraseña, complétala localmente en la variable del proceso.
+
+```powershell
+$env:LEALCAF_TEST_POSTGRES_DSN = 'host=127.0.0.1 port=5432 user=postgres dbname=lealcaf_pruebas sslmode=disable'
+go test -count=1 -v ./internal/fidelizacion -run '^TestTaller10TransaccionesPostgres$'
+```
+
+Comprueba que aparezca `PASS` para los subtests `gorm` y `sqlc`. Si aparece `SKIP`, revisa que la variable esté definida en la misma terminal. El `SQLSTATE 23514` es el rechazo esperado del `CHECK` en la segunda escritura.
+
+En la repetición local, ambos adaptadores conservaron el canje solicitado, sin descuentos y con saldo 100. Para la compra quedaron cero filas de la factura probada y saldo 60. Al quitar cada restricción, el reintento confirmó el canje con saldo 60 y la compra elevó el saldo a 110.
