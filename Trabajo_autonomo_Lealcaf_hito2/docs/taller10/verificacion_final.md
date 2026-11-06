@@ -48,3 +48,9 @@ Repetí el flujo desde el Collection Runner de Bruno Desktop 4.3.0, con el adapt
 ## Uso de IA
 
 OpenAI Codex apoyó la comparación con la consigna, la ejecución local de Bruno y las pruebas, y la revisión de la documentación y sus enlaces.
+
+## Canje inexistente con sqlc
+
+En una base temporal de PostgreSQL con datos demo y `REPOSITORY_ADAPTER=sqlc`, inicié sesión como cliente y envié `GET /canjes/2147483647` con su token. El ID positivo era ajeno a los registros de la base de ensayo. La API devolvió **404** con `{"error":"canje no encontrado"}`.
+
+Esta petición complementa las seis de Bruno. Verifica por HTTP que la ausencia de una fila de sqlc se traduce a un error de dominio y luego a un 404.
