@@ -1,28 +1,19 @@
 # LealCafé
 
-## Hito 2 — entrega actual
+## Semana 10 · Taller autónomo
 
-El servidor nuevo está separado en **hito2/**. La documentación y las capturas se encuentran en **docs/**, en la raíz del repositorio. El trabajo anterior del Hito 1 se conserva en sus carpetas y en el historial.
-
-Desde la carpeta principal del repositorio:
+El módulo de la API está en [Trabajo_autonomo_Lealcaf_hito2/](Trabajo_autonomo_Lealcaf_hito2/). Desde la raíz del repositorio, entra al módulo antes de ejecutar la API o sus pruebas.
 
 ```powershell
-go -C hito2 test ./...
-npx.cmd @redocly/cli lint docs/openapi.yaml --format=stylish
-.\hito2\Iniciar-Proyecto.cmd
+Set-Location Trabajo_autonomo_Lealcaf_hito2
+go test ./...
 ```
 
-Para iniciar, mantenga PostgreSQL activo y configure localmente **hito2/.env** a partir de **hito2/.env.example**, con su conexión a **fidelizacion_db**. El archivo privado no se publica. El iniciador puede ejecutar Go si no hay un binario local; se requiere la versión indicada en hito2/go.mod.
-
-- [Instrucciones del Hito 2](hito2/README.md).
-- [Hoja del hito y seis peticiones](docs/hito2_hoja.md).
-- [Contrato OpenAPI](docs/openapi.yaml) y [vista HTML](docs/api.html).
-- [Colección Bruno](docs/hito2_bruno/README.md): abrir docs/hito2_bruno y elegir Local.
-- [Capturas actuales](docs/hito2_capturas/) y [verificaciones](docs/validacion.md).
-- [Estructura, decisiones y declaración de IA](docs/decisiones.md).
-- [Guion y preguntas de la demostración](docs/guion_hito2.md).
-
-La exposición utiliza el código de **hito2/**; ejecutar go test ./... en la raíz solo comprueba el módulo antiguo. Cierre Web II A: **29 de octubre de 2026, 23:59**, en el repositorio **uleam-web-2026-2/web2A-fuentes-anchundia**.
+- [Configuración de PostgreSQL y arranque](Trabajo_autonomo_Lealcaf_hito2/README.md)
+- [Colección Bruno](Trabajo_autonomo_Lealcaf_hito2/docs/hito2_bruno/README.md)
+- [Contrato OpenAPI](Trabajo_autonomo_Lealcaf_hito2/docs/openapi.yaml)
+- [Decisiones de diseño](Trabajo_autonomo_Lealcaf_hito2/docs/decisiones.md)
+- [Evidencias del taller](Trabajo_autonomo_Lealcaf_hito2/docs/taller10/LEEME.md) y [verificación final](Trabajo_autonomo_Lealcaf_hito2/docs/taller10/verificacion_final.md)
 
 ## Documentación anterior del Hito 1
 

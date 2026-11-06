@@ -86,9 +86,9 @@ También `RegistrarCompra` inserta en `compras` y, cuando genera al menos un pun
 
 Elegimos el callback con `RepositorioTransaccion`: sirve para los dos casos reales y mantiene las reglas juntas en `servicio.go`. `Repositorio` declara las operaciones del servicio y la entrada `EnTransaccion`. El puerto transaccional ofrece solo los métodos que necesitan compras y confirmaciones, sin permitir abrir otra transacción desde el callback.
 
-La confirmación conserva el orden de concurrencia del proyecto: leer el canje, bloquear su cliente, volver a leer el canje con bloqueo, validar transición y saldo, actualizar el estado condicionado al anterior e insertar el descuento. Los canjes de un cliente comparten el bloqueo del cliente, para que dos confirmaciones no gasten el mismo saldo. Las comprobaciones y escrituras usan el repositorio recibido en el callback.
+La confirmación conserva el orden de concurrencia del proyecto: leer el canje, bloquear su cliente, volver a leer el canje con bloqueo, validar la transición y actualizar el estado solo si sigue en `solicitado`. Para confirmar, antes del cambio se comprueba que el cliente siga activo y tenga saldo suficiente. Después del cambio se inserta el descuento. Para cancelar, se guarda el estado `cancelado` sin generar un movimiento. Los canjes de un cliente comparten el bloqueo del cliente, para que dos confirmaciones no gasten el mismo saldo. Las comprobaciones y escrituras usan el repositorio recibido en el callback.
 
-`RepositorioGORM.EnTransaccion` utiliza `DB.Transaction` y entrega una instancia con `DB: tx`. Un error del callback provoca rollback. El servicio no importa `gorm` ni `database/sql`. El falso de `servicio_falso_test.go` trabaja con copias y aplica los datos solo cuando el callback termina bien, sin abrir una base.
+`RepositorioGORM.EnTransaccion` utiliza `DB.Transaction` y entrega una instancia con `DB: tx`. Si el callback devuelve un error, GORM revierte la transacción y lo devuelve al servicio. El servicio no importa `gorm` ni `database/sql`. El falso de `servicio_falso_test.go` trabaja con copias y aplica los datos solo cuando el callback termina bien, sin abrir una base.
 
 ### D4 · La que descartamos y por qué
 
@@ -104,7 +104,7 @@ En operaciones atómicas, sqlc usa `BeginTx` sobre la conexión `*sql.DB` que ya
 
 El diseño del servicio no cambia al seleccionar sqlc: cambia la implementación del puerto. El adaptador traduce `sql.ErrNoRows` al error de dominio y comprueba las filas afectadas en la actualización. Se conserva AutoMigrate. `db/schema.sql` describe las tablas para generar Go; no se ejecuta como migración. `internal/almacen/filas` se genera con sqlc 1.31.1 y no se edita a mano.
 
-La prueba PostgreSQL de `taller10_postgres_test.go` está destinada a forzar un fallo al insertar el movimiento después de la primera escritura y comprobar que no queda una confirmación parcial con ambos adaptadores. Los resultados efectivamente ejecutados se guardan en `taller10/`; esta explicación del diseño no sustituye esas evidencias.
+La prueba PostgreSQL de `taller10_postgres_test.go` agrega una restricción `CHECK` sobre `movimiento_puntos` para que falle la segunda escritura con `SQLSTATE 23514`. Comprueba que el canje siga solicitado y que la factura de prueba no quede registrada. Luego quita cada restricción y verifica que el reintento guarde ambas escrituras. La [verificación final](taller10/verificacion_final.md) registra los resultados de GORM y sqlc.
 
 ### D6 · Archivos
 
