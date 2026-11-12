@@ -1,0 +1,46 @@
+#0 building with "desktop-linux" instance using docker driver
+System.Management.Automation.RemoteException
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 554B 0.0s done
+#1 DONE 0.0s
+System.Management.Automation.RemoteException
+#2 [internal] load metadata for docker.io/library/golang:1.27
+#2 DONE 0.3s
+System.Management.Automation.RemoteException
+#3 [internal] load .dockerignore
+#3 transferring context: 547B 0.0s done
+#3 DONE 0.0s
+System.Management.Automation.RemoteException
+#4 [compilacion 1/6] FROM docker.io/library/golang:1.27@sha256:ec47ea3725fea0cc88f6de94919aef19f40f12fc1ec0e2d1b3426dbf15ecca04
+#4 resolve docker.io/library/golang:1.27@sha256:ec47ea3725fea0cc88f6de94919aef19f40f12fc1ec0e2d1b3426dbf15ecca04 0.0s done
+#4 DONE 0.1s
+System.Management.Automation.RemoteException
+#5 [internal] load build context
+#5 transferring context: 2.99kB 0.0s done
+#5 DONE 0.1s
+System.Management.Automation.RemoteException
+#6 [compilacion 3/6] COPY Trabajo_autonomo_Lealcaf_hito2/go.mod Trabajo_autonomo_Lealcaf_hito2/go.sum ./
+#6 CACHED
+System.Management.Automation.RemoteException
+#7 [compilacion 4/6] RUN go mod download
+#7 CACHED
+System.Management.Automation.RemoteException
+#8 [compilacion 5/6] COPY Trabajo_autonomo_Lealcaf_hito2/ ./
+#8 CACHED
+System.Management.Automation.RemoteException
+#9 [compilacion 2/6] WORKDIR /src
+#9 CACHED
+System.Management.Automation.RemoteException
+#10 [compilacion 6/6] RUN CGO_ENABLED=0 go build -trimpath -o /servidor .
+#10 CACHED
+System.Management.Automation.RemoteException
+#11 exporting to image
+#11 exporting layers 0.0s done
+#11 exporting manifest sha256:8fb1587a1383efd35300cc3b055eddc55f71b18eff1f99387a7bdd74d87ba0b7 done
+#11 exporting config sha256:dd41e53d4739b54a3c76f33b47fef1d48d6c82875bba54aa3eaf0393909de7cd done
+#11 exporting attestation manifest sha256:2088929c152b174467a33a3f2468159b4871cc1a3d7541d50b7ef351595993b2 0.0s done
+#11 exporting manifest list sha256:a72401f79e206a306c11e232113737ff19d49fb3eeaff609fdfede47734f039a
+#11 exporting manifest list sha256:a72401f79e206a306c11e232113737ff19d49fb3eeaff609fdfede47734f039a 0.0s done
+#11 naming to docker.io/library/lealcaf:compilacion done
+#11 unpacking to docker.io/library/lealcaf:compilacion 0.0s done
+#11 DONE 0.2s
