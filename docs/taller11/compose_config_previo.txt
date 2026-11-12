@@ -1,0 +1,9 @@
+Compose config: valido.
+Servicios: api, db.
+DB_HOST=db; DB_PORT=5432.
+Dependencia service_healthy y healthcheck presentes.
+Base sin puerto publicado.
+Un unico puerto de API, limitado a loopback.
+Volumen PostgreSQL en /var/lib/postgresql/data.
+Variables privadas resueltas, valores omitidos de este informe.
+No se iniciaron contenedores.

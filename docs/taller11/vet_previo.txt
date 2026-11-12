@@ -1,0 +1,3 @@
+Comando: vet ./...
+CGO_ENABLED=0
+Codigo de salida: 0

@@ -1,0 +1,1 @@
+Captura simultanea en memoria: 1000 lineas stdout y 1000 lineas stderr, completas. Proceso terminado y ambas lecturas completadas. No se usan archivos temporales de redireccion. Ensayo ejecutado en PowerShell sobre Linux.

@@ -1,0 +1,6 @@
+Configuracion privada lista. El .env anterior de su API se conserva.
+Verificando la API actual: go build y go test.
+Linea de base: arrancando go run .
+gorun : 401, 200, 200, 403, 200, 422
+Se verificaron las seis peticiones y la captura completa de stdout y stderr.
+VALIDACION DEL EJECUTOR APROBADA. PostgreSQL nativo temporal; Docker no ejecutado.

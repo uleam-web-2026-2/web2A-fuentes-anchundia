@@ -1,0 +1,45 @@
+{
+    "etapa":  "contenedor",
+    "fecha_utc":  "2026-11-12T14:16:04.4960273Z",
+    "peticiones":  [
+                       {
+                           "peticion":  1,
+                           "codigo":  401,
+                           "esperado":  401,
+                           "correcto":  true
+                       },
+                       {
+                           "peticion":  2,
+                           "codigo":  200,
+                           "esperado":  200,
+                           "correcto":  true
+                       },
+                       {
+                           "peticion":  3,
+                           "codigo":  200,
+                           "esperado":  200,
+                           "correcto":  true
+                       },
+                       {
+                           "peticion":  4,
+                           "codigo":  403,
+                           "esperado":  403,
+                           "correcto":  true
+                       },
+                       {
+                           "peticion":  5,
+                           "codigo":  200,
+                           "esperado":  200,
+                           "correcto":  true
+                       },
+                       {
+                           "peticion":  6,
+                           "codigo":  422,
+                           "esperado":  422,
+                           "correcto":  true
+                       }
+                   ],
+    "correcto":  true,
+    "canje_confirmado":  1,
+    "canje_nuevo":  3
+}

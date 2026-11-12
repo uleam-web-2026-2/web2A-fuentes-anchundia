@@ -1,0 +1,3 @@
+2026/11/12 14:16:00 No se pudo conectar a la base: failed to connect to `user=postgres database=lealcaf_taller11`:
+	127.0.0.1:55433 (localhost): dial error: dial tcp 127.0.0.1:55433: connect: connection refused
+	[::1]:55433 (localhost): dial error: dial tcp [::1]:55433: connect: connection refused

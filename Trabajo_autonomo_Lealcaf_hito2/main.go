@@ -72,7 +72,8 @@ func main() {
 		log.Fatal("REPOSITORY_ADAPTER debe ser sqlc o gorm")
 	}
 	fidelizacion.ConfigurarRutasConRepositorio(r, repo, auth)
-	servidor := &http.Server{Addr: "127.0.0.1:" + puerto, Handler: r, ReadHeaderTimeout: 5 * time.Second, ReadTimeout: 10 * time.Second, WriteTimeout: 20 * time.Second, IdleTimeout: 60 * time.Second}
+	// El puerto publicado por Docker debe alcanzar al servidor en su interfaz de red.
+	servidor := &http.Server{Addr: ":" + puerto, Handler: r, ReadHeaderTimeout: 5 * time.Second, ReadTimeout: 10 * time.Second, WriteTimeout: 20 * time.Second, IdleTimeout: 60 * time.Second}
 	log.Printf("LealCaf listo en http://localhost:%s", puerto)
 	if err := servidor.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
 		log.Fatal(err)

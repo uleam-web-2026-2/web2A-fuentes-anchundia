@@ -1,0 +1,3 @@
+Comando: build -p 2 -trimpath -o /workspace/scratch/5cc9bf4b73f0/tmp/servidor .
+CGO_ENABLED=0
+Codigo de salida: 0

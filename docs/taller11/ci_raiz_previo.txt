@@ -1,0 +1,8 @@
+go vet ./...
+Codigo de salida: 0
+go: downloading golang.org/x/text v0.29.0
+go: downloading golang.org/x/sync v0.17.0
+
+go test ./...
+Codigo de salida: 0
+?   	github.com/uleam-web-2026-2/web2A-fuentes-anchundia	[no test files]

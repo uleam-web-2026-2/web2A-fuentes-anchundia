@@ -1,0 +1,4 @@
+Sintaxis del ejecutor actualizado: correcta.
+Casos de regresion aprobados: 53.
+.env.example: permitido tanto con LF como con CRLF.
+.env, variantes privadas y .git: rechazados con LF y CRLF.

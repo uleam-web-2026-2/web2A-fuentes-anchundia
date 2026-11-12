@@ -1,0 +1,6 @@
+Contenedor: lealcaf-t11-manual-4aeec00c4ae3
+Volumen: lealcaf_t11_manual_4aeec00c4ae3
+Puerto de la computadora: 55433
+Comprobacion SQL con usuario, base y contrasena: correcta.
+Conexion TCP desde la computadora al puerto publicado: correcta.
+Las bases de intentos anteriores no se borraron.

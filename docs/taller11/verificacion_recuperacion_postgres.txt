@@ -1,0 +1,9 @@
+Pruebas unitarias de recuperacion: aprobadas.
+Misma configuracion: misma base.
+Otra contrasena o cuenta demo: otra base, sin borrar la anterior.
+Solo se detiene la base del taller que ocupa el puerto necesario.
+La base actual y las de otros puertos no se detienen.
+Se exige que la comprobacion SQL de credenciales sea correcta.
+Se comprueba una conexion TCP real a un listener local.
+Sintaxis de PowerShell: correcta.
+Estas pruebas usan respuestas Docker simuladas; no acreditan contenedores reales.
