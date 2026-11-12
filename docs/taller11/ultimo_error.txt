@@ -1,2 +1,0 @@
-docker termino con codigo 1.
-no configuration file provided: not found
