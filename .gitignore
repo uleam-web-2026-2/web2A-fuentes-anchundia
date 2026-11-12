@@ -13,3 +13,4 @@ node_modules/
 *.pem
 *.key
 /hito2/archivos.sha256
+**/docs/hito2_bruno/environments/Taller11-privado.bru

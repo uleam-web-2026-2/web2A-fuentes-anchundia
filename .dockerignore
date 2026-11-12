@@ -1,0 +1,24 @@
+# Enviar solamente el modulo actual; no las entregas historicas.
+**
+!Trabajo_autonomo_Lealcaf_hito2/
+!Trabajo_autonomo_Lealcaf_hito2/**
+
+# Los patrones recursivos tambien protegen secretos en subcarpetas.
+**/.env
+**/.env.*
+!**/.env.example
+**/.git
+**/bin
+**/data
+**/node_modules
+**/*.exe
+**/*.exe~
+**/*.log
+**/*.dump
+**/*.pem
+**/*.key
+
+# La API no lee estos archivos para atender sus rutas.
+Trabajo_autonomo_Lealcaf_hito2/docs
+Trabajo_autonomo_Lealcaf_hito2/scripts
+Trabajo_autonomo_Lealcaf_hito2/.vscode
