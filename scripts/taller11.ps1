@@ -547,6 +547,17 @@ function Show-Status {
 }
 
 $previousLocation = Get-Location
+# Las carpetas separadas para subir no son un proyecto ejecutable.
+# Comprobarlo antes de generar entornos privados o cambiar las evidencias.
+if ($Paso -ne 'Estado') {
+    $requiredFiles = @('Dockerfile', 'compose.yaml', 'Trabajo_autonomo_Lealcaf_hito2/go.mod')
+    foreach ($requiredFile in $requiredFiles) {
+        if (-not (Test-Path -LiteralPath (Join-Path $script:Root $requiredFile) -PathType Leaf)) {
+            Write-Host "DETENIDO: Falta $requiredFile. Ejecute el taller desde el proyecto completo; las carpetas separadas para subir a GitHub no se ejecutan." -ForegroundColor Red
+            exit 1
+        }
+    }
+}
 try {
     Set-Location $script:Root
     if ($Paso -eq 'Estado') { Show-Status; exit 0 }
