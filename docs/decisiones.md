@@ -52,6 +52,24 @@ Por ejemplo, `13:00:00-05:00` y `18:00:00Z` pueden describir el mismo instante. 
 
 Decidimos mantener el instante y su offset explícito en las respuestas, y convertir a la hora de Ecuador al mostrarlo al usuario. No se modifica el código para corregir una diferencia que sea solo de representación. En LealCafé esta distinción afecta las fechas de compra, la caducidad de los puntos y los reportes por día.
 
+Las decisiones D5 a D9 y la configuración de Compose se integraron a partir del paquete de José Miguel Fuentes Cedeño. Las mediciones de ese paquete corresponden a su equipo.
+
+### D5 - Cómo encuentra la API a la base
+
+`compose.yaml` define los servicios `api` y `db`. Compose los conecta a su red y permite resolver `db` por su nombre de servicio. La API recibe `DB_HOST=db` y `DB_PORT=5432`: este es el puerto de PostgreSQL dentro de esa red.
+
+No usa `host.docker.internal`, `5433` ni `55433` para esta conexión. Esos puertos publicados en una computadora pertenecen al acceso desde fuera de la red de Compose. Aquí los dos servicios se comunican directamente.
+
+### D6 - El orden de arranque
+
+La API existente conecta, migra y carga datos al iniciar. Si PostgreSQL todavía no acepta conexiones, termina con error. Configuramos un `healthcheck` de la base con `pg_isready` por TCP y `depends_on: condition: service_healthy` en la API. No basta con que el proceso de la base haya empezado: debe estar listo para recibir conexiones. Usar TCP evita dar por listo al servidor temporal que PostgreSQL utiliza durante su inicialización.
+
+El ejecutor comprueba tres arranques con una base nueva en el proyecto separado `lealcaf-taller11-ensayo`. En cada uno exige las seis respuestas correctas y cero reinicios de la API. Solamente ese proyecto de ensayo se elimina con `down -v`. Las evidencias quedan en `arranques_limpios.txt`, `arranque_limpio_*.txt` y sus logs.
+
+<!-- D6:INICIO -->
+Pendiente de ejecutar los tres arranques en la computadora de Luis Anchundia.
+<!-- D6:FIN -->
+
 ## Fuentes consultadas
 
 - Kit y taller de la semana 11 proporcionados por el docente.
