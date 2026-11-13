@@ -70,6 +70,30 @@ El ejecutor comprueba tres arranques con una base nueva en el proyecto separado 
 Pendiente de ejecutar los tres arranques en la computadora de Luis Anchundia.
 <!-- D6:FIN -->
 
+### D7 - Dónde quedan los datos
+
+PostgreSQL guarda sus datos en el volumen nombrado `datos_postgres`, montado en `/var/lib/postgresql/data`. `docker compose down` elimina contenedores y red, pero conserva ese volumen. Al volver a subir, los canjes siguen disponibles. El ejecutor comprueba un canje nuevo confirmado antes de `down` y vuelve a consultar exactamente ese ID después del reinicio; el resultado se guarda en `persistencia.txt`.
+
+`docker compose down -v` sí elimina el volumen del proyecto seleccionado. En el ensayo se usa deliberadamente para comprobar bases vacías. No lo utilizamos para reiniciar el proyecto final ni el contenedor manual. La base manual también tiene su volumen propio, con el prefijo `lealcaf_t11_manual_` y un sufijo que identifica la configuración. Repetir con la misma configuración reutiliza ese volumen.
+
+### D8 - Los secretos
+
+Las contraseñas y la clave JWT no están escritas en `compose.yaml`. Se obtienen por interpolación del `.env` privado de la raíz. `Taller11.cmd` genera valores aleatorios locales con un generador criptográfico; si el archivo ya existe, lo reutiliza. El ejemplo público `.env.example` deja vacíos esos campos.
+
+`.gitignore` excluye `.env`, sus variantes y el entorno `Taller11-privado.bru` de Bruno. `.dockerignore` tiene patrones recursivos para excluir secretos también dentro de subcarpetas. Las variables de la API se pasan al arrancar mediante `--env-file` o `environment` de Compose. Los tokens de las peticiones solo viven en memoria y los informes no guardan respuestas de login. Antes del commit verificamos con `git status` que los archivos privados no estén incluidos.
+
+### D9 - Lo que se publica en la máquina
+
+Compose publica solamente la API, por defecto en `127.0.0.1:8080`. La base de Compose no tiene `ports`; usa `5432` únicamente dentro de su red. Así puede convivir con el PostgreSQL previo y con la base manual publicada en `55433`.
+
+Para consultar la base desde su propio contenedor, con los nombres predeterminados:
+
+```powershell
+docker compose exec db psql -U postgres -d lealcaf_taller11
+```
+
+Si se cambian `DB_USER` o `DB_NAME`, se sustituyen en ese comando. No hace falta publicar otro puerto para ejecutar `psql` dentro del servicio.
+
 ## Fuentes consultadas
 
 - Kit y taller de la semana 11 proporcionados por el docente.
