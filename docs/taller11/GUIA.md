@@ -12,7 +12,7 @@ Los resultados de Docker aparecen como pendientes hasta ejecutar el paquete. La 
 
 Se necesita **Windows con Docker Desktop funcionando** y **Go 1.27.1 o superior**, como pide el módulo existente. Para subir los cambios por terminal también se necesita Git. Abra Docker Desktop y espere a que indique que el motor está listo.
 
-Descargue y extraiga el ZIP. Dentro de la carpeta extraída debe ver `Dockerfile`, `compose.yaml`, `Taller11.cmd`, `scripts/` y `Trabajo_autonomo_Lealcaf_hito2/`.
+Abra la raíz del repositorio completo en la rama `taller11`. Antes de ejecutar, compruebe que allí estén `Dockerfile`, `compose.yaml`, `Taller11.cmd`, `scripts/` y `Trabajo_autonomo_Lealcaf_hito2/`. El ZIP parcial del reto sirve para integrar la configuración y consultar las evidencias del compañero. Genere sus propias evidencias ejecutando el taller desde el repositorio.
 
 Cierre el servidor anterior con `Ctrl+C` si usa el puerto 8080. El ejecutor usa ese puerto para las tres comparaciones. Si otro programa debe conservarlo, cambie `PORT` en el `.env` de la raíz después de configurar, como se explica abajo.
 

@@ -48,6 +48,14 @@ En la computadora de ejecucion se encontro `docs/taller11/resultado.txt` con la 
 
 Las seis peticiones mantienen la secuencia `401, 200, 200, 403, 200, 422`. Las evidencias de la ejecucion estan en esta carpeta y las decisiones D1 a D9 en `docs/decisiones.md`.
 
+## Incidencia en el equipo de Luis Anchundia
+
+`docker version` y `docker info` detectaron el cliente, pero el motor Linux aún no ofrecía la tubería `dockerDesktopLinuxEngine`. El primer `docker desktop start --timeout 90` agotó su espera. El registro de Docker Desktop indicó que el servidor de Ingest falló cuando Windows rechazó el cambio de nombre de `sailor-ingest.sock` a `sailor-ingest.sock.stale` con el mensaje `The file cannot be accessed by the system`.
+
+Durante el diagnóstico, `docker desktop stop --timeout 20` también agotó su espera. Docker Desktop se volvió a iniciar y `docker info --format '{{.ServerVersion}} {{.OSType}}'` devolvió `29.9.2 linux`. La causa de que el archivo volviera a estar accesible quedó sin confirmar.
+
+En esta sesión Go estaba instalado en `C:/Program Files/Go/bin`. Se añadió esa carpeta al `PATH` del proceso que lanzó el ejecutor para que Windows PowerShell encontrara `go`.
+
 ## Apoyo de IA
 
 OpenAI Codex apoyo el diagnostico, los cambios del ejecutor y la redaccion de este registro a partir de los mensajes de error y resultados compartidos durante la ejecucion. La declaracion de uso tambien debe figurar en el cuerpo de los commits correspondientes.
