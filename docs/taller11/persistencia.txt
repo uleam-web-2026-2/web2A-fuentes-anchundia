@@ -1,0 +1,1 @@
+Tras down sin -v y up se conservo el canje 2 en estado confirmado. Fecha UTC: 2026-11-13T00:54:46.9748374Z.

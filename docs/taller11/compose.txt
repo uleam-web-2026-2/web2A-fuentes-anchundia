@@ -1,0 +1,9 @@
+NAME                     IMAGE              COMMAND                  SERVICE   CREATED         STATUS                   PORTS
+lealcaf-taller11-api-1   lealcaf:taller11   "/servidor"              api       8 seconds ago   Up 2 seconds             127.0.0.1:8080->8080/tcp
+lealcaf-taller11-db-1    postgres:16        "docker-entrypoint.s…"   db        9 seconds ago   Up 8 seconds (healthy)   5432/tcp
+
+api-1  | 2026/11/13 00:54:46 PostgreSQL: base lealcaf_taller11 en db:5432
+api-1  | 2026/11/13 00:54:46 LealCaf listo en http://localhost:8080
+api-1  | [GIN] 2026/11/13 - 00:54:46 | 404 | 28.927µs |      172.19.0.1 | GET      "/login"
+api-1  | [GIN] 2026/11/13 - 00:54:46 | 200 | 132.66ms |      172.19.0.1 | POST     "/login"
+api-1  | [GIN] 2026/11/13 - 00:54:46 | 200 |   3.02ms |      172.19.0.1 | GET      "/canjes/2"
