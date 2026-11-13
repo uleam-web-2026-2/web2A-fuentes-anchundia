@@ -1,0 +1,85 @@
+ Image lealcaf:taller11 Building
+#1 [internal] load local bake definitions
+#1 reading from stdin 656B 0.1s done
+#1 DONE 0.1s
+
+#2 [internal] load build definition from Dockerfile
+#2 transferring dockerfile: 567B 0.0s done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for gcr.io/distroless/static-debian13:nonroot
+#3 DONE 0.4s
+
+#4 [internal] load metadata for docker.io/library/golang:1.27
+#4 DONE 0.5s
+
+#5 [internal] load .dockerignore
+#5 transferring context: 571B done
+#5 DONE 0.0s
+
+#6 [internal] load build context
+#6 DONE 0.0s
+
+#7 [compilacion 1/6] FROM docker.io/library/golang:1.27@sha256:ec47ea3725fea0cc88f6de94919aef19f40f12fc1ec0e2d1b3426dbf15ecca04
+#7 resolve docker.io/library/golang:1.27@sha256:ec47ea3725fea0cc88f6de94919aef19f40f12fc1ec0e2d1b3426dbf15ecca04
+#7 resolve docker.io/library/golang:1.27@sha256:ec47ea3725fea0cc88f6de94919aef19f40f12fc1ec0e2d1b3426dbf15ecca04 0.1s done
+#7 DONE 0.1s
+
+#8 [stage-1 1/2] FROM gcr.io/distroless/static-debian13:nonroot@sha256:aafe993665bf6200db38a02c11a9351e782a84b6a45e7f33b6695638c88e3931
+#8 resolve gcr.io/distroless/static-debian13:nonroot@sha256:aafe993665bf6200db38a02c11a9351e782a84b6a45e7f33b6695638c88e3931 0.1s done
+#8 DONE 0.1s
+
+#6 [internal] load build context
+#6 transferring context: 2.99kB 0.0s done
+#6 DONE 0.0s
+
+#9 [compilacion 2/6] WORKDIR /src
+#9 CACHED
+
+#10 [compilacion 4/6] RUN go mod download
+#10 CACHED
+
+#11 [compilacion 6/6] RUN CGO_ENABLED=0 go build -trimpath -o /servidor .
+#11 CACHED
+
+#12 [compilacion 3/6] COPY Trabajo_autonomo_Lealcaf_hito2/go.mod Trabajo_autonomo_Lealcaf_hito2/go.sum ./
+#12 CACHED
+
+#13 [compilacion 5/6] COPY Trabajo_autonomo_Lealcaf_hito2/ ./
+#13 CACHED
+
+#14 [stage-1 2/2] COPY --from=compilacion /servidor /servidor
+#14 CACHED
+
+#15 exporting to image
+#15 exporting layers done
+#15 exporting manifest sha256:e235e884ca1e927466e15088a21ad4d32dc0a28d5b99e19c70ae996d6c7fda93 0.0s done
+#15 exporting config sha256:527a25affdd394a8f93fcac121939516ad25ddbf45b1ce8b191a7a26b23df3fd done
+#15 exporting attestation manifest sha256:755af17019b87d7d47b92712c1a46dc3bfedfaa3c25b8083ef690918a12cd60c 0.0s done
+#15 exporting manifest list sha256:c7e64ac9d41f20161784decbe2da7b2c67c05185c1994f418e15c06626dcdd6f
+#15 exporting manifest list sha256:c7e64ac9d41f20161784decbe2da7b2c67c05185c1994f418e15c06626dcdd6f 0.0s done
+#15 naming to docker.io/library/lealcaf:taller11 done
+#15 unpacking to docker.io/library/lealcaf:taller11 0.0s done
+#15 DONE 0.2s
+
+#16 resolving provenance for metadata file
+#16 DONE 0.0s
+ Image lealcaf:taller11 Built
+ Network lealcaf-taller11-ensayo_default Creating
+ Volume lealcaf-taller11-ensayo_datos_postgres Creating
+ Network lealcaf-taller11-ensayo_default Creating
+ Volume lealcaf-taller11-ensayo_datos_postgres Creating
+ Volume lealcaf-taller11-ensayo_datos_postgres Created
+ Volume lealcaf-taller11-ensayo_datos_postgres Created
+ Network lealcaf-taller11-ensayo_default Created
+ Network lealcaf-taller11-ensayo_default Created
+ Container lealcaf-taller11-ensayo-db-1 Creating
+ Container lealcaf-taller11-ensayo-db-1 Created
+ Container lealcaf-taller11-ensayo-api-1 Creating
+ Container lealcaf-taller11-ensayo-api-1 Created
+ Container lealcaf-taller11-ensayo-db-1 Starting
+ Container lealcaf-taller11-ensayo-db-1 Started
+ Container lealcaf-taller11-ensayo-db-1 Waiting
+ Container lealcaf-taller11-ensayo-db-1 Healthy
+ Container lealcaf-taller11-ensayo-api-1 Starting
+ Container lealcaf-taller11-ensayo-api-1 Started

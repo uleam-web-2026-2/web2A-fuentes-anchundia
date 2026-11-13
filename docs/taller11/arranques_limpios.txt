@@ -1,0 +1,4 @@
+Tres arranques con base vacia. Solo se borran los datos del proyecto de ensayo.
+Intento 1 : seis codigos correctos; reinicios de API = 0; fecha UTC 2026-11-13T00:53:49.8811766Z.
+Intento 2 : seis codigos correctos; reinicios de API = 0; fecha UTC 2026-11-13T00:54:04.5192282Z.
+Intento 3 : seis codigos correctos; reinicios de API = 0; fecha UTC 2026-11-13T00:54:19.7601488Z.

@@ -67,7 +67,7 @@ La API existente conecta, migra y carga datos al iniciar. Si PostgreSQL todavía
 El ejecutor comprueba tres arranques con una base nueva en el proyecto separado `lealcaf-taller11-ensayo`. En cada uno exige las seis respuestas correctas y cero reinicios de la API. Solamente ese proyecto de ensayo se elimina con `down -v`. Las evidencias quedan en `arranques_limpios.txt`, `arranque_limpio_*.txt` y sus logs.
 
 <!-- D6:INICIO -->
-Pendiente de ejecutar los tres arranques en la computadora de Luis Anchundia.
+Intento 1 : seis codigos correctos; reinicios de API = 0; fecha UTC 2026-11-13T00:53:49.8811766Z. Intento 2 : seis codigos correctos; reinicios de API = 0; fecha UTC 2026-11-13T00:54:04.5192282Z. Intento 3 : seis codigos correctos; reinicios de API = 0; fecha UTC 2026-11-13T00:54:19.7601488Z.
 <!-- D6:FIN -->
 
 ### D7 - Dónde quedan los datos
