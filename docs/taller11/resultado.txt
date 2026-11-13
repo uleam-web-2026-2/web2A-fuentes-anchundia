@@ -1,0 +1,1 @@
+Taller completado en esta computadora el 2026-11-13T00:54:48.3460056Z UTC: imagen, seis peticiones en tres modos, tres arranques limpios y persistencia tras down.

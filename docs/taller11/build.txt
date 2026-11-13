@@ -1,60 +1,239 @@
 #0 building with "desktop-linux" instance using docker driver
 System.Management.Automation.RemoteException
 #1 [internal] load build definition from Dockerfile
-#1 transferring dockerfile: 554B 0.0s done
+#1 transferring dockerfile: 567B 0.0s done
 #1 DONE 0.1s
 System.Management.Automation.RemoteException
-#2 [internal] load metadata for gcr.io/distroless/static-debian13:nonroot
-#2 DONE 0.7s
+#2 [internal] load metadata for docker.io/library/golang:1.27
+#2 ...
 System.Management.Automation.RemoteException
-#3 [internal] load metadata for docker.io/library/golang:1.27
-#3 DONE 1.4s
+#3 [auth] library/golang:pull token for registry-1.docker.io
+#3 DONE 0.0s
 System.Management.Automation.RemoteException
-#4 [internal] load .dockerignore
-#4 transferring context: 547B 0.0s done
-#4 DONE 0.0s
+#4 [internal] load metadata for gcr.io/distroless/static-debian13:nonroot
+#4 DONE 2.3s
 System.Management.Automation.RemoteException
-#5 [internal] load build context
-#5 DONE 0.0s
+#2 [internal] load metadata for docker.io/library/golang:1.27
+#2 DONE 3.0s
 System.Management.Automation.RemoteException
-#6 [stage-1 1/2] FROM gcr.io/distroless/static-debian13:nonroot@sha256:25ac8f0c3b2334a9eb05452266bd4697864a8c8ef0ef71e5e6480d7f92868329
-#6 resolve gcr.io/distroless/static-debian13:nonroot@sha256:25ac8f0c3b2334a9eb05452266bd4697864a8c8ef0ef71e5e6480d7f92868329 0.1s done
-#6 DONE 0.1s
+#5 [internal] load .dockerignore
+#5 transferring context: 571B 0.0s done
+#5 DONE 0.1s
 System.Management.Automation.RemoteException
-#7 [compilacion 1/6] FROM docker.io/library/golang:1.27@sha256:ec47ea3725fea0cc88f6de94919aef19f40f12fc1ec0e2d1b3426dbf15ecca04
-#7 resolve docker.io/library/golang:1.27@sha256:ec47ea3725fea0cc88f6de94919aef19f40f12fc1ec0e2d1b3426dbf15ecca04
-#7 resolve docker.io/library/golang:1.27@sha256:ec47ea3725fea0cc88f6de94919aef19f40f12fc1ec0e2d1b3426dbf15ecca04 0.1s done
+#6 [internal] load build context
+#6 DONE 0.0s
+System.Management.Automation.RemoteException
+#7 [stage-1 1/2] FROM gcr.io/distroless/static-debian13:nonroot@sha256:aafe993665bf6200db38a02c11a9351e782a84b6a45e7f33b6695638c88e3931
+#7 resolve gcr.io/distroless/static-debian13:nonroot@sha256:aafe993665bf6200db38a02c11a9351e782a84b6a45e7f33b6695638c88e3931 0.1s done
 #7 DONE 0.1s
 System.Management.Automation.RemoteException
-#5 [internal] load build context
-#5 transferring context: 2.99kB 0.0s done
-#5 DONE 0.0s
+#8 [compilacion 1/6] FROM docker.io/library/golang:1.27@sha256:ec47ea3725fea0cc88f6de94919aef19f40f12fc1ec0e2d1b3426dbf15ecca04
+#8 resolve docker.io/library/golang:1.27@sha256:ec47ea3725fea0cc88f6de94919aef19f40f12fc1ec0e2d1b3426dbf15ecca04
+#8 resolve docker.io/library/golang:1.27@sha256:ec47ea3725fea0cc88f6de94919aef19f40f12fc1ec0e2d1b3426dbf15ecca04 0.0s done
+#8 ...
 System.Management.Automation.RemoteException
-#8 [compilacion 2/6] WORKDIR /src
-#8 CACHED
+#6 [internal] load build context
+#6 transferring context: 151.09kB 0.1s done
+#6 DONE 0.2s
 System.Management.Automation.RemoteException
-#9 [compilacion 3/6] COPY Trabajo_autonomo_Lealcaf_hito2/go.mod Trabajo_autonomo_Lealcaf_hito2/go.sum ./
-#9 CACHED
+#7 [stage-1 1/2] FROM gcr.io/distroless/static-debian13:nonroot@sha256:aafe993665bf6200db38a02c11a9351e782a84b6a45e7f33b6695638c88e3931
+#7 ...
 System.Management.Automation.RemoteException
-#10 [compilacion 4/6] RUN go mod download
-#10 CACHED
+#8 [compilacion 1/6] FROM docker.io/library/golang:1.27@sha256:ec47ea3725fea0cc88f6de94919aef19f40f12fc1ec0e2d1b3426dbf15ecca04
+#8 DONE 0.6s
 System.Management.Automation.RemoteException
-#11 [compilacion 5/6] COPY Trabajo_autonomo_Lealcaf_hito2/ ./
-#11 CACHED
+#8 [compilacion 1/6] FROM docker.io/library/golang:1.27@sha256:ec47ea3725fea0cc88f6de94919aef19f40f12fc1ec0e2d1b3426dbf15ecca04
+#8 sha256:e34fd850821b07d16947174880d8fcb7e8120048fcb1ac4339029e9f2ed4aad6 0B / 126B 0.2s
+#8 sha256:83d129a974dd319fef9f5f496bf3a04194c14ba0fbf95635c2d5577185dd0b2f 0B / 71.22MB 0.2s
+#8 sha256:91d8d09967d5ad3fab2a6b0a5866d655458dd6414c11255e4f5279641f522a60 0B / 102.47MB 0.2s
+#8 sha256:411d2dc8717dbb4bb0d3cfa27e6e0275fca455c5220029d7a14dc7a75fbe8665 0B / 67.82MB 0.2s
+#8 sha256:e34fd850821b07d16947174880d8fcb7e8120048fcb1ac4339029e9f2ed4aad6 126B / 126B 0.4s done
+#8 sha256:e8a88afca2bd37d4058d4b33d9d4d29b0557f8b811bb8c106942b5b51e1e4aad 0B / 25.63MB 0.2s
+#8 sha256:83d129a974dd319fef9f5f496bf3a04194c14ba0fbf95635c2d5577185dd0b2f 4.19MB / 71.22MB 2.3s
+#8 sha256:83d129a974dd319fef9f5f496bf3a04194c14ba0fbf95635c2d5577185dd0b2f 8.39MB / 71.22MB 3.2s
+#8 sha256:83d129a974dd319fef9f5f496bf3a04194c14ba0fbf95635c2d5577185dd0b2f 12.58MB / 71.22MB 4.4s
+#8 ...
 System.Management.Automation.RemoteException
-#12 [compilacion 6/6] RUN CGO_ENABLED=0 go build -trimpath -o /servidor .
-#12 CACHED
+#7 [stage-1 1/2] FROM gcr.io/distroless/static-debian13:nonroot@sha256:aafe993665bf6200db38a02c11a9351e782a84b6a45e7f33b6695638c88e3931
+#7 sha256:c3c9c2f21e6c3293a061cee538a81f4cb29ea224f43d075750ec702b923b77d7 312B / 312B 0.4s done
+#7 sha256:ec1b04bf2eb2122e86781f791b03ea0cf6588694e0f4a88245250224c186cdf0 142.00kB / 142.00kB 1.8s done
+#7 sha256:b839dfae01f66e15c6a8b63520557ed315bdfe036342fa7a0c537259f10d7a9a 351B / 351B 0.7s done
+#7 sha256:dd64bf2dd177757451a98fcdc999a339c35dee5d9872d8f4dc69c8f3c4dd0112 80B / 80B 0.7s done
+#7 sha256:52630fc75a18675c530ed9eba5f55eca09b03e91bd5bc15307918bbc1a7e7296 162B / 162B 0.4s done
+#7 sha256:3214acf345c0cc6bbdb56b698a41ccdefc624a09d6beb0d38b5de0b2303ecaf4 123B / 123B 0.4s done
+#7 sha256:7c12895b777bcaa8ccae0605b4de635b68fc32d60fa08f421dc3818bf55ee212 188B / 188B 1.2s done
+#7 sha256:2780920e5dbfbe103d03a583ed75345306e572ec5a48cb10361f046767d9f29a 67B / 67B 0.7s done
+#7 sha256:d6b1b89eccacc15c2420b2776d72c1dae334a00805ed9af54bf2f71e4d536f28 32.09kB / 32.09kB 1.1s done
+#7 sha256:777e9d0975e474519f4f14ff87e547cbb8f9fff4cfc4f1a147ac81906880e503 257.71kB / 257.71kB 2.4s done
+#7 sha256:fc4330146a1cc76e06ce6def693f5da42c16e2615be6f49e1ea5b6e249ff8262 290.16kB / 290.16kB 2.1s done
+#7 sha256:c172f21841dff4c8cf45cde46589c1c2616cefe7e819965e92e6d3475c428aa0 12.68kB / 12.68kB 1.2s done
+#7 sha256:2cc7ee286bf3a9e6af5f71756d7fc8e22e23ce65fec9047d774511ffcef79fa8 124.53kB / 124.53kB 1.7s done
+#7 extracting sha256:2cc7ee286bf3a9e6af5f71756d7fc8e22e23ce65fec9047d774511ffcef79fa8 0.1s done
+#7 extracting sha256:c172f21841dff4c8cf45cde46589c1c2616cefe7e819965e92e6d3475c428aa0 0.1s done
+#7 extracting sha256:fc4330146a1cc76e06ce6def693f5da42c16e2615be6f49e1ea5b6e249ff8262 0.3s done
+#7 extracting sha256:777e9d0975e474519f4f14ff87e547cbb8f9fff4cfc4f1a147ac81906880e503 0.4s done
+#7 extracting sha256:d6b1b89eccacc15c2420b2776d72c1dae334a00805ed9af54bf2f71e4d536f28 0.1s done
+#7 DONE 5.8s
 System.Management.Automation.RemoteException
-#13 [stage-1 2/2] COPY --from=compilacion /servidor /servidor
-#13 CACHED
+#8 [compilacion 1/6] FROM docker.io/library/golang:1.27@sha256:ec47ea3725fea0cc88f6de94919aef19f40f12fc1ec0e2d1b3426dbf15ecca04
+#8 ...
 System.Management.Automation.RemoteException
-#14 exporting to image
-#14 exporting layers 0.0s done
-#14 exporting manifest sha256:f29f963678feeac97e456d0630c82fc2da3cf64141b27c679ba39f2688c8f9e2 done
-#14 exporting config sha256:3233f031efd9bc100317aa4d164b373c369be56e390e9c048fde02508e106216 done
-#14 exporting attestation manifest sha256:78a5aa26b278777fb61b6fc22fad52045bc4fe835312ed9eca6610bde354dfd0
-#14 exporting attestation manifest sha256:78a5aa26b278777fb61b6fc22fad52045bc4fe835312ed9eca6610bde354dfd0 0.0s done
-#14 exporting manifest list sha256:fbf6b8d952b22cf686bacf757864cedaa7e34ff29dc69bb1b54a689ab27e22c2 0.0s done
-#14 naming to docker.io/library/lealcaf:taller11 done
-#14 unpacking to docker.io/library/lealcaf:taller11 0.0s done
-#14 DONE 0.2s
+#7 [stage-1 1/2] FROM gcr.io/distroless/static-debian13:nonroot@sha256:aafe993665bf6200db38a02c11a9351e782a84b6a45e7f33b6695638c88e3931
+#7 extracting sha256:2780920e5dbfbe103d03a583ed75345306e572ec5a48cb10361f046767d9f29a 0.0s done
+#7 extracting sha256:7c12895b777bcaa8ccae0605b4de635b68fc32d60fa08f421dc3818bf55ee212 0.0s done
+#7 extracting sha256:3214acf345c0cc6bbdb56b698a41ccdefc624a09d6beb0d38b5de0b2303ecaf4 0.1s done
+#7 DONE 6.0s
+System.Management.Automation.RemoteException
+#8 [compilacion 1/6] FROM docker.io/library/golang:1.27@sha256:ec47ea3725fea0cc88f6de94919aef19f40f12fc1ec0e2d1b3426dbf15ecca04
+#8 sha256:91d8d09967d5ad3fab2a6b0a5866d655458dd6414c11255e4f5279641f522a60 2.10MB / 102.47MB 5.3s
+#8 sha256:411d2dc8717dbb4bb0d3cfa27e6e0275fca455c5220029d7a14dc7a75fbe8665 1.05MB / 67.82MB 5.3s
+#8 ...
+System.Management.Automation.RemoteException
+#7 [stage-1 1/2] FROM gcr.io/distroless/static-debian13:nonroot@sha256:aafe993665bf6200db38a02c11a9351e782a84b6a45e7f33b6695638c88e3931
+#7 extracting sha256:52630fc75a18675c530ed9eba5f55eca09b03e91bd5bc15307918bbc1a7e7296 0.0s done
+#7 extracting sha256:dd64bf2dd177757451a98fcdc999a339c35dee5d9872d8f4dc69c8f3c4dd0112 0.0s done
+#7 extracting sha256:b839dfae01f66e15c6a8b63520557ed315bdfe036342fa7a0c537259f10d7a9a 0.0s done
+#7 DONE 6.1s
+System.Management.Automation.RemoteException
+#8 [compilacion 1/6] FROM docker.io/library/golang:1.27@sha256:ec47ea3725fea0cc88f6de94919aef19f40f12fc1ec0e2d1b3426dbf15ecca04
+#8 sha256:83d129a974dd319fef9f5f496bf3a04194c14ba0fbf95635c2d5577185dd0b2f 16.78MB / 71.22MB 5.4s
+#8 ...
+System.Management.Automation.RemoteException
+#7 [stage-1 1/2] FROM gcr.io/distroless/static-debian13:nonroot@sha256:aafe993665bf6200db38a02c11a9351e782a84b6a45e7f33b6695638c88e3931
+#7 extracting sha256:c3c9c2f21e6c3293a061cee538a81f4cb29ea224f43d075750ec702b923b77d7 0.0s done
+#7 extracting sha256:ec1b04bf2eb2122e86781f791b03ea0cf6588694e0f4a88245250224c186cdf0 0.1s done
+#7 DONE 6.2s
+System.Management.Automation.RemoteException
+#8 [compilacion 1/6] FROM docker.io/library/golang:1.27@sha256:ec47ea3725fea0cc88f6de94919aef19f40f12fc1ec0e2d1b3426dbf15ecca04
+#8 sha256:e8a88afca2bd37d4058d4b33d9d4d29b0557f8b811bb8c106942b5b51e1e4aad 1.05MB / 25.63MB 5.3s
+#8 sha256:83d129a974dd319fef9f5f496bf3a04194c14ba0fbf95635c2d5577185dd0b2f 20.97MB / 71.22MB 6.5s
+#8 sha256:83d129a974dd319fef9f5f496bf3a04194c14ba0fbf95635c2d5577185dd0b2f 25.17MB / 71.22MB 7.5s
+#8 sha256:e8a88afca2bd37d4058d4b33d9d4d29b0557f8b811bb8c106942b5b51e1e4aad 3.15MB / 25.63MB 7.2s
+#8 sha256:83d129a974dd319fef9f5f496bf3a04194c14ba0fbf95635c2d5577185dd0b2f 29.36MB / 71.22MB 8.7s
+#8 sha256:83d129a974dd319fef9f5f496bf3a04194c14ba0fbf95635c2d5577185dd0b2f 33.55MB / 71.22MB 10.1s
+#8 sha256:91d8d09967d5ad3fab2a6b0a5866d655458dd6414c11255e4f5279641f522a60 5.24MB / 102.47MB 10.4s
+#8 sha256:411d2dc8717dbb4bb0d3cfa27e6e0275fca455c5220029d7a14dc7a75fbe8665 4.19MB / 67.82MB 10.4s
+#8 sha256:e8a88afca2bd37d4058d4b33d9d4d29b0557f8b811bb8c106942b5b51e1e4aad 5.24MB / 25.63MB 10.4s
+#8 sha256:83d129a974dd319fef9f5f496bf3a04194c14ba0fbf95635c2d5577185dd0b2f 37.75MB / 71.22MB 11.4s
+#8 sha256:83d129a974dd319fef9f5f496bf3a04194c14ba0fbf95635c2d5577185dd0b2f 41.94MB / 71.22MB 12.6s
+#8 sha256:e8a88afca2bd37d4058d4b33d9d4d29b0557f8b811bb8c106942b5b51e1e4aad 7.34MB / 25.63MB 12.8s
+#8 sha256:83d129a974dd319fef9f5f496bf3a04194c14ba0fbf95635c2d5577185dd0b2f 46.14MB / 71.22MB 13.5s
+#8 sha256:83d129a974dd319fef9f5f496bf3a04194c14ba0fbf95635c2d5577185dd0b2f 50.33MB / 71.22MB 14.9s
+#8 sha256:411d2dc8717dbb4bb0d3cfa27e6e0275fca455c5220029d7a14dc7a75fbe8665 8.39MB / 67.82MB 14.7s
+#8 sha256:e8a88afca2bd37d4058d4b33d9d4d29b0557f8b811bb8c106942b5b51e1e4aad 9.44MB / 25.63MB 14.6s
+#8 sha256:91d8d09967d5ad3fab2a6b0a5866d655458dd6414c11255e4f5279641f522a60 10.49MB / 102.47MB 15.0s
+#8 sha256:83d129a974dd319fef9f5f496bf3a04194c14ba0fbf95635c2d5577185dd0b2f 54.53MB / 71.22MB 15.9s
+#8 sha256:83d129a974dd319fef9f5f496bf3a04194c14ba0fbf95635c2d5577185dd0b2f 58.72MB / 71.22MB 17.0s
+#8 sha256:e8a88afca2bd37d4058d4b33d9d4d29b0557f8b811bb8c106942b5b51e1e4aad 11.53MB / 25.63MB 16.5s
+#8 sha256:83d129a974dd319fef9f5f496bf3a04194c14ba0fbf95635c2d5577185dd0b2f 62.91MB / 71.22MB 18.0s
+#8 sha256:83d129a974dd319fef9f5f496bf3a04194c14ba0fbf95635c2d5577185dd0b2f 67.11MB / 71.22MB 19.1s
+#8 sha256:e8a88afca2bd37d4058d4b33d9d4d29b0557f8b811bb8c106942b5b51e1e4aad 13.63MB / 25.63MB 18.6s
+#8 sha256:411d2dc8717dbb4bb0d3cfa27e6e0275fca455c5220029d7a14dc7a75fbe8665 11.53MB / 67.82MB 19.8s
+#8 sha256:91d8d09967d5ad3fab2a6b0a5866d655458dd6414c11255e4f5279641f522a60 14.68MB / 102.47MB 20.1s
+#8 sha256:e8a88afca2bd37d4058d4b33d9d4d29b0557f8b811bb8c106942b5b51e1e4aad 15.73MB / 25.63MB 20.1s
+#8 sha256:83d129a974dd319fef9f5f496bf3a04194c14ba0fbf95635c2d5577185dd0b2f 71.22MB / 71.22MB 21.3s
+#8 sha256:83d129a974dd319fef9f5f496bf3a04194c14ba0fbf95635c2d5577185dd0b2f 71.22MB / 71.22MB 21.4s done
+#8 sha256:a6dd1c05fbba4f9028078a11f143cbb625d2408921eb8207bfa1dd1ad301276f 0B / 49.41MB 0.2s
+#8 sha256:e8a88afca2bd37d4058d4b33d9d4d29b0557f8b811bb8c106942b5b51e1e4aad 17.83MB / 25.63MB 21.5s
+#8 sha256:a6dd1c05fbba4f9028078a11f143cbb625d2408921eb8207bfa1dd1ad301276f 3.15MB / 49.41MB 1.4s
+#8 sha256:e8a88afca2bd37d4058d4b33d9d4d29b0557f8b811bb8c106942b5b51e1e4aad 19.92MB / 25.63MB 22.8s
+#8 sha256:a6dd1c05fbba4f9028078a11f143cbb625d2408921eb8207bfa1dd1ad301276f 6.29MB / 49.41MB 2.3s
+#8 sha256:411d2dc8717dbb4bb0d3cfa27e6e0275fca455c5220029d7a14dc7a75fbe8665 15.73MB / 67.82MB 24.2s
+#8 sha256:e8a88afca2bd37d4058d4b33d9d4d29b0557f8b811bb8c106942b5b51e1e4aad 22.02MB / 25.63MB 24.2s
+#8 sha256:a6dd1c05fbba4f9028078a11f143cbb625d2408921eb8207bfa1dd1ad301276f 9.44MB / 49.41MB 3.2s
+#8 sha256:91d8d09967d5ad3fab2a6b0a5866d655458dd6414c11255e4f5279641f522a60 19.92MB / 102.47MB 24.9s
+#8 sha256:a6dd1c05fbba4f9028078a11f143cbb625d2408921eb8207bfa1dd1ad301276f 12.58MB / 49.41MB 4.1s
+#8 sha256:e8a88afca2bd37d4058d4b33d9d4d29b0557f8b811bb8c106942b5b51e1e4aad 24.12MB / 25.63MB 25.5s
+#8 sha256:a6dd1c05fbba4f9028078a11f143cbb625d2408921eb8207bfa1dd1ad301276f 15.73MB / 49.41MB 5.1s
+#8 sha256:e8a88afca2bd37d4058d4b33d9d4d29b0557f8b811bb8c106942b5b51e1e4aad 25.63MB / 25.63MB 26.5s done
+#8 sha256:a6dd1c05fbba4f9028078a11f143cbb625d2408921eb8207bfa1dd1ad301276f 18.87MB / 49.41MB 6.5s
+#8 sha256:411d2dc8717dbb4bb0d3cfa27e6e0275fca455c5220029d7a14dc7a75fbe8665 19.92MB / 67.82MB 28.7s
+#8 sha256:a6dd1c05fbba4f9028078a11f143cbb625d2408921eb8207bfa1dd1ad301276f 22.02MB / 49.41MB 7.4s
+#8 sha256:91d8d09967d5ad3fab2a6b0a5866d655458dd6414c11255e4f5279641f522a60 25.17MB / 102.47MB 29.1s
+#8 sha256:a6dd1c05fbba4f9028078a11f143cbb625d2408921eb8207bfa1dd1ad301276f 25.17MB / 49.41MB 8.1s
+#8 sha256:a6dd1c05fbba4f9028078a11f143cbb625d2408921eb8207bfa1dd1ad301276f 28.31MB / 49.41MB 9.0s
+#8 sha256:a6dd1c05fbba4f9028078a11f143cbb625d2408921eb8207bfa1dd1ad301276f 31.46MB / 49.41MB 10.0s
+#8 sha256:91d8d09967d5ad3fab2a6b0a5866d655458dd6414c11255e4f5279641f522a60 30.41MB / 102.47MB 32.2s
+#8 sha256:411d2dc8717dbb4bb0d3cfa27e6e0275fca455c5220029d7a14dc7a75fbe8665 24.12MB / 67.82MB 32.2s
+#8 sha256:a6dd1c05fbba4f9028078a11f143cbb625d2408921eb8207bfa1dd1ad301276f 34.60MB / 49.41MB 10.9s
+#8 sha256:a6dd1c05fbba4f9028078a11f143cbb625d2408921eb8207bfa1dd1ad301276f 37.75MB / 49.41MB 11.8s
+#8 sha256:a6dd1c05fbba4f9028078a11f143cbb625d2408921eb8207bfa1dd1ad301276f 40.89MB / 49.41MB 12.6s
+#8 sha256:a6dd1c05fbba4f9028078a11f143cbb625d2408921eb8207bfa1dd1ad301276f 44.04MB / 49.41MB 13.5s
+#8 sha256:91d8d09967d5ad3fab2a6b0a5866d655458dd6414c11255e4f5279641f522a60 35.65MB / 102.47MB 35.4s
+#8 sha256:411d2dc8717dbb4bb0d3cfa27e6e0275fca455c5220029d7a14dc7a75fbe8665 28.31MB / 67.82MB 35.4s
+#8 sha256:a6dd1c05fbba4f9028078a11f143cbb625d2408921eb8207bfa1dd1ad301276f 47.19MB / 49.41MB 14.4s
+#8 sha256:a6dd1c05fbba4f9028078a11f143cbb625d2408921eb8207bfa1dd1ad301276f 49.41MB / 49.41MB 14.9s done
+#8 extracting sha256:a6dd1c05fbba4f9028078a11f143cbb625d2408921eb8207bfa1dd1ad301276f
+#8 sha256:91d8d09967d5ad3fab2a6b0a5866d655458dd6414c11255e4f5279641f522a60 40.89MB / 102.47MB 37.8s
+#8 sha256:411d2dc8717dbb4bb0d3cfa27e6e0275fca455c5220029d7a14dc7a75fbe8665 32.51MB / 67.82MB 38.2s
+#8 sha256:91d8d09967d5ad3fab2a6b0a5866d655458dd6414c11255e4f5279641f522a60 46.14MB / 102.47MB 39.6s
+#8 extracting sha256:a6dd1c05fbba4f9028078a11f143cbb625d2408921eb8207bfa1dd1ad301276f 4.0s done
+#8 sha256:411d2dc8717dbb4bb0d3cfa27e6e0275fca455c5220029d7a14dc7a75fbe8665 36.70MB / 67.82MB 40.3s
+#8 extracting sha256:e8a88afca2bd37d4058d4b33d9d4d29b0557f8b811bb8c106942b5b51e1e4aad
+#8 sha256:91d8d09967d5ad3fab2a6b0a5866d655458dd6414c11255e4f5279641f522a60 51.38MB / 102.47MB 41.1s
+#8 extracting sha256:e8a88afca2bd37d4058d4b33d9d4d29b0557f8b811bb8c106942b5b51e1e4aad 1.8s done
+#8 sha256:91d8d09967d5ad3fab2a6b0a5866d655458dd6414c11255e4f5279641f522a60 56.62MB / 102.47MB 42.6s
+#8 sha256:411d2dc8717dbb4bb0d3cfa27e6e0275fca455c5220029d7a14dc7a75fbe8665 40.89MB / 67.82MB 42.6s
+#8 sha256:91d8d09967d5ad3fab2a6b0a5866d655458dd6414c11255e4f5279641f522a60 61.87MB / 102.47MB 43.9s
+#8 sha256:411d2dc8717dbb4bb0d3cfa27e6e0275fca455c5220029d7a14dc7a75fbe8665 45.09MB / 67.82MB 44.5s
+#8 sha256:91d8d09967d5ad3fab2a6b0a5866d655458dd6414c11255e4f5279641f522a60 67.11MB / 102.47MB 45.3s
+#8 sha256:91d8d09967d5ad3fab2a6b0a5866d655458dd6414c11255e4f5279641f522a60 72.35MB / 102.47MB 46.5s
+#8 sha256:411d2dc8717dbb4bb0d3cfa27e6e0275fca455c5220029d7a14dc7a75fbe8665 49.28MB / 67.82MB 46.5s
+#8 sha256:91d8d09967d5ad3fab2a6b0a5866d655458dd6414c11255e4f5279641f522a60 77.59MB / 102.47MB 47.8s
+#8 sha256:411d2dc8717dbb4bb0d3cfa27e6e0275fca455c5220029d7a14dc7a75fbe8665 53.48MB / 67.82MB 48.1s
+#8 sha256:91d8d09967d5ad3fab2a6b0a5866d655458dd6414c11255e4f5279641f522a60 82.84MB / 102.47MB 49.3s
+#8 sha256:411d2dc8717dbb4bb0d3cfa27e6e0275fca455c5220029d7a14dc7a75fbe8665 57.67MB / 67.82MB 49.8s
+#8 sha256:91d8d09967d5ad3fab2a6b0a5866d655458dd6414c11255e4f5279641f522a60 88.08MB / 102.47MB 50.5s
+#8 sha256:411d2dc8717dbb4bb0d3cfa27e6e0275fca455c5220029d7a14dc7a75fbe8665 61.87MB / 67.82MB 51.3s
+#8 sha256:91d8d09967d5ad3fab2a6b0a5866d655458dd6414c11255e4f5279641f522a60 93.32MB / 102.47MB 52.0s
+#8 sha256:411d2dc8717dbb4bb0d3cfa27e6e0275fca455c5220029d7a14dc7a75fbe8665 66.06MB / 67.82MB 52.9s
+#8 sha256:91d8d09967d5ad3fab2a6b0a5866d655458dd6414c11255e4f5279641f522a60 98.57MB / 102.47MB 53.4s
+#8 sha256:411d2dc8717dbb4bb0d3cfa27e6e0275fca455c5220029d7a14dc7a75fbe8665 67.82MB / 67.82MB 53.5s done
+#8 extracting sha256:411d2dc8717dbb4bb0d3cfa27e6e0275fca455c5220029d7a14dc7a75fbe8665
+#8 sha256:91d8d09967d5ad3fab2a6b0a5866d655458dd6414c11255e4f5279641f522a60 102.47MB / 102.47MB 54.3s done
+#8 extracting sha256:411d2dc8717dbb4bb0d3cfa27e6e0275fca455c5220029d7a14dc7a75fbe8665 5.2s done
+#8 DONE 59.4s
+System.Management.Automation.RemoteException
+#8 [compilacion 1/6] FROM docker.io/library/golang:1.27@sha256:ec47ea3725fea0cc88f6de94919aef19f40f12fc1ec0e2d1b3426dbf15ecca04
+#8 extracting sha256:91d8d09967d5ad3fab2a6b0a5866d655458dd6414c11255e4f5279641f522a60
+#8 extracting sha256:91d8d09967d5ad3fab2a6b0a5866d655458dd6414c11255e4f5279641f522a60 5.0s done
+#8 DONE 64.4s
+System.Management.Automation.RemoteException
+#8 [compilacion 1/6] FROM docker.io/library/golang:1.27@sha256:ec47ea3725fea0cc88f6de94919aef19f40f12fc1ec0e2d1b3426dbf15ecca04
+#8 extracting sha256:83d129a974dd319fef9f5f496bf3a04194c14ba0fbf95635c2d5577185dd0b2f
+#8 extracting sha256:83d129a974dd319fef9f5f496bf3a04194c14ba0fbf95635c2d5577185dd0b2f 10.9s done
+#8 extracting sha256:e34fd850821b07d16947174880d8fcb7e8120048fcb1ac4339029e9f2ed4aad6
+#8 extracting sha256:e34fd850821b07d16947174880d8fcb7e8120048fcb1ac4339029e9f2ed4aad6 0.0s done
+#8 extracting sha256:4f4fb700ef54461cfa02571ae0db9a0dc1e0cdb5577484a6d75e68dc38e8acc1 0.0s done
+#8 DONE 75.4s
+System.Management.Automation.RemoteException
+#9 [compilacion 2/6] WORKDIR /src
+#9 DONE 0.8s
+System.Management.Automation.RemoteException
+#10 [compilacion 3/6] COPY Trabajo_autonomo_Lealcaf_hito2/go.mod Trabajo_autonomo_Lealcaf_hito2/go.sum ./
+#10 DONE 0.1s
+System.Management.Automation.RemoteException
+#11 [compilacion 4/6] RUN go mod download
+#11 DONE 40.3s
+System.Management.Automation.RemoteException
+#12 [compilacion 5/6] COPY Trabajo_autonomo_Lealcaf_hito2/ ./
+#12 DONE 0.4s
+System.Management.Automation.RemoteException
+#13 [compilacion 6/6] RUN CGO_ENABLED=0 go build -trimpath -o /servidor .
+#13 DONE 39.3s
+System.Management.Automation.RemoteException
+#14 [stage-1 2/2] COPY --from=compilacion /servidor /servidor
+#14 DONE 0.1s
+System.Management.Automation.RemoteException
+#15 exporting to image
+#15 exporting layers
+#15 exporting layers 3.0s done
+#15 exporting manifest sha256:c127d54104136a9bd35b7d3daef1c900b05ebd9fb661911ebc7d566350e106cc 0.0s done
+#15 exporting config sha256:4650ae16edb64e0ad51bf9efa3ade52eebfe86c64c7eaf7ccd2a966a416d605c 0.0s done
+#15 exporting attestation manifest sha256:27dd844994a130d9b937b59c54736865bb153a6fe39693b124be4f394e34a330 0.0s done
+#15 exporting manifest list sha256:d5a37b2d0a1c51575b1cbf15d25f5c56f27e3e24bedaddd8d0056aceedfa40bc
+#15 exporting manifest list sha256:d5a37b2d0a1c51575b1cbf15d25f5c56f27e3e24bedaddd8d0056aceedfa40bc 0.0s done
+#15 naming to docker.io/library/lealcaf:taller11 done
+#15 unpacking to docker.io/library/lealcaf:taller11
+#15 unpacking to docker.io/library/lealcaf:taller11 1.6s done
+#15 DONE 4.9s

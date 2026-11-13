@@ -13,7 +13,7 @@ El `Dockerfile` tiene dos etapas. La primera usa `golang:1.27`, descarga las dep
 La imagen final parte de `gcr.io/distroless/static-debian13:nonroot` y recibe solamente `/servidor`. No copiamos el compilador, el código fuente, las pruebas ni las dependencias descargadas. Las rutas implementadas no necesitan leer la carpeta `docs/` del disco. El proceso arranca con el usuario nonroot de la imagen base, no como root.
 
 <!-- D1:INICIO -->
-Tamano real final: **65804243 bytes** (62.76 MiB). Etapa de compilacion: **2573010783 bytes** (2453.81 MiB). Usuario observado: **65532**. Evidencias: imagenes.txt, capas.txt, contexto.txt y usuario.txt.
+Tamano real final: **65804244 bytes** (62.76 MiB). Etapa de compilacion: **2573030927 bytes** (2453.83 MiB). Usuario observado: **65532**. Evidencias: imagenes.txt, capas.txt, contexto.txt y usuario.txt.
 <!-- D1:FIN -->
 
 Sin `.dockerignore`, los archivos privados entrarían al contexto enviado a Docker. Si un `.env` estuviera dentro del módulo copiado, llegaría además a `/src` en la etapa de compilación y podría quedar en su caché. Un `.env` de la raíz no coincide con nuestro `COPY` de la subcarpeta, pero igualmente se enviaría en el contexto. Ninguno llega automáticamente a la imagen final porque allí solo copiamos el binario. Excluirlos desde el contexto evita exponerlos también durante la construcción.

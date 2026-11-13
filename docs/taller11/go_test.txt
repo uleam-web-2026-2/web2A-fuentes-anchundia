@@ -8,7 +8,7 @@
 === RUN   TestTodasLasRutasDelNegocioExigenToken/GET/canjes
 === RUN   TestTodasLasRutasDelNegocioExigenToken/GET/canjes/1
 === RUN   TestTodasLasRutasDelNegocioExigenToken/PATCH/canjes/1/estado
---- PASS: TestTodasLasRutasDelNegocioExigenToken (0.01s)
+--- PASS: TestTodasLasRutasDelNegocioExigenToken (0.02s)
     --- PASS: TestTodasLasRutasDelNegocioExigenToken/GET/clientes/1/puntos (0.00s)
     --- PASS: TestTodasLasRutasDelNegocioExigenToken/GET/recompensas (0.00s)
     --- PASS: TestTodasLasRutasDelNegocioExigenToken/POST/compras (0.00s)
@@ -17,9 +17,9 @@
     --- PASS: TestTodasLasRutasDelNegocioExigenToken/GET/canjes/1 (0.00s)
     --- PASS: TestTodasLasRutasDelNegocioExigenToken/PATCH/canjes/1/estado (0.00s)
 === RUN   TestEncabezadosDelHito1NoSuplantanUnaSesion
---- PASS: TestEncabezadosDelHito1NoSuplantanUnaSesion (0.00s)
+--- PASS: TestEncabezadosDelHito1NoSuplantanUnaSesion (0.01s)
 === RUN   TestLoginCorrectoYCredencialesInvalidas
---- PASS: TestLoginCorrectoYCredencialesInvalidas (0.20s)
+--- PASS: TestLoginCorrectoYCredencialesInvalidas (0.28s)
 === RUN   TestTokenManipuladoNoElevaPermisos
 --- PASS: TestTokenManipuladoNoElevaPermisos (0.01s)
 === RUN   TestTokensInvalidosYVencidosSeRechazan
@@ -81,7 +81,7 @@
     --- PASS: TestValidarTransicionDelCanje/solicitado_a_desconocido (0.00s)
     --- PASS: TestValidarTransicionDelCanje/desconocido_a_confirmado (0.00s)
 === RUN   TestDTOCanjeIgnoraCamposQueDecideElServidor
---- PASS: TestDTOCanjeIgnoraCamposQueDecideElServidor (0.01s)
+--- PASS: TestDTOCanjeIgnoraCamposQueDecideElServidor (0.02s)
 === RUN   TestDTORespuestasAnidadasConservanContrato
 --- PASS: TestDTORespuestasAnidadasConservanContrato (0.01s)
 === RUN   TestDTOCanjeNoTieneEtiquetasJSON
@@ -101,13 +101,13 @@
 === RUN   TestCanjeConPuntosInsuficientes
 --- PASS: TestCanjeConPuntosInsuficientes (0.01s)
 === RUN   TestCanjeCorrectoDescuentaPuntosAlConfirmar
---- PASS: TestCanjeCorrectoDescuentaPuntosAlConfirmar (0.01s)
+--- PASS: TestCanjeCorrectoDescuentaPuntosAlConfirmar (0.02s)
 === RUN   TestTransicionProhibidaDeConfirmadoACancelado
 --- PASS: TestTransicionProhibidaDeConfirmadoACancelado (0.02s)
 === RUN   TestRecompensasSoloMuestraLasActivas
 --- PASS: TestRecompensasSoloMuestraLasActivas (0.01s)
 === RUN   TestVerCanjePropioYNoAjeno
---- PASS: TestVerCanjePropioYNoAjeno (0.01s)
+--- PASS: TestVerCanjePropioYNoAjeno (0.02s)
 === RUN   TestIntegracionSeisPeticionesHito2
 --- PASS: TestIntegracionSeisPeticionesHito2 (0.02s)
 === RUN   TestPuntosCompartidosEntreSucursales
@@ -116,40 +116,40 @@
 === RUN   TestSucursalObligatoriaExistenteYActiva/sin_sucursal
 === RUN   TestSucursalObligatoriaExistenteYActiva/sucursal_inexistente
 === RUN   TestSucursalObligatoriaExistenteYActiva/sucursal_inactiva
---- PASS: TestSucursalObligatoriaExistenteYActiva (0.03s)
+--- PASS: TestSucursalObligatoriaExistenteYActiva (0.04s)
     --- PASS: TestSucursalObligatoriaExistenteYActiva/sin_sucursal (0.01s)
     --- PASS: TestSucursalObligatoriaExistenteYActiva/sucursal_inexistente (0.01s)
-    --- PASS: TestSucursalObligatoriaExistenteYActiva/sucursal_inactiva (0.01s)
+    --- PASS: TestSucursalObligatoriaExistenteYActiva/sucursal_inactiva (0.02s)
 === RUN   TestCancelarSolicitadoNoDescuentaPuntos
 --- PASS: TestCancelarSolicitadoNoDescuentaPuntos (0.02s)
 === RUN   TestCanjeConfirmadoNoSeModificaNiSeDescuentaDosVeces
 --- PASS: TestCanjeConfirmadoNoSeModificaNiSeDescuentaDosVeces (0.01s)
 === RUN   TestConfirmacionRevalidaSaldoYNoDejaCambiosParciales
---- PASS: TestConfirmacionRevalidaSaldoYNoDejaCambiosParciales (0.01s)
+--- PASS: TestConfirmacionRevalidaSaldoYNoDejaCambiosParciales (0.02s)
 === RUN   TestEstadosYDatosInvalidos
 --- PASS: TestEstadosYDatosInvalidos (0.01s)
 === RUN   TestMigrarConservaDatosHito1YAsignaSucursalPrincipal
---- PASS: TestMigrarConservaDatosHito1YAsignaSucursalPrincipal (0.03s)
+--- PASS: TestMigrarConservaDatosHito1YAsignaSucursalPrincipal (0.04s)
 === RUN   TestSembrarSoloCargaDatosConOpcionExplicita
---- PASS: TestSembrarSoloCargaDatosConOpcionExplicita (0.00s)
+--- PASS: TestSembrarSoloCargaDatosConOpcionExplicita (0.01s)
 === RUN   TestSembrarDemoEsIdempotenteYPreparaLasCredenciales
---- PASS: TestSembrarDemoEsIdempotenteYPreparaLasCredenciales (1.37s)
+--- PASS: TestSembrarDemoEsIdempotenteYPreparaLasCredenciales (1.29s)
 === RUN   TestPrepararBaseConIdsOcupadosConservaTodoElHito1
---- PASS: TestPrepararBaseConIdsOcupadosConservaTodoElHito1 (0.59s)
+--- PASS: TestPrepararBaseConIdsOcupadosConservaTodoElHito1 (0.54s)
 === RUN   TestConflictoDeCuentaDemoConservaCredencialesYReviertePreparacion
---- PASS: TestConflictoDeCuentaDemoConservaCredencialesYReviertePreparacion (0.01s)
+--- PASS: TestConflictoDeCuentaDemoConservaCredencialesYReviertePreparacion (0.02s)
 === RUN   TestConectarRechazaSQLiteSinCrearUnaBase
---- PASS: TestConectarRechazaSQLiteSinCrearUnaBase (0.00s)
+--- PASS: TestConectarRechazaSQLiteSinCrearUnaBase (0.01s)
 === RUN   TestPreparacionFallidaRevierteTambienElEsquema
---- PASS: TestPreparacionFallidaRevierteTambienElEsquema (0.03s)
+--- PASS: TestPreparacionFallidaRevierteTambienElEsquema (0.04s)
 === RUN   TestDemoSinPasswordsReviertePreparacion
---- PASS: TestDemoSinPasswordsReviertePreparacion (0.01s)
+--- PASS: TestDemoSinPasswordsReviertePreparacion (0.02s)
 === RUN   TestPostgresConfirmacionesConcurrentes
 === RUN   TestPostgresConfirmacionesConcurrentes/gorm
 === RUN   TestPostgresConfirmacionesConcurrentes/sqlc
---- PASS: TestPostgresConfirmacionesConcurrentes (3.09s)
-    --- PASS: TestPostgresConfirmacionesConcurrentes/gorm (1.56s)
-    --- PASS: TestPostgresConfirmacionesConcurrentes/sqlc (1.52s)
+--- PASS: TestPostgresConfirmacionesConcurrentes (3.48s)
+    --- PASS: TestPostgresConfirmacionesConcurrentes/gorm (1.88s)
+    --- PASS: TestPostgresConfirmacionesConcurrentes/sqlc (1.60s)
 === RUN   TestServicioConfirmacionConFalsoSinBase
 --- PASS: TestServicioConfirmacionConFalsoSinBase (0.00s)
 === RUN   TestServicioCompraConFalsoSinBase
@@ -157,16 +157,16 @@
 === RUN   TestTaller10TransaccionesPostgres
 === RUN   TestTaller10TransaccionesPostgres/gorm
     taller10_postgres_test.go:115: adaptador=gorm fallo forzado SQLSTATE=23514: estado=solicitado movimientos_canje=0 saldo=100; rollback completo
-    taller10_postgres_test.go:129: adaptador=gorm reintento v├ílido: movimientos_canje=1 saldo=60; commit completo
+    taller10_postgres_test.go:129: adaptador=gorm reintento válido: movimientos_canje=1 saldo=60; commit completo
     taller10_postgres_test.go:148: adaptador=gorm compra fallo SQLSTATE=23514: compras=0 saldo=60; rollback completo
     taller10_postgres_test.go:160: adaptador=gorm reintento compra: puntos_generados=50 saldo=110; commit completo
 === RUN   TestTaller10TransaccionesPostgres/sqlc
     taller10_postgres_test.go:115: adaptador=sqlc fallo forzado SQLSTATE=23514: estado=solicitado movimientos_canje=0 saldo=100; rollback completo
-    taller10_postgres_test.go:129: adaptador=sqlc reintento v├ílido: movimientos_canje=1 saldo=60; commit completo
+    taller10_postgres_test.go:129: adaptador=sqlc reintento válido: movimientos_canje=1 saldo=60; commit completo
     taller10_postgres_test.go:148: adaptador=sqlc compra fallo SQLSTATE=23514: compras=0 saldo=60; rollback completo
     taller10_postgres_test.go:160: adaptador=sqlc reintento compra: puntos_generados=50 saldo=110; commit completo
---- PASS: TestTaller10TransaccionesPostgres (0.86s)
-    --- PASS: TestTaller10TransaccionesPostgres/gorm (0.43s)
-    --- PASS: TestTaller10TransaccionesPostgres/sqlc (0.42s)
+--- PASS: TestTaller10TransaccionesPostgres (1.02s)
+    --- PASS: TestTaller10TransaccionesPostgres/gorm (0.51s)
+    --- PASS: TestTaller10TransaccionesPostgres/sqlc (0.50s)
 PASS
-ok  	fidelizacion/internal/fidelizacion	7.165s
+ok  	fidelizacion/internal/fidelizacion	7.876s

@@ -1,1 +1,1 @@
-2026/11/12 14:15:59 No se pudo conectar a la base: DB_NAME es obligatorio; configure la base PostgreSQL existente
+2026/11/13 00:53:27 No se pudo conectar a la base: DB_NAME es obligatorio; configure la base PostgreSQL existente
