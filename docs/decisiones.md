@@ -45,7 +45,7 @@ Encontramos una excepción concreta al supuesto de no tocar Go: el servidor exis
 Comparamos la respuesta completa de la petición 3 sobre el mismo canje confirmado, usando la misma base en `go run` y `docker run`. El script conserva el JSON original, sin convertir las fechas antes de guardarlo, y compara ambos valores como instantes UTC.
 
 <!-- D4:INICIO -->
-Observacion real del canje 1: con go run, **2026-11-12T15:15:56.02458+01:00**; en el contenedor, **2026-11-12T14:15:56.02458Z**. Las dos fechas representan el mismo instante. Se guardaron las respuestas completas en peticiones.md.
+Observacion real del canje 1: con go run, **2026-11-12T19:53:23.368194-05:00**; en el contenedor, **2026-11-13T00:53:23.368194Z**. Las dos fechas representan el mismo instante. Se guardaron las respuestas completas en peticiones.md.
 <!-- D4:FIN -->
 
 Por ejemplo, `13:00:00-05:00` y `18:00:00Z` pueden describir el mismo instante. Cambiar la representación no implica que se haya movido el canje cinco horas. El proceso puede usar una zona local distinta; tener zonas horarias disponibles no obliga a utilizar la de Ecuador como predeterminada. La conexión de este proyecto ya establece `TimeZone=America/Guayaquil` en PostgreSQL, pero eso no sustituye la revisión del JSON que recibe el cliente.
