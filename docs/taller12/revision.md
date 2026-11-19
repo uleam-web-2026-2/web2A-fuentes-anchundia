@@ -42,3 +42,9 @@ La prueba de navegador de CORS es ilustrativa en el PDF y no exige una captura a
 - ¿Por qué se concede UPDATE de id sobre clientes? PostgreSQL exige permiso UPDATE para el bloqueo FOR UPDATE que protege confirmaciones concurrentes.
 - ¿Qué ocurre al cambiar un modelo? El comando migrar debe aplicar el cambio antes de servir la nueva versión.
 - ¿Qué podría hacer una inyección con el usuario limitado? Leer o modificar dentro de los permisos concedidos. El rol carece de propiedad para borrar tablas.
+
+## Verificación de José Miguel
+
+Ejecuté las tres pruebas del límite de inicio de sesión en Windows PowerShell 5.1. Las tres pasaron y el paquete reportó `ok` en 0.669 s.
+
+Comprobé que el límite cuenta los intentos dentro de una ventana de tiempo, funciona con solicitudes simultáneas y se aplica al inicio de sesión. Las cabeceras que envía el cliente no sirven para cambiar la IP que usa el contador.
