@@ -1,0 +1,23 @@
+HTTP 200
+Content-Type: application/json; charset=utf-8
+Date: Fri, 20 Nov 2026 02:48:31 GMT
+Content-Length: 302
+Connection: close
+
+{"canjes":[{"id":2,"sucursal_id":2,"cliente_id":1,"recompensa_id":1,"puntos_utilizados":40,"fecha":"2026-11-19T21:48:21.83862-05:00","estado":"confirmado"},{"id":1,"sucursal_id":2,"cliente_id":1,"recompensa_id":1,"puntos_utilizados":40,"fecha":"2026-11-19T21:45:31.08939-05:00","estado":"confirmado"}]}
+
+HTTP 400
+Content-Type: application/json; charset=utf-8
+Date: Fri, 20 Nov 2026 02:48:31 GMT
+Content-Length: 29
+Connection: close
+
+{"error":"estado no válido"}
+
+HTTP 400
+Content-Type: application/json; charset=utf-8
+Date: Fri, 20 Nov 2026 02:48:31 GMT
+Content-Length: 24
+Connection: close
+
+{"error":"id inválido"}
