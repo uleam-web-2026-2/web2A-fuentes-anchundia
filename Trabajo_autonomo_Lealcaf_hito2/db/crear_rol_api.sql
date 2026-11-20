@@ -1,0 +1,10 @@
+\set ON_ERROR_STOP on
+\getenv api_password DB_API_PASSWORD
+SELECT format('CREATE ROLE lealcaf_api LOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE NOREPLICATION NOBYPASSRLS PASSWORD %L', :'api_password')
+WHERE NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'lealcaf_api')
+\gexec
+ALTER ROLE lealcaf_api NOSUPERUSER NOCREATEDB NOCREATEROLE NOREPLICATION NOBYPASSRLS;
+SELECT format('REVOKE ALL ON DATABASE %I FROM PUBLIC', current_database())
+\gexec
+SELECT format('GRANT CONNECT ON DATABASE %I TO lealcaf_api', current_database())
+\gexec
