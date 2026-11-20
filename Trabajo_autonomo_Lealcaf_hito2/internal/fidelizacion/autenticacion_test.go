@@ -69,8 +69,12 @@ func TestLoginCorrectoYCredencialesInvalidas(t *testing.T) {
 		}
 	}
 	for _, invalido := range []string{`{`, `{}`, `{"usuario":"cliente-demo"}`} {
-		codigo, rechazo := e.solicitar("POST", "/login", "", invalido)
-		exigirCodigo(t, codigo, http.StatusBadRequest, rechazo)
+		t.Run(invalido, func(t *testing.T) {
+			// Cada JSON se valida con su propio contador y base de pruebas.
+			caso := nuevoEntorno(t)
+			codigo, rechazo := caso.solicitar("POST", "/login", "", invalido)
+			exigirCodigo(t, codigo, http.StatusBadRequest, rechazo)
+		})
 	}
 }
 

@@ -13,7 +13,7 @@ func ConfigurarRutas(r *gin.Engine, db *gorm.DB, auth *Autenticacion) {
 // ConfigurarRutasConRepositorio conecta las rutas con el repositorio del servicio.
 func ConfigurarRutasConRepositorio(r *gin.Engine, repo Repositorio, auth *Autenticacion) {
 	a := &API{Servicio: &Servicio{Repo: repo}, Autenticacion: auth}
-	r.POST("/login", a.Login)
+	r.POST("/login", LimitarLogin(), a.Login)
 	g := r.Group("", auth.Middleware())
 	g.GET("/clientes/:id/puntos", a.ConsultarPuntos)
 	g.GET("/recompensas", a.ListarRecompensas)
