@@ -1,0 +1,49 @@
+Trabajo_autonomo_Lealcaf_hito2/internal/almacen/filas/consultas.sql.go:20:	row := q.db.QueryRowContext(ctx, bloquearCanje, id)
+Trabajo_autonomo_Lealcaf_hito2/internal/almacen/filas/consultas.sql.go:44:	row := q.db.QueryRowContext(ctx, bloquearClienteTransaccion, id)
+Trabajo_autonomo_Lealcaf_hito2/internal/almacen/filas/consultas.sql.go:57:	row := q.db.QueryRowContext(ctx, buscarCanje, id)
+Trabajo_autonomo_Lealcaf_hito2/internal/almacen/filas/consultas.sql.go:82:	row := q.db.QueryRowContext(ctx, buscarClienteTransaccion, id)
+Trabajo_autonomo_Lealcaf_hito2/internal/almacen/filas/consultas.sql.go:93:	row := q.db.QueryRowContext(ctx, buscarSucursalTransaccion, id)
+Trabajo_autonomo_Lealcaf_hito2/internal/almacen/filas/consultas.sql.go:116:	result, err := q.db.ExecContext(ctx, cambiarEstadoCanje, arg.Hasta, arg.ID, arg.Desde)
+Trabajo_autonomo_Lealcaf_hito2/internal/almacen/filas/consultas.sql.go:137:	row := q.db.QueryRowContext(ctx, crearCompraTransaccion,
+Trabajo_autonomo_Lealcaf_hito2/internal/almacen/filas/consultas.sql.go:165:	row := q.db.QueryRowContext(ctx, crearMovimientoTransaccion,
+Trabajo_autonomo_Lealcaf_hito2/internal/almacen/filas/consultas.sql.go:184:	row := q.db.QueryRowContext(ctx, existeFacturaTransaccion, numeroFactura)
+Trabajo_autonomo_Lealcaf_hito2/internal/almacen/filas/consultas.sql.go:203:	row := q.db.QueryRowContext(ctx, saldoTransaccion, arg.ClienteID, arg.Fecha)
+Trabajo_autonomo_Lealcaf_hito2/internal/almacen/filas/db.go:13:	ExecContext(context.Context, string, ...interface{}) (sql.Result, error)
+Trabajo_autonomo_Lealcaf_hito2/internal/almacen/filas/db.go:15:	QueryContext(context.Context, string, ...interface{}) (*sql.Rows, error)
+Trabajo_autonomo_Lealcaf_hito2/internal/almacen/filas/db.go:16:	QueryRowContext(context.Context, string, ...interface{}) *sql.Row
+Trabajo_autonomo_Lealcaf_hito2/internal/fidelizacion/autenticacion.go:54:	err := a.db.Where("usuario = ?", strings.TrimSpace(usuario)).First(&cuenta).Error
+Trabajo_autonomo_Lealcaf_hito2/internal/fidelizacion/autenticacion.go:104:	if err := a.db.First(&cuenta, uint(id64)).Error; err != nil {
+Trabajo_autonomo_Lealcaf_hito2/internal/fidelizacion/db.go:52:	conexion := url.URL{Scheme: "postgres", Host: net.JoinHostPort(host, puerto), Path: "/" + os.Getenv("DB_NAME"), User: url.UserPassword(user, password)}
+Trabajo_autonomo_Lealcaf_hito2/internal/fidelizacion/db.go:80:	return tx.Exec("SELECT pg_advisory_xact_lock(20261028, 2)").Error
+Trabajo_autonomo_Lealcaf_hito2/internal/fidelizacion/db.go:98:	if err := tx.Where("id = ?", 1).FirstOrCreate(&principal).Error; err != nil {
+Trabajo_autonomo_Lealcaf_hito2/internal/fidelizacion/db.go:131:	if err := tx.Where("id = ?", 2).FirstOrCreate(&norte).Error; err != nil {
+Trabajo_autonomo_Lealcaf_hito2/internal/fidelizacion/db.go:158:	err = tx.Where("activa = ? AND puntos_necesarios > 0", true).Order("id").First(&recompensa).Error
+Trabajo_autonomo_Lealcaf_hito2/internal/fidelizacion/db.go:169:	err = tx.Where("numero_factura = ?", facturaDemoHito2).First(&compra).Error
+Trabajo_autonomo_Lealcaf_hito2/internal/fidelizacion/db.go:182:	err = tx.Where("compra_id = ? AND tipo = ?", compra.ID, TipoAcumulacion).First(&acumulacion).Error
+Trabajo_autonomo_Lealcaf_hito2/internal/fidelizacion/db.go:197:	err = tx.Where("cliente_id = ? AND estado = ?", cliente.ID, EstadoConfirmado).Order("id").First(&confirmado).Error
+Trabajo_autonomo_Lealcaf_hito2/internal/fidelizacion/db.go:219:	if err := tx.Where("canje_id = ? AND tipo = ?", confirmado.ID, TipoCanje).First(&descuento).Error; err != nil {
+Trabajo_autonomo_Lealcaf_hito2/internal/fidelizacion/db.go:230:	err := tx.Where("correo = ?", correoDemoHito2).First(&cliente).Error
+Trabajo_autonomo_Lealcaf_hito2/internal/fidelizacion/db.go:233:		if err := tx.Model(&Cliente{}).Where("cedula = ?", cedulaDemoHito2).Count(&cantidad).Error; err != nil {
+Trabajo_autonomo_Lealcaf_hito2/internal/fidelizacion/db.go:254:	err := tx.Where("usuario = ?", usuario).First(&cuenta).Error
+Trabajo_autonomo_Lealcaf_hito2/internal/fidelizacion/db.go:282:		if err := tx.Raw(consulta, tabla).Scan(&secuencia).Error; err != nil {
+Trabajo_autonomo_Lealcaf_hito2/internal/fidelizacion/db.go:293:		if err := tx.Raw("SELECT last_value, is_called FROM " + secuencia).Scan(&estado).Error; err != nil {
+Trabajo_autonomo_Lealcaf_hito2/internal/fidelizacion/db.go:297:		if err := tx.Table(tabla).Select("COALESCE(MAX(id), 0)").Scan(&maximo).Error; err != nil {
+Trabajo_autonomo_Lealcaf_hito2/internal/fidelizacion/db.go:301:			if err := tx.Exec("SELECT setval(?::regclass, ?, true)", secuencia, maximo).Error; err != nil {
+Trabajo_autonomo_Lealcaf_hito2/internal/fidelizacion/manejadores.go:113:	canjes, err := a.Servicio.ListarCanjes(c.Query("estado"))
+Trabajo_autonomo_Lealcaf_hito2/internal/fidelizacion/permisos.go:21:				if err := tx.Exec(statement).Error; err != nil {
+Trabajo_autonomo_Lealcaf_hito2/internal/fidelizacion/repositorio_gorm.go:17:		return errorConMensaje(ErrNoEncontrado, entidad+" no encontrado")
+Trabajo_autonomo_Lealcaf_hito2/internal/fidelizacion/repositorio_gorm.go:30:	err := consulta.First(&cliente, id).Error
+Trabajo_autonomo_Lealcaf_hito2/internal/fidelizacion/repositorio_gorm.go:35:	err := r.DB.First(&sucursal, id).Error
+Trabajo_autonomo_Lealcaf_hito2/internal/fidelizacion/repositorio_gorm.go:43:	err := r.DB.Where("activa = ?", true).First(&recompensa, id).Error
+Trabajo_autonomo_Lealcaf_hito2/internal/fidelizacion/repositorio_gorm.go:51:	err := r.DB.Model(&MovimientoPuntos{}).Select("COALESCE(SUM(puntos), 0)").Where("cliente_id = ?", clienteID).Where("(tipo = ? AND fecha_vencimiento > ?) OR tipo = ?", TipoAcumulacion, ahora(), TipoCanje).Scan(&suma).Error
+Trabajo_autonomo_Lealcaf_hito2/internal/fidelizacion/repositorio_gorm.go:59:	err := r.DB.Where("cliente_id = ?", clienteID).Order("fecha DESC, id DESC").Find(&movimientos).Error
+Trabajo_autonomo_Lealcaf_hito2/internal/fidelizacion/repositorio_gorm.go:64:	err := r.DB.Where("activa = ?", true).Order("puntos_necesarios, id").Find(&recompensas).Error
+Trabajo_autonomo_Lealcaf_hito2/internal/fidelizacion/repositorio_gorm.go:69:	err := r.DB.Model(&Compra{}).Where("numero_factura = ?", numero).Count(&cantidad).Error
+Trabajo_autonomo_Lealcaf_hito2/internal/fidelizacion/repositorio_gorm.go:90:	consulta := r.DB.Order("fecha DESC, id DESC")
+Trabajo_autonomo_Lealcaf_hito2/internal/fidelizacion/repositorio_gorm.go:92:		consulta = consulta.Where("estado = ?", estado)
+Trabajo_autonomo_Lealcaf_hito2/internal/fidelizacion/repositorio_gorm.go:94:	err := consulta.Find(&canjes).Error
+Trabajo_autonomo_Lealcaf_hito2/internal/fidelizacion/repositorio_gorm.go:103:	err := consulta.First(&canje, id).Error
+Trabajo_autonomo_Lealcaf_hito2/internal/fidelizacion/repositorio_gorm.go:107:	resultado := r.DB.Model(&Canje{}).Where("id = ? AND estado = ?", id, desde).Update("estado", hasta)
+Trabajo_autonomo_Lealcaf_hito2/internal/fidelizacion/repositorio_sqlc.go:55:		return errorConMensaje(ErrNoEncontrado, entidad+" no encontrado")
+Trabajo_autonomo_Lealcaf_hito2/internal/fidelizacion/rutas.go:17:	g := r.Group("", auth.Middleware())
+Trabajo_autonomo_Lealcaf_hito2/main.go:90:	servidor := &http.Server{Addr: ":" + puerto, Handler: r, ReadHeaderTimeout: 5 * time.Second, ReadTimeout: 10 * time.Second, WriteTimeout: 20 * time.Second, IdleTimeout: 60 * time.Second}

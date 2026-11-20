@@ -122,7 +122,12 @@ def burst():
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("phase", choices=["antes", "defensas", "reto", "compose", "inyeccion", "cors", "rafaga"])
-    phase = parser.parse_args().phase
+    parser.add_argument("--port", type=int, default=int(CONFIG["PORT"]))
+    arguments = parser.parse_args()
+    if not 1 <= arguments.port <= 65535:
+        parser.error("el puerto debe estar entre 1 y 65535")
+    BASE = "http://127.0.0.1:" + str(arguments.port)
+    phase = arguments.phase
     EVIDENCE.mkdir(parents=True, exist_ok=True)
     if phase == "inyeccion":
         injection()

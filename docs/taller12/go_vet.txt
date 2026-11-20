@@ -1,0 +1,3 @@
+Comando ejecutado: go vet ./...
+Codigo de salida: 0
+Salida:

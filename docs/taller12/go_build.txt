@@ -1,0 +1,3 @@
+Comando ejecutado: go build ./...
+Codigo de salida: 0
+Salida:

@@ -105,3 +105,79 @@ Si se cambian `DB_USER` o `DB_NAME`, se sustituyen en ese comando. No hace falta
 ## Declaración de IA
 
 OpenAI Codex apoyó la preparación del Dockerfile, Compose, la exclusión de secretos, el ajuste de escucha HTTP, el ejecutor para Windows, la documentación y la revisión de rutas del CI. Las mediciones de Docker y los resultados HTTP se completan solamente al ejecutar el paquete; no se presentan resultados ficticios. Cada integrante debe comprender y poder explicar las decisiones y registrar su aporte real. La herramienta y el alcance de su uso también se indican en el cuerpo de los commits.
+
+
+## Semana 12 · la seguridad de la API
+
+Integrantes, Anchundia Anchundia Luis Antonio y Fuentes Cedeño José Miguel. El punto de partida es taller11, d62846e. Los ejemplos de Chi se adaptaron a Gin, el framework vigente.
+
+### D1 · Lo que encontramos y cerramos
+
+La búsqueda inicial produjo 48 coincidencias en el módulo vigente. Se revisaron 39 coincidencias que construyen o ejecutan consultas, tres declaraciones de interfaz y seis líneas de mensajes, URI y llamadas de transporte. De las coincidencias SQL, 22 reciben valores derivados de HTTP o de la identidad autenticada mediante GORM o sqlc. Los valores se envían separados con ? o $1. Las órdenes de ordenación y selección son constantes.
+
+No encontramos SQL de negocio que concatene texto recibido del cliente. idDeRuta ya convierte a entero positivo y el servicio valida los estados. La concatenación de un nombre de secuencia pertenece al mantenimiento y usa un identificador obtenido y escapado por PostgreSQL. Cada coincidencia está justificada en docs/taller12/auditoria.md.
+
+El filtro normal devolvió 200 con canjes confirmados. El estado con comilla y el ID con texto SQL devolvieron 400. Se agregaron pruebas de regresión del filtro parametrizado y del ID inválido. La búsqueda final dio 49 coincidencias e incluye Exec(statement), que ejecuta exclusivamente el archivo fijo de permisos embebido.
+
+La API ya verifica que un cliente consulte sus propios canjes. Las pruebas existentes comprueban el rechazo de consultas de un cliente a registros ajenos.
+
+### D2 · El origen que puede leer nuestras respuestas
+
+Se autorizó únicamente http://localhost:5173, el origen previsto del frontend. Se permiten GET, POST y PATCH, los métodos de la API, y las cabeceras Authorization y Content-Type. La caché del preflight dura 300 segundos.
+
+CORS se coloca antes del registro, la recuperación y la autenticación. Se adaptó el middleware net/http go-chi/cors del kit a Gin. El preflight permitido respondió 200 con Access-Control-Allow-Origin. El no permitido respondió 200 sin esa cabecera.
+
+El PATCH con token de administrador enviado por curl desde http://malo.example confirmó un canje nuevo con 200. CORS regula la lectura y el envío que permite el navegador. Los clientes HTTP directos pueden enviar la petición y el servidor debe comprobar token, rol y reglas del negocio. Cuando se publique el frontend, su origen exacto debe incorporarse a la lista autorizada.
+
+### D3 · El límite del login
+
+Se cuentan cinco solicitudes por minuto por IP únicamente en POST /login. Cada solicitud aceptada se conserva durante 60 segundos en una ventana móvil. Un mutex protege el contador frente a solicitudes concurrentes y la limpieza periódica retira IP inactivas.
+
+Se implementó el contador en Go para integrarlo con Gin y probar el tiempo sin esperas mediante un reloj controlado. Se verificó el límite con 30 llamadas concurrentes y con cabeceras de IP falsificadas. Todas las solicitudes al login cuentan, incluidas las correctas y las inválidas.
+
+La ráfaga real respondió 401, 401, 401, 401, 401, 429 y 429. El primer Remaining fue 4 y el sexto intento devolvió Retry-After de 60 segundos. El contador devuelve los segundos restantes hasta que caduque el intento más antiguo. Las seis peticiones funcionales conservaron 401, 200, 200, 403, 200 y 422 tanto por HTTP como en Bruno.
+
+El contador vive en memoria de cada proceso. Reiniciar la API vacía la ventana. Varias réplicas necesitarían un contador compartido para imponer un límite global.
+
+### D4 · Detrás de un proxy
+
+El límite obtiene la IP de Request.RemoteAddr, separa el puerto y normaliza IPv4 e IPv6. No lee X-Forwarded-For ni X-Real-IP. Las pruebas cambiaron esas cabeceras y la sexta solicitud siguió recibiendo 429. Gin conserva SetTrustedProxies(nil).
+
+Detrás de un proxy, RemoteAddr identifica al proxy y varios clientes podrían compartir el mismo cupo. Docker también puede presentar una dirección de su red al servidor. El despliegue deberá establecer qué proxy se considera confiable y cómo entrega la IP real. Confiar directamente en una cabecera editable permitiría cambiar de identidad para evadir el límite.
+
+## Semana 12 · reto de mínimo privilegio en la base
+
+### D5 · Con qué usuario se conecta la API
+
+La API usa lealcaf_api, sin superusuario, CREATEDB, CREATEROLE, REPLICATION ni BYPASSRLS y sin ser dueño de las tablas. Tiene USAGE sobre public, sin CREATE ni permiso para tablas temporales. Las tablas pertenecen a lealcaf_migrador.
+
+Los permisos por tabla están en permisos.sql y se comprobaron en el catálogo de PostgreSQL. sucursals, recompensas y cuenta son de solo lectura. compras y movimiento_puntos permiten SELECT e INSERT. canjes permite SELECT, INSERT y UPDATE de estado. clientes permite SELECT y UPDATE de id, el permiso necesario para obtener el bloqueo SELECT FOR UPDATE que serializa las confirmaciones. Las secuencias de las tres tablas con INSERT tienen USAGE.
+
+Las seis peticiones, una compra adicional y la consulta de puntos pasaron con el usuario restringido. El intento de DROP TABLE canjes dentro de BEGIN y ROLLBACK produjo ERROR must be owner of table canjes. Los resultados están en reto_drop.txt, reto_usuarios.txt y reto_compra.txt.
+
+### D6 · Quién crea y cambia las tablas
+
+lealcaf_migrador prepara las tablas mediante el mismo binario con el argumento migrar. En Windows, desde el módulo se ejecuta go run . migrar con DB_MIGRATION_USER y DB_MIGRATION_PASSWORD. El arranque normal usa DB_USER y DB_PASSWORD y atiende peticiones sin ejecutar AutoMigrate ni sembrar datos.
+
+Compose inicializa el rol API al crear la base. El servicio migrar espera el healthcheck TCP de db y la API espera a que migrar termine con código cero. Las credenciales de migración se pasan solo al servicio de migración. En esta demostración el usuario migrador creado por la imagen PostgreSQL tiene privilegios administrativos.
+
+La preparación del esquema, la semilla y los permisos se aplican en una transacción. Si cambia un modelo, primero se debe ejecutar migrar. Arrancar únicamente el servidor no actualiza el esquema y una operación que necesite el nuevo modelo puede fallar.
+
+Se comprobó el arranque con otro proyecto Compose y un volumen nuevo, y la conservación del mismo canje después de down y up en el proyecto principal del taller. Se conservaron todos los volúmenes existentes. El caso de recreación desde una base vacía se probó creando un volumen nuevo.
+
+### D7 · El alcance del mínimo privilegio
+
+Si quedara una inyección, los permisos de lealcaf_api permitirían leer las tablas autorizadas e insertar o actualizar dentro del alcance concedido. Eso todavía puede causar exposición o alteración de datos.
+
+Ese rol carece de propiedad y de privilegios para borrar tablas, crear roles o modificar el esquema. El mínimo privilegio reduce el alcance de una falla. La parametrización, la validación y la autorización de cada ruta siguen siendo necesarias.
+
+Las pruebas usan exclusivamente datos ficticios en bases de demostración propias. Las contraseñas PostgreSQL, JWT y cuentas demo se obtienen del entorno privado.
+
+### Fuentes de la semana 12
+
+- Taller y código por pasos de la semana 12 proporcionados por el docente.
+- [Middleware CORS utilizado](https://github.com/go-chi/cors).
+- [PostgreSQL 16, CREATE ROLE](https://www.postgresql.org/docs/16/sql-createrole.html).
+- [PostgreSQL 16, GRANT](https://www.postgresql.org/docs/16/sql-grant.html).
+
+OpenAI Codex colaboró en la adaptación a Gin, la auditoría, las pruebas locales, la ejecución del Runner de Bruno, las capturas, los permisos y la documentación. Los commits de esta sesión corresponden a Luis Anchundia. El historial anterior de José Miguel Fuentes Cedeño se conserva.

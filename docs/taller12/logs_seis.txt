@@ -1,3 +1,5 @@
+2026/11/20 02:57:21 PostgreSQL: base lealcaf_taller12 en host.docker.internal:55434
+2026/11/20 02:57:21 LealCaf listo en http://localhost:18082
 [GIN] 2026/11/20 - 02:57:23 | 401 | 114.87ms |      172.17.0.1 | POST     "/login"
 [GIN] 2026/11/20 - 02:57:23 | 401 | 112.86ms |      172.17.0.1 | POST     "/login"
 [GIN] 2026/11/20 - 02:57:23 | 401 |  119.2ms |      172.17.0.1 | POST     "/login"
@@ -6,6 +8,8 @@
 [GIN] 2026/11/20 - 02:57:23 | 429 | 88.235µs |      172.17.0.1 | POST     "/login"
 [GIN] 2026/11/20 - 02:57:23 | 429 | 58.215µs |      172.17.0.1 | POST     "/login"
 [GIN] 2026/11/20 - 02:57:23 | 401 | 114.146µs |      172.17.0.1 | GET      "/canjes/1"
+2026/11/20 02:57:30 PostgreSQL: base lealcaf_taller12 en host.docker.internal:55434
+2026/11/20 02:57:30 LealCaf listo en http://localhost:18082
 [GIN] 2026/11/20 - 02:57:31 | 200 | 115.86ms |      172.17.0.1 | POST     "/login"
 [GIN] 2026/11/20 - 02:57:32 | 200 |    110ms |      172.17.0.1 | POST     "/login"
 [GIN] 2026/11/20 - 02:57:32 | 200 |   9.88ms |      172.17.0.1 | GET      "/canjes"
@@ -17,6 +21,8 @@
 [GIN] 2026/11/20 - 02:57:32 | 403 |   3.02ms |      172.17.0.1 | PATCH    "/canjes/5/estado"
 [GIN] 2026/11/20 - 02:57:32 | 200 |  33.77ms |      172.17.0.1 | PATCH    "/canjes/5/estado"
 [GIN] 2026/11/20 - 02:57:32 | 422 |  13.25ms |      172.17.0.1 | PATCH    "/canjes/4/estado"
+2026/11/20 02:57:34 PostgreSQL: base lealcaf_taller12 en host.docker.internal:55434
+2026/11/20 02:57:34 LealCaf listo en http://localhost:18082
 [GIN] 2026/11/20 - 02:57:40 | 200 | 121.02ms |      172.17.0.1 | POST     "/login"
 [GIN] 2026/11/20 - 02:57:41 | 200 | 156.63ms |      172.17.0.1 | POST     "/login"
 [GIN] 2026/11/20 - 02:57:41 | 200 |  11.23ms |      172.17.0.1 | GET      "/recompensas"
@@ -28,9 +34,3 @@
 [GIN] 2026/11/20 - 02:57:43 | 403 |   3.18ms |      172.17.0.1 | PATCH    "/canjes/6/estado"
 [GIN] 2026/11/20 - 02:57:44 | 200 |  41.34ms |      172.17.0.1 | PATCH    "/canjes/6/estado"
 [GIN] 2026/11/20 - 02:57:44 | 422 |  17.14ms |      172.17.0.1 | PATCH    "/canjes/1/estado"
-2026/11/20 02:57:21 PostgreSQL: base lealcaf_taller12 en host.docker.internal:55434
-2026/11/20 02:57:21 LealCaf listo en http://localhost:18082
-2026/11/20 02:57:30 PostgreSQL: base lealcaf_taller12 en host.docker.internal:55434
-2026/11/20 02:57:30 LealCaf listo en http://localhost:18082
-2026/11/20 02:57:34 PostgreSQL: base lealcaf_taller12 en host.docker.internal:55434
-2026/11/20 02:57:34 LealCaf listo en http://localhost:18082

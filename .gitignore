@@ -14,3 +14,5 @@ node_modules/
 *.key
 /hito2/archivos.sha256
 **/docs/hito2_bruno/environments/Taller11-privado.bru
+**/docs/hito2_bruno/environments/Taller12*-privado.bru
+__pycache__/

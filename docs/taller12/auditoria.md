@@ -18,9 +18,9 @@ La salida íntegra contiene 48 líneas y está en [auditoria.txt](auditoria.txt)
 | internal/almacen/filas/consultas.sql.go:165 — row := q.db.QueryRowContext(ctx, crearMovimientoTransaccion, | Sí | IDs/estados/compra según consulta | Sí, argumentos separados y SQL fijo con $1, $2… | Código generado por sqlc, contrastado con db/consultas.sql. |
 | internal/almacen/filas/consultas.sql.go:184 — row := q.db.QueryRowContext(ctx, existeFacturaTransaccion, numeroFactura) | Sí | IDs/estados/compra según consulta | Sí, argumentos separados y SQL fijo con $1, $2… | Código generado por sqlc, contrastado con db/consultas.sql. |
 | internal/almacen/filas/consultas.sql.go:203 — row := q.db.QueryRowContext(ctx, saldoTransaccion, arg.ClienteID, arg.Fecha) | Sí | IDs/estados/compra según consulta | Sí, argumentos separados y SQL fijo con $1, $2… | Código generado por sqlc, contrastado con db/consultas.sql. |
-| internal/almacen/filas/db.go:13 — ExecContext(context.Context, string, ...interface{}) (sql.Result, error) | Sí | Interfaz del controlador | Parámetros variádicos | Declaración, sin SQL ejecutado. |
-| internal/almacen/filas/db.go:15 — QueryContext(context.Context, string, ...interface{}) (*sql.Rows, error) | Sí | Interfaz del controlador | Parámetros variádicos | Declaración, sin SQL ejecutado. |
-| internal/almacen/filas/db.go:16 — QueryRowContext(context.Context, string, ...interface{}) *sql.Row | Sí | Interfaz del controlador | Parámetros variádicos | Declaración, sin SQL ejecutado. |
+| internal/almacen/filas/db.go:13 — ExecContext(context.Context, string, ...interface{}) (sql.Result, error) | No | Interfaz del controlador | Parámetros variádicos | Declaración, sin SQL ejecutado. |
+| internal/almacen/filas/db.go:15 — QueryContext(context.Context, string, ...interface{}) (*sql.Rows, error) | No | Interfaz del controlador | Parámetros variádicos | Declaración, sin SQL ejecutado. |
+| internal/almacen/filas/db.go:16 — QueryRowContext(context.Context, string, ...interface{}) *sql.Row | No | Interfaz del controlador | Parámetros variádicos | Declaración, sin SQL ejecutado. |
 | internal/fidelizacion/autenticacion.go:54 — err := a.db.Where("usuario = ?", strings.TrimSpace(usuario)).First(&cuenta).Error | Sí | Valores separados de la expresión SQL | Sí, ? y argumentos | Where/Raw/Exec parametrizados. Orden y selección fijos. |
 | internal/fidelizacion/autenticacion.go:104 — if err := a.db.First(&cuenta, uint(id64)).Error; err != nil { | Sí | ID convertido a uint antes del repositorio | Sí, ID numérico | idDeRuta usa ParseUint y rechaza 0, negativos y texto. |
 | internal/fidelizacion/db.go:68 — return tx.Exec("SELECT pg_advisory_xact_lock(20261028, 2)").Error | Sí | SQL constante | Constantes numéricas | Bloqueo de la preparación. |
@@ -57,3 +57,13 @@ El filtro estado de Canjes usa Where("estado = ?", estado). Los IDs se convierte
 La concatenación de secuencia en la inicialización usa un identificador obtenido del catálogo y escapado por PostgreSQL. Ese mantenimiento no recibe texto de peticiones. La prueba funcional del paso 1.4 quedará en inyeccion.txt.
 
 La prueba HTTP produjo 200 con canjes confirmados para el filtro normal, 400 para el estado con comilla y 400 para el ID con texto SQL. El servicio valida los estados antes de consultar. No se encontró SQL de negocio que concatene texto del cliente. Se agregaron pruebas de regresión para el filtro parametrizado y los IDs.
+
+## Revisión posterior al reto
+
+La búsqueda original se conserva como evidencia del punto 1. [auditoria_despues.txt](auditoria_despues.txt) registra la versión final. Los números de línea de db.go y main.go se desplazaron por la separación de migraciones.
+
+| Código incorporado | Origen | Revisión |
+| --- | --- | --- |
+| permisos.go, Exec(statement) | Archivo permisos.sql embebido al compilar | Cada sentencia es fija y se ejecuta solo en el comando migrar. Ningún valor de HTTP llega a statement. |
+| ConectarMigracion y conectarConCredenciales | Variables del entorno privado | Construyen la URI mediante net/url y conservan el escape de usuario, contraseña y host. |
+| crear_rol_api.sql | Contraseña del entorno del contenedor | psql usa format con %L para citar el valor. Los identificadores de rol son constantes y la base se cita con %I. |

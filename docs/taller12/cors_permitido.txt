@@ -7,5 +7,3 @@ Vary: Origin
 Date: Fri, 20 Nov 2026 02:51:37 GMT
 Content-Length: 0
 Connection: close
-
-

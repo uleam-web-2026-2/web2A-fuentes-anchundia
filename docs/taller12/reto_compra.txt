@@ -1,0 +1,17 @@
+HTTP 201
+Content-Type: application/json; charset=utf-8
+Vary: Origin
+Date: Fri, 20 Nov 2026 03:02:33 GMT
+Content-Length: 240
+Connection: close
+
+{"compra":{"id":2,"sucursal_id":2,"cliente_id":1,"fecha":"2026-11-20T03:02:33.400829051Z","total":10,"numero_factura":"T12-ENSAYO-a195478788c147abb58f7eb38f8d784e"},"puntos_generados":10,"fecha_vencimiento":"2027-05-20T03:02:33.400829051Z"}
+
+HTTP 200
+Content-Type: application/json; charset=utf-8
+Vary: Origin
+Date: Fri, 20 Nov 2026 03:02:33 GMT
+Content-Length: 898
+Connection: close
+
+{"cliente_id":1,"cedula":"9999999999","nombre":"Cliente de demostración Hito 2","saldo":99890,"movimientos":[{"id":5,"cliente_id":1,"compra_id":2,"canje_id":null,"tipo":"acumulacion","puntos":10,"fecha":"2026-11-20T03:02:33.400829Z","fecha_vencimiento":"2027-05-20T03:02:33.400829Z"},{"id":4,"cliente_id":1,"compra_id":null,"canje_id":3,"tipo":"canje","puntos":-40,"fecha":"2026-11-20T03:01:15.338792Z","fecha_vencimiento":null},{"id":3,"cliente_id":1,"compra_id":null,"canje_id":2,"tipo":"canje","puntos":-40,"fecha":"2026-11-20T03:00:49.8952Z","fecha_vencimiento":null},{"id":2,"cliente_id":1,"compra_id":null,"canje_id":1,"tipo":"canje","puntos":-40,"fecha":"2026-11-20T03:00:40.411685Z","fecha_vencimiento":null},{"id":1,"cliente_id":1,"compra_id":1,"canje_id":null,"tipo":"acumulacion","puntos":100000,"fecha":"2026-11-20T03:00:40.403997Z","fecha_vencimiento":"2027-05-20T03:00:40.403997Z"}]}

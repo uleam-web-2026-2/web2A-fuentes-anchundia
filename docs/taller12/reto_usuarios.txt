@@ -1,0 +1,52 @@
+                                 List of roles
+    Role name     |                         Attributes
+------------------+------------------------------------------------------------
+ lealcaf_api      |
+ lealcaf_migrador | Superuser, Create role, Create DB, Replication, Bypass RLS
+
+
+     tablename     |    tableowner
+-------------------+------------------
+ canjes            | lealcaf_migrador
+ clientes          | lealcaf_migrador
+ compras           | lealcaf_migrador
+ cuenta            | lealcaf_migrador
+ movimiento_puntos | lealcaf_migrador
+ recompensas       | lealcaf_migrador
+ sucursals         | lealcaf_migrador
+(7 rows)
+
+
+     rolname      | rolsuper | rolcreatedb | rolcreaterole | rolbypassrls
+------------------+----------+-------------+---------------+--------------
+ lealcaf_migrador | t        | t           | t             | t
+ lealcaf_api      | f        | f           | f             | f
+(2 rows)
+
+
+    table_name     | privilege_type
+-------------------+----------------
+ canjes            | INSERT
+ canjes            | SELECT
+ clientes          | SELECT
+ compras           | INSERT
+ compras           | SELECT
+ cuenta            | SELECT
+ movimiento_puntos | INSERT
+ movimiento_puntos | SELECT
+ recompensas       | SELECT
+ sucursals         | SELECT
+(10 rows)
+
+
+ table_name | column_name | privilege_type
+------------+-------------+----------------
+ canjes     | estado      | UPDATE
+ clientes   | id          | UPDATE
+(2 rows)
+
+
+ puede_crear_tablas | puede_crear_temporales
+--------------------+------------------------
+ f                  | f
+(1 row)
