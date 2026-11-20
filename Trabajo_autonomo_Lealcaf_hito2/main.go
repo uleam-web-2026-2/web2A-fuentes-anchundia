@@ -20,6 +20,14 @@ func main() {
 	} else {
 		_ = godotenv.Load()
 	}
+	migracion := len(os.Args) == 2 && os.Args[1] == "migrar"
+	if len(os.Args) > 1 && !migracion {
+		log.Fatal("uso: servidor [migrar]")
+	}
+	conectar := fidelizacion.Conectar
+	if migracion {
+		conectar = fidelizacion.ConectarMigracion
+	}
 	duracion := time.Hour
 	if valor := os.Getenv("JWT_TTL"); valor != "" {
 		var err error
@@ -36,7 +44,7 @@ func main() {
 	if err != nil || numero < 1 || numero > 65535 {
 		log.Fatal("PORT debe estar entre 1 y 65535")
 	}
-	db, err := fidelizacion.Conectar()
+	db, err := conectar()
 	if err != nil {
 		log.Fatalf("No se pudo conectar a la base: %v", err)
 	}
@@ -45,12 +53,16 @@ func main() {
 		log.Fatal(err)
 	}
 	defer sqlDB.Close()
+	if migracion {
+		if err := fidelizacion.PrepararConPermisos(db); err != nil {
+			log.Fatalf("No se pudo migrar y asignar permisos: %v", err)
+		}
+		log.Println("Migración, datos demo opcionales y permisos completados")
+		return
+	}
 	auth, err := fidelizacion.NuevaAutenticacion(db, os.Getenv("JWT_SECRET"), duracion)
 	if err != nil {
 		log.Fatal(err)
-	}
-	if err := fidelizacion.PrepararBase(db); err != nil {
-		log.Fatalf("No se pudo actualizar la base conservando los datos: %v", err)
 	}
 	log.Printf("PostgreSQL: base %s en %s:%s", os.Getenv("DB_NAME"), os.Getenv("DB_HOST"), os.Getenv("DB_PORT"))
 	modo := os.Getenv("GIN_MODE")

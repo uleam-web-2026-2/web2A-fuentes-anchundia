@@ -1,14 +1,16 @@
-name: lealcaf-taller11
+name: lealcaf-taller12
 
 services:
   db:
     image: postgres:16
     environment:
-      POSTGRES_USER: ${DB_USER:-postgres}
-      POSTGRES_DB: ${DB_NAME:-lealcaf_taller11}
-      POSTGRES_PASSWORD: ${DB_PASSWORD:?Ejecute Taller11.cmd para crear la configuracion local}
+      POSTGRES_USER: ${DB_MIGRATION_USER:-lealcaf_migrador}
+      POSTGRES_DB: ${DB_NAME:-lealcaf_taller12}
+      POSTGRES_PASSWORD: ${DB_MIGRATION_PASSWORD:?Configure DB_MIGRATION_PASSWORD}
+      DB_API_PASSWORD: ${DB_API_PASSWORD:?Configure DB_API_PASSWORD}
     volumes:
       - datos_postgres:/var/lib/postgresql/data
+      - ./Trabajo_autonomo_Lealcaf_hito2/db/crear_rol_api.sql:/docker-entrypoint-initdb.d/01-crear-rol-api.sql:ro
     healthcheck:
       # TCP evita dar por listo al servidor temporal de inicializacion.
       test: ["CMD-SHELL", "pg_isready -h 127.0.0.1 -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
@@ -17,8 +19,28 @@ services:
       retries: 30
       start_period: 10s
 
+  migrar:
+    image: lealcaf:taller12
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: ["migrar"]
+    environment:
+      DB_DRIVER: postgres
+      DB_HOST: db
+      DB_PORT: "5432"
+      DB_NAME: ${DB_NAME:-lealcaf_taller12}
+      DB_MIGRATION_USER: ${DB_MIGRATION_USER:-lealcaf_migrador}
+      DB_MIGRATION_PASSWORD: ${DB_MIGRATION_PASSWORD:?Configure DB_MIGRATION_PASSWORD}
+      DEMO_DATA: "true"
+      DEMO_CLIENT_PASSWORD: ${DEMO_CLIENT_PASSWORD:?Falta DEMO_CLIENT_PASSWORD}
+      DEMO_ADMIN_PASSWORD: ${DEMO_ADMIN_PASSWORD:?Falta DEMO_ADMIN_PASSWORD}
+    depends_on:
+      db:
+        condition: service_healthy
+
   api:
-    image: lealcaf:taller11
+    image: lealcaf:taller12
     build:
       context: .
       dockerfile: Dockerfile
@@ -26,15 +48,12 @@ services:
       DB_DRIVER: postgres
       DB_HOST: db
       DB_PORT: "5432"
-      DB_USER: ${DB_USER:-postgres}
-      DB_NAME: ${DB_NAME:-lealcaf_taller11}
-      DB_PASSWORD: ${DB_PASSWORD:?Falta DB_PASSWORD en .env}
+      DB_USER: lealcaf_api
+      DB_NAME: ${DB_NAME:-lealcaf_taller12}
+      DB_PASSWORD: ${DB_API_PASSWORD:?Configure DB_API_PASSWORD}
       PORT: ${PORT:-8080}
       JWT_SECRET: ${JWT_SECRET:?Falta JWT_SECRET en .env}
       JWT_TTL: 1h
-      DEMO_DATA: "true"
-      DEMO_CLIENT_PASSWORD: ${DEMO_CLIENT_PASSWORD:?Falta DEMO_CLIENT_PASSWORD en .env}
-      DEMO_ADMIN_PASSWORD: ${DEMO_ADMIN_PASSWORD:?Falta DEMO_ADMIN_PASSWORD en .env}
       GIN_MODE: release
       REPOSITORY_ADAPTER: sqlc
     ports:
@@ -42,6 +61,8 @@ services:
     depends_on:
       db:
         condition: service_healthy
+      migrar:
+        condition: service_completed_successfully
 
 volumes:
   datos_postgres:

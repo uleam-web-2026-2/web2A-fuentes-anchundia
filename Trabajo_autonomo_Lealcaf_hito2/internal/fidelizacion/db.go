@@ -23,6 +23,18 @@ const (
 
 // Conectar usa PostgreSQL. SQLite solo se utiliza dentro de las pruebas aisladas.
 func Conectar() (*gorm.DB, error) {
+	return conectarConCredenciales(os.Getenv("DB_USER"), os.Getenv("DB_PASSWORD"))
+}
+
+func ConectarMigracion() (*gorm.DB, error) {
+	user, password := os.Getenv("DB_MIGRATION_USER"), os.Getenv("DB_MIGRATION_PASSWORD")
+	if user == "" || password == "" {
+		return nil, errors.New("migrar requiere DB_MIGRATION_USER y DB_MIGRATION_PASSWORD")
+	}
+	return conectarConCredenciales(user, password)
+}
+
+func conectarConCredenciales(user, password string) (*gorm.DB, error) {
 	driver := strings.ToLower(strings.TrimSpace(os.Getenv("DB_DRIVER")))
 	if driver != "" && driver != "postgres" {
 		return nil, fmt.Errorf("DB_DRIVER debe ser postgres; el proyecto usa PostgreSQL")
@@ -37,7 +49,7 @@ func Conectar() (*gorm.DB, error) {
 	if puerto == "" {
 		puerto = "5432"
 	}
-	conexion := url.URL{Scheme: "postgres", Host: net.JoinHostPort(host, puerto), Path: "/" + os.Getenv("DB_NAME"), User: url.UserPassword(os.Getenv("DB_USER"), os.Getenv("DB_PASSWORD"))}
+	conexion := url.URL{Scheme: "postgres", Host: net.JoinHostPort(host, puerto), Path: "/" + os.Getenv("DB_NAME"), User: url.UserPassword(user, password)}
 	// La barra es válida en una query URI. GORM lee TimeZone sin decodificar el DSN.
 	conexion.RawQuery = "sslmode=disable&TimeZone=America/Guayaquil"
 	return gorm.Open(postgres.Open(conexion.String()), &gorm.Config{Logger: logger.Default.LogMode(logger.Silent)})
