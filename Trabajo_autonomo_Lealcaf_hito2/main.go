@@ -58,7 +58,9 @@ func main() {
 		modo = gin.ReleaseMode
 	}
 	gin.SetMode(modo)
-	r := gin.Default()
+	r := gin.New()
+	r.Use(fidelizacion.CORS())
+	r.Use(gin.Logger(), gin.Recovery())
 	_ = r.SetTrustedProxies(nil)
 	r.Use(func(c *gin.Context) { c.Request.Body = http.MaxBytesReader(c.Writer, c.Request.Body, 1<<20); c.Next() })
 	// El servicio y el transporte solo reciben el puerto del negocio.
