@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LealCafé · Avisos del Taller 13</title>
+  <link rel="icon" href="data:,">
+  <style>
+    body { font: 18px/1.5 system-ui, sans-serif; max-width: 34rem; margin: 2rem auto; padding: 0 1rem; color: #1d1b33; }
+    fieldset { border: 1px solid #b9b6d3; border-radius: 8px; padding: 1rem; }
+    label { display: block; margin-top: .5rem; }
+    input { font: inherit; width: 100%; box-sizing: border-box; padding: .3rem .5rem; }
+    button { font: inherit; margin-top: 1rem; padding: .4rem 1rem; }
+    #estado { font-weight: 700; margin: 1rem 0 .5rem; }
+    #avisos { padding-left: 1.2rem; }
+    #avisos li { margin: .3rem 0; }
+  </style>
+</head>
+<body>
+  <h1>LealCafé · Avisos</h1>
+  <form id="entrar">
+    <fieldset>
+      <legend>Iniciar sesión y conectar</legend>
+      <label>Dirección de la API <input id="api" value="http://localhost:18083" type="url" required></label>
+      <label>Usuario <input id="usuario" autocomplete="username" required></label>
+      <label>Contraseña <input id="clave" type="password" autocomplete="current-password" required></label>
+      <!-- Si su login usa otros nombres de campo (email, password…), cámbielos en la línea marcada abajo. -->
+      <button id="conectar">Entrar y conectar</button>
+      <button id="salir" type="button" disabled>Desconectar</button>
+    </fieldset>
+  </form>
+  <p id="estado" role="status">Sin conexión.</p>
+  <h2>Avisos recibidos</h2>
+  <ul id="avisos" aria-live="polite"></ul>
+  <script>
+    const $ = (id) => document.getElementById(id);
+    const hora = () => new Date().toLocaleTimeString("es-EC");
+    let conexion;
+    let entrando = false;
+    $("salir").onclick = () => conexion?.close(1000, "Salida del usuario");
+    window.addEventListener("pagehide", () => conexion?.close(1000, "Página cerrada"));
+
+    $("entrar").onsubmit = async (e) => {
+      e.preventDefault();
+      if (entrando || conexion?.readyState === WebSocket.OPEN) return;
+      entrando = true;
+      $("conectar").disabled = true;
+      const api = $("api").value.replace(/\/$/, "");
+      const usuario = $("usuario").value;
+      // 1. Iniciar sesión, como la petición 2 de Bruno. CAMBIEN los nombres de campo si los suyos son otros:
+      let r;
+      try {
+        r = await fetch(api + "/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ usuario: usuario, password: $("clave").value }),
+        });
+      } catch {
+        $("estado").textContent = "No se pudo llamar a la API: ¿está arrancada, y su CORS permite " + location.origin + "? Mire la consola (F12).";
+        entrando = false; $("conectar").disabled = false;
+        return;
+      }
+      if (!r.ok) { $("estado").textContent = "El login respondió " + r.status + "."; entrando = false; $("conectar").disabled = false; return; }
+      const { token, rol, cliente_id } = await r.json();
+      $("clave").value = "";
+      $("avisos").replaceChildren();
+
+      // 2. Abrir el WebSocket con el token en la dirección: no se puede poner Authorization.
+      const ws = conexion = new WebSocket(api.replace(/^http/, "ws") + "/ws?token=" + encodeURIComponent(token));
+      ws.onopen = () => { entrando = false; $("salir").disabled = false; $("estado").textContent = "Conectado como " + usuario + " · " + rol + (cliente_id ? " · cliente ID " + cliente_id : "") + " (" + hora() + ")."; };
+      ws.onclose = (ev) => { entrando = false; $("conectar").disabled = false; $("salir").disabled = true; $("estado").textContent = "Conexión cerrada, código " + ev.code + " (" + hora() + ")."; };
+      // 3. Cada aviso es un JSON con tipo e id: se muestra sin recargar.
+      ws.onmessage = (ev) => {
+        const aviso = JSON.parse(ev.data);
+        const li = document.createElement("li");
+        li.textContent = hora() + " · " + aviso.tipo + " · canje " + aviso.id + (aviso.estado ? " → " + aviso.estado : "");
+        $("avisos").prepend(li);
+      };
+    };
+  </script>
+</body>
+</html>
