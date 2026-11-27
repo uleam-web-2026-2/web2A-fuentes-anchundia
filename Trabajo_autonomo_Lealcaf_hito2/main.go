@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	"log"
+	"net"
 	"net/http"
 	"os"
 	"strconv"
@@ -87,7 +88,7 @@ func main() {
 	}
 	fidelizacion.ConfigurarRutasConRepositorio(r, repo, auth)
 	// El puerto publicado por Docker debe alcanzar al servidor en su interfaz de red.
-	servidor := &http.Server{Addr: ":" + puerto, Handler: r, ReadHeaderTimeout: 5 * time.Second, ReadTimeout: 10 * time.Second, WriteTimeout: 20 * time.Second, IdleTimeout: 60 * time.Second}
+	servidor := &http.Server{Addr: net.JoinHostPort(os.Getenv("BIND_HOST"), puerto), Handler: r, ReadHeaderTimeout: 5 * time.Second, ReadTimeout: 10 * time.Second, WriteTimeout: 20 * time.Second, IdleTimeout: 60 * time.Second}
 	log.Printf("LealCaf listo en http://localhost:%s", puerto)
 	if err := servidor.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
 		log.Fatal(err)

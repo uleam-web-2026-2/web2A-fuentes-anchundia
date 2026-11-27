@@ -1,0 +1,11 @@
+# Extensión del Compose existente: usa otro proyecto y conserva los volúmenes previos.
+name: lealcaf-taller13
+
+services:
+  db:
+    ports:
+      - "127.0.0.1:${DB_LOCAL_PORT:-15433}:5432"
+  migrar:
+    image: lealcaf:taller13
+  api:
+    image: lealcaf:taller13

@@ -1,0 +1,64 @@
+$ git --version
+git version 2.56.1.windows.1
+
+exit: 0
+
+$ go version
+go version go1.27.1 windows/amd64
+
+exit: 0
+
+$ docker version
+Client:
+ Version:           29.9.2
+ API version:       1.56
+ Go version:        go1.26.10
+ Git commit:        a82e528
+ Built:             Tue Oct 20 19:44:07 2026
+ OS/Arch:           windows/amd64
+ Context:           desktop-linux
+
+Server: Docker Desktop 4.98.0 (245422)
+ Engine:
+  Version:          29.9.2
+  API version:      1.56 (minimum version 1.40)
+  Go version:       go1.26.10
+  Git commit:       0367cbe
+  Built:            Tue Oct 20 18:45:02 2026
+  OS/Arch:          linux/amd64
+  Experimental:     false
+ containerd:
+  Version:          v2.4.2
+  GitCommit:        b7a25261e029d68978bbf290df0a62fc819b3c51
+ runc:
+  Version:          1.5.2
+  GitCommit:        v1.5.2-0-g29dd3dc2
+ docker-init:
+  Version:          0.19.0
+  GitCommit:        de40ad0
+
+exit: 0
+
+$ docker compose version
+Docker Compose version v5.6.1
+
+exit: 0
+
+$ git config user.name
+Anchundia Luis
+
+exit: 0
+
+$ git config user.email
+https.antonio001@gmail.com
+
+exit: 0
+
+$ git log -5 origin/taller12 --format=%h %an %s
+c36d76e Fuentes Cedeño José Miguel Taller 12: verificación del límite de login
+7bc093a Anchundia Luis Taller 12: consolidar evidencias e instrucciones de integracion
+b69be69 Anchundia Luis Taller 12 reto: separar migraciones y actualizar Docker Compose
+7e6e77a Anchundia Luis Taller 12 reto: configurar permisos minimos de PostgreSQL
+642c6be Anchundia Luis Taller 12: implementar limite de solicitudes en login
+
+exit: 0

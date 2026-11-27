@@ -21,7 +21,9 @@ $ go test -count=1 ./internal/fidelizacion -run WebSocket|Avisos -v
 --- PASS: TestAvisosConcurrenciaSuscribirEnviarQuitar (0.00s)
 === RUN   TestWebSocketTokenVencidoNoAbre
 --- PASS: TestWebSocketTokenVencidoNoAbre (0.01s)
+=== RUN   TestWebSocketRegistroOcultaTokenAntesDelLogger
+--- PASS: TestWebSocketRegistroOcultaTokenAntesDelLogger (0.00s)
 PASS
-ok  	fidelizacion/internal/fidelizacion	1.171s
+ok  	fidelizacion/internal/fidelizacion	1.128s
 
 Código de salida: 0

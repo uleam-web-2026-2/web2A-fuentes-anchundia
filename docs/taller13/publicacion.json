@@ -1,0 +1,46 @@
+{
+  "rama": "taller13",
+  "sha_remoto": "220f246f866ee2efb78ec6ef2d4d12ac31f082c2",
+  "commits_sobre_taller12": 6,
+  "commits": [
+    {
+      "sha": "220b24969dd89bcca4d9839d41da8a80d1d0e20c",
+      "autor": "Anchundia Luis",
+      "asunto": "Taller 13: actualizar dependencias de WebSocket"
+    },
+    {
+      "sha": "f36b0a8bae99ea7c12d4523cc85a7116c1926c0d",
+      "autor": "Anchundia Luis",
+      "asunto": "Taller 13: registrar pruebas iniciales de Bruno"
+    },
+    {
+      "sha": "6f0d757a43557ef2896fa8ff7a517de8259a9e19",
+      "autor": "Anchundia Luis",
+      "asunto": "Taller 13: verificar propietario del canje desde la sesion"
+    },
+    {
+      "sha": "75dca446460248e2cf8c966477ecca0ce6624881",
+      "autor": "Anchundia Luis",
+      "asunto": "Taller 13: incorporar segundo cliente de demostracion"
+    },
+    {
+      "sha": "1bc503aa6f8454fdc3d670a57a210c7e051fae89",
+      "autor": "Anchundia Luis",
+      "asunto": "Taller 13: implementar servicio de notificaciones"
+    },
+    {
+      "sha": "220f246f866ee2efb78ec6ef2d4d12ac31f082c2",
+      "autor": "Anchundia Luis",
+      "asunto": "Taller 13: agregar pruebas unitarias del servicio"
+    }
+  ],
+  "actions": [
+    {
+      "id": 46021709396,
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/uleam-web-2026-2/web2A-fuentes-anchundia/actions/runs/46021709396",
+      "head_sha": "220f246f866ee2efb78ec6ef2d4d12ac31f082c2"
+    }
+  ]
+}

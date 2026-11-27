@@ -1,0 +1,9 @@
+$ go build ./...
+
+exit: 0
+$ go test -count=1 ./...
+?   	fidelizacion	[no test files]
+?   	fidelizacion/internal/almacen/filas	[no test files]
+ok  	fidelizacion/internal/fidelizacion	3.601s
+
+exit: 0

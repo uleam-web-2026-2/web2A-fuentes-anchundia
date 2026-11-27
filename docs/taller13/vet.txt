@@ -1,0 +1,3 @@
+$ go vet ./...
+
+Código de salida: 0

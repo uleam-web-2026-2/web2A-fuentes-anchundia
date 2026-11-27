@@ -181,3 +181,30 @@ Las pruebas usan exclusivamente datos ficticios en bases de demostración propia
 - [PostgreSQL 16, GRANT](https://www.postgresql.org/docs/16/sql-grant.html).
 
 OpenAI Codex colaboró en la adaptación a Gin, la auditoría, las pruebas locales, la ejecución del Runner de Bruno, las capturas, los permisos y la documentación. Los commits de esta sesión corresponden a Luis Anchundia. El historial anterior de José Miguel Fuentes Cedeño se conserva.
+
+
+## Semana 13 · los avisos en tiempo real
+
+### D1 · Por qué WebSocket y no SSE ni sondeo
+
+LealCafé avisa `estado_cambiado` cuando un administrador confirma o cancela un `Canje`, y `canje_nuevo` cuando un cliente lo solicita. Hoy ambos flujos son servidor → navegador: SSE bastaría técnicamente. Elegimos WebSocket porque el criterio 2.3 del Hito 3 exige ese transporte; no afirmamos que SSE sea incapaz ni inventamos una app móvil ya construida. La plataforma propuesta es web adaptable. Con sondeo cada 15 segundos el cliente podría esperar hasta 15 segundos para enterarse y haría cuatro consultas por minuto aunque nada cambie. WebSocket entrega inmediatamente a conexiones activas, a cambio de memoria por conexión, sincronización, gestión de cierres y una futura estrategia de reconexión y distribución entre instancias. La demo `demo/taller13/index.html` muestra los eventos sin recargar y no implementa reconexión automática.
+
+### D2 · Quién recibe cada aviso
+
+`Canje.ClienteID` ya existía. `API.SolicitarCanje` toma `cliente_id` del contexto del middleware JWT y el DTO `CanjePeticion` solo acepta recompensa y sucursal. No se necesita migración ni regeneración de sqlc. La prueba `TestPropietarioCanjeSaleDeSesion` intenta suplantarlo por JSON y verifica propietario persistido y lectura prohibida al segundo cliente. `Avisos.Enviar` convierte ese ID en la llave `cliente:<id>`, la misma que `claveConexion` produce desde `Identidad.ClienteID` validada. Los administradores usan llaves `cuenta:<CuentaID>` para evitar colisiones. El mapa guarda varios canales por identidad y usa mutex. `Servicio.ActualizarEstadoCanje` avisa solo después de que `EnTransaccion` devuelve éxito: incluye persistir el estado, descontar puntos y confirmar COMMIT. Fallos de transición, escritura o COMMIT no generan avisos.
+
+Cada canal tiene capacidad 8. Si está lleno se pierde ese aviso, sin bloquear el negocio ni avisar a otro usuario. Una escritura tiene plazo de 5 segundos y luego cierra una conexión que no responde; un ping cada 30 segundos detecta conexiones caídas. No hay persistencia ni reenvío: al reconectar se debe consultar REST. Dos copias de la API tendrían mapas separados; falta un bus o PostgreSQL LISTEN/NOTIFY, que corresponde a semana 14. El taller funciona con una sola instancia.
+
+### D3 · El token en la dirección
+
+La API `WebSocket` del navegador no admite una cabecera Authorization personalizada. `/ws` queda fuera de `auth.Middleware()` y `Avisos.Conectar` valida el token de la query antes de `websocket.Accept`. Sesión ausente, inválida o vencida da 401, otro origen da 403 y un handshake autorizado da 101. `OrigenFront`, en `cors.go`, vale `http://localhost:5173` y se comparte con `OriginPatterns`. CORS no protege el handshake WebSocket: el servidor comprueba Origin para frenar páginas de otros orígenes. Un cliente sin navegador puede omitir Origin; por eso la autenticación sigue siendo obligatoria.
+
+Gin registraría la dirección con el JWT completo. `OcultarTokenWS`, colocado antes de `gin.Logger`, conserva el valor original solo en memoria y sustituye la query por `token=BORRADO` antes del log. `docs/taller13/logs_avisos.txt` muestra ambos cierres 101 con BORRADO y el PATCH del canje 4 de la captura. También se ejecutó la sustitución sed indicada por el docente. No se guardan tokens en localStorage ni en las capturas. Se valida al abrir: si el token vence durante una conexión, esta implementación no lo revalida ni la cierra en ese instante; al reconectar exige sesión vigente. En producción se necesitaría revocación y vencimiento de conexiones, además de wss://. `CloseRead(context.Background())` evita depender de un contexto HTTP de corta duración y libera recursos al cerrar.
+
+## Semana 13 · reto: lo nuevo, al negocio
+
+### D4 · Cómo sabe a quién avisar
+
+`Autenticacion.ValidarToken` contrasta los claims con la cuenta actual en PostgreSQL y devuelve `Identidad.Rol`. `Conectar` registra esa identidad en el canal. El servicio conoce únicamente `AvisadorNuevos.NuevoCanje(Aviso)` y emite `canje_nuevo` después de `CrearCanje`; la selección de `RolAdministrador` está en `Avisos.NuevoCanje`, fuera del caso de uso. Todos sus canales conectados reciben el evento, incluidos dos administradores distintos de la prueba `TestRetoAvisaADosAdministradoresYNingunCliente`. Ningún cliente, incluido quien creó el canje, lo recibe. El cambio de estado sigue exclusivamente por `Enviar(ClienteID, ...)`, sin notificar administradores.
+
+El rol es una instantánea al abrir la conexión. Si cambia mientras sigue abierta, esa conexión mantiene su selección anterior hasta cerrarse. Al reconectar, un token con rol anterior será rechazado por la validación contra la cuenta actual. Una futura revocación activa o revalidación periódica resolvería esa ventana; no se presenta como implementada.

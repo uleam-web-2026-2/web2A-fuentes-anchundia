@@ -272,3 +272,6 @@ La pantalla principal es **Mis puntos** (rol cliente) y consume `GET /clientes/{
 - **Claude (Anthropic):** revisión contra la rúbrica, mapa de endpoints, código de los manejadores, pruebas y addendum (secciones 3 a 7 de la ficha).
 
 Las entidades, endpoints y reglas son un diseño académico de los integrantes y no la arquitectura interna de DIPASO.
+# Taller 13 · avisos en tiempo real
+
+La implementación completa y sus evidencias se describen en [docs/taller13/README.md](docs/taller13/README.md). El módulo vigente sigue siendo `Trabajo_autonomo_Lealcaf_hito2/`. La rama remota de entrega parcial contiene únicamente los primeros seis commits autorizados; el avance posterior se entrega a José Miguel mediante un paquete que conserva la autoría real.
