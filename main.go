@@ -1,20 +1,27 @@
 package main
 
 import (
-	"database/sql"
 	"fmt"
 	"log"
 	"net/http"
+	"os"
+	"strings"
 
-	_ "github.com/jackc/pgx/v5/stdlib"
+	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/stdlib"
 )
 
 func main() {
-	db, err := sql.Open("pgx",
-		"postgres://postgres:123456789@localhost:5432/mesa_ayuda_web2")
-	if err != nil {
-		log.Fatal(err)
+	databaseURL := strings.TrimSpace(os.Getenv("DATABASE_URL"))
+	if databaseURL == "" {
+		log.Fatal("Configura DATABASE_URL para ejecutar el servidor de la raíz")
 	}
+
+	dbConfig, err := pgx.ParseConfig(databaseURL)
+	if err != nil {
+		log.Fatal("DATABASE_URL no es válida para PostgreSQL")
+	}
+	db := stdlib.OpenDB(*dbConfig)
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintln(w, `{"estado":"vivo"}`)
@@ -25,7 +32,7 @@ func main() {
 
 		if err := db.QueryRow("select version()").Scan(&version); err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
-			fmt.Fprintf(w, `{"bd":"sin conexion","detalle":%q}`, err.Error())
+			fmt.Fprintln(w, `{"bd":"sin conexion","detalle":"No se pudo consultar PostgreSQL"}`)
 			return
 		}
 

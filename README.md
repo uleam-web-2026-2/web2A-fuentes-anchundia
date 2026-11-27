@@ -1,5 +1,9 @@
 # LealCafé
 
+## Servidor de comprobación de la raíz
+
+Para ejecutar el servidor de este directorio con `go run .`, configura `DATABASE_URL` en el entorno de la terminal con la URL privada de PostgreSQL. El servidor de la raíz no carga `.env` automáticamente.
+
 ## Semana 10 · Taller autónomo
 
 El módulo de la API está en [Trabajo_autonomo_Lealcaf_hito2/](Trabajo_autonomo_Lealcaf_hito2/). Desde la raíz del repositorio, entra al módulo antes de ejecutar la API o sus pruebas.
