@@ -227,7 +227,8 @@ func TestSembrarDemoEsIdempotenteYPreparaLasCredenciales(t *testing.T) {
 			t.Fatalf("se duplicaron datos: antes=%v después=%v", conteos, actuales)
 		}
 	}
-	esperado := []int64{2, 1, 1, 1, 1, 2, 2}
+	// Taller 13 agrega un segundo cliente y su cuenta, sin duplicar compras ni puntos.
+	esperado := []int64{2, 2, 1, 1, 1, 2, 3}
 	if !reflect.DeepEqual(conteos, esperado) {
 		t.Fatalf("datos demo inesperados: %v, esperaba %v", conteos, esperado)
 	}

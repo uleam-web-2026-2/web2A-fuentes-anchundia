@@ -50,7 +50,10 @@ func ValidarTransicion(actual, destino string) error {
 	return nil
 }
 
-type Servicio struct{ Repo Repositorio }
+type Servicio struct {
+	Repo   Repositorio
+	avisos Avisador
+}
 type EntradaCompra struct {
 	ClienteID     uint
 	SucursalID    uint
@@ -250,5 +253,9 @@ func (s *Servicio) ActualizarEstadoCanje(id uint, destino string) (Canje, error)
 		resultado = canje
 		return nil
 	})
+	// EnTransaccion incluye COMMIT: un fallo de escritura o commit no genera avisos.
+	if err == nil && s.avisos != nil {
+		s.avisos.Enviar(resultado.ClienteID, Aviso{Tipo: "estado_cambiado", ID: resultado.ID, Estado: resultado.Estado})
+	}
 	return resultado, err
 }
