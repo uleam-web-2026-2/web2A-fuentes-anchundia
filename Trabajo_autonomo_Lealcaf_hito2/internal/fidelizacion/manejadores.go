@@ -101,6 +101,7 @@ func (a *API) SolicitarCanje(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "datos inválidos: recompensa_id y sucursal_id son obligatorios"})
 		return
 	}
+	// Canje.ClienteID procede del JWT validado, nunca de un cliente_id enviado en JSON.
 	canje, err := a.Servicio.SolicitarCanje(c.GetUint("cliente_id"), entrada.aEntrada())
 	if err != nil {
 		responderError(c, err)
