@@ -7,10 +7,13 @@ import (
 	"github.com/go-chi/cors"
 )
 
+// OrigenFront se comparte entre CORS y el handshake WebSocket.
+const OrigenFront = "http://localhost:5173"
+
 // CORS adapta el middleware net/http del kit a la cadena de Gin.
 func CORS() gin.HandlerFunc {
 	middleware := cors.Handler(cors.Options{
-		AllowedOrigins: []string{"http://localhost:5173"},
+		AllowedOrigins: []string{OrigenFront},
 		AllowedMethods: []string{"GET", "POST", "PATCH"},
 		AllowedHeaders: []string{"Authorization", "Content-Type"},
 		MaxAge:         300,
