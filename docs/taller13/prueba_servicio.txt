@@ -1,0 +1,13 @@
+$ go test -count=1 ./internal/fidelizacion -run Avisa -v
+=== RUN   TestCambioPermitidoAvisaTrasCommit
+--- PASS: TestCambioPermitidoAvisaTrasCommit (0.00s)
+=== RUN   TestTransicionProhibidaNoAvisa
+--- PASS: TestTransicionProhibidaNoAvisa (0.00s)
+=== RUN   TestErrorPersistenciaNoAvisa
+--- PASS: TestErrorPersistenciaNoAvisa (0.00s)
+=== RUN   TestErrorCommitNoAvisa
+--- PASS: TestErrorCommitNoAvisa (0.00s)
+PASS
+ok  	fidelizacion/internal/fidelizacion	0.553s
+
+Código de salida: 0
