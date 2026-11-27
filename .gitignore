@@ -16,3 +16,5 @@ node_modules/
 **/docs/hito2_bruno/environments/Taller11-privado.bru
 **/docs/hito2_bruno/environments/Taller12*-privado.bru
 __pycache__/
+**/docs/hito2_bruno/environments/Taller13*-privado.bru
+/tmp/
