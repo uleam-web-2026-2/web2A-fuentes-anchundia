@@ -1,0 +1,27 @@
+$ go test -count=1 ./internal/fidelizacion -run WebSocket|Avisos -v
+=== RUN   TestWebSocketAutenticacionYOrigen
+=== RUN   TestWebSocketAutenticacionYOrigen/sin_token
+=== RUN   TestWebSocketAutenticacionYOrigen/token_invalido
+=== RUN   TestWebSocketAutenticacionYOrigen/otro_origen
+=== RUN   TestWebSocketAutenticacionYOrigen/esquema_distinto
+=== RUN   TestWebSocketAutenticacionYOrigen/permitido
+=== RUN   TestWebSocketAutenticacionYOrigen/sin_origin_con_token
+--- PASS: TestWebSocketAutenticacionYOrigen (0.10s)
+    --- PASS: TestWebSocketAutenticacionYOrigen/sin_token (0.00s)
+    --- PASS: TestWebSocketAutenticacionYOrigen/token_invalido (0.00s)
+    --- PASS: TestWebSocketAutenticacionYOrigen/otro_origen (0.00s)
+    --- PASS: TestWebSocketAutenticacionYOrigen/esquema_distinto (0.00s)
+    --- PASS: TestWebSocketAutenticacionYOrigen/permitido (0.00s)
+    --- PASS: TestWebSocketAutenticacionYOrigen/sin_origin_con_token (0.00s)
+=== RUN   TestWebSocketAvisoIndividualVariasConexionesYLimpieza
+--- PASS: TestWebSocketAvisoIndividualVariasConexionesYLimpieza (0.52s)
+=== RUN   TestAvisosClienteLentoNoBloqueaYOtrosUsuarios
+--- PASS: TestAvisosClienteLentoNoBloqueaYOtrosUsuarios (0.00s)
+=== RUN   TestAvisosConcurrenciaSuscribirEnviarQuitar
+--- PASS: TestAvisosConcurrenciaSuscribirEnviarQuitar (0.00s)
+=== RUN   TestWebSocketTokenVencidoNoAbre
+--- PASS: TestWebSocketTokenVencidoNoAbre (0.01s)
+PASS
+ok  	fidelizacion/internal/fidelizacion	1.171s
+
+Código de salida: 0

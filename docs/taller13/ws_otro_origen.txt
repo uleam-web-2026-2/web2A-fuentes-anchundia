@@ -1,0 +1,8 @@
+HTTP/1.1 403 Forbidden
+Content-Type: text/plain; charset=utf-8
+Vary: Origin
+X-Content-Type-Options: nosniff
+Date: Fri, 27 Nov 2026 14:44:49 GMT
+Content-Length: 75
+
+request Origin "malo.example" is not authorized for Host "localhost:18083"
