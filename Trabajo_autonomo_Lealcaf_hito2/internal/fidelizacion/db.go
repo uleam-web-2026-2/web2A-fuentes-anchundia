@@ -142,6 +142,9 @@ func sembrarDentro(tx *gorm.DB) error {
 	if err != nil {
 		return err
 	}
+	if err := sembrarSegundoCliente(tx, passwordCliente); err != nil {
+		return err
+	}
 	for _, dato := range []struct {
 		usuario, password, rol string
 		clienteID              *uint
