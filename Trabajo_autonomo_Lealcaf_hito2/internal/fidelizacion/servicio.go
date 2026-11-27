@@ -53,6 +53,7 @@ func ValidarTransicion(actual, destino string) error {
 type Servicio struct {
 	Repo   Repositorio
 	avisos Avisador
+	nuevos AvisadorNuevos
 }
 type EntradaCompra struct {
 	ClienteID     uint
@@ -185,6 +186,9 @@ func (s *Servicio) SolicitarCanje(clienteID uint, entrada EntradaCanje) (Canje, 
 	canje = Canje{ClienteID: clienteID, SucursalID: entrada.SucursalID, RecompensaID: recompensa.ID, PuntosUtilizados: recompensa.PuntosNecesarios, Fecha: ahora(), Estado: EstadoSolicitado}
 	if err := s.Repo.CrearCanje(&canje); err != nil {
 		return Canje{}, err
+	}
+	if s.nuevos != nil {
+		s.nuevos.NuevoCanje(Aviso{Tipo: "canje_nuevo", ID: canje.ID, Estado: canje.Estado})
 	}
 	return canje, nil
 }

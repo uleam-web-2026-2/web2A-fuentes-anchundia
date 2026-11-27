@@ -1,0 +1,11 @@
+$ go test -count=1 ./internal/fidelizacion -run Reto -v
+=== RUN   TestRetoAvisaADosAdministradoresYNingunCliente
+--- PASS: TestRetoAvisaADosAdministradoresYNingunCliente (1.11s)
+=== RUN   TestRetoNoAvisaSiCrearFalla
+--- PASS: TestRetoNoAvisaSiCrearFalla (0.00s)
+=== RUN   TestRetoEstadoSoloAlPropietarioSinAvisarAdministradores
+--- PASS: TestRetoEstadoSoloAlPropietarioSinAvisarAdministradores (0.51s)
+PASS
+ok  	fidelizacion/internal/fidelizacion	2.159s
+
+Código de salida: 0

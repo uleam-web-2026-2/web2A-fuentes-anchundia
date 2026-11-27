@@ -65,6 +65,24 @@ func (a *Avisos) Enviar(clienteID uint, av Aviso) {
 	}
 }
 
+// NuevoCanje aplica la selección del rol administrativo en el transporte.
+// El cliente nunca recibe avisos que después tenga que filtrar.
+func (a *Avisos) NuevoCanje(av Aviso) {
+	a.mu.Lock()
+	defer a.mu.Unlock()
+	for _, conexiones := range a.canales {
+		for canal, identidad := range conexiones {
+			if identidad.Rol != RolAdministrador {
+				continue
+			}
+			select {
+			case canal <- av:
+			default:
+			}
+		}
+	}
+}
+
 // Conectar valida la sesión antes de Accept, fuera del guardia Bearer.
 func (a *Avisos) Conectar(c *gin.Context) {
 	token := c.GetString("token_ws")

@@ -14,3 +14,8 @@ type Avisador interface {
 
 // AvisarCon se configura una vez, antes de atender peticiones.
 func (s *Servicio) AvisarCon(avisador Avisador) { s.avisos = avisador }
+
+// AvisadorNuevos decide los destinatarios fuera del servicio de negocio.
+type AvisadorNuevos interface{ NuevoCanje(Aviso) }
+
+func (s *Servicio) AvisarNuevosCon(avisador AvisadorNuevos) { s.nuevos = avisador }

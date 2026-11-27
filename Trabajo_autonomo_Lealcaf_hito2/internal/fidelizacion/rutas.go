@@ -15,6 +15,7 @@ func ConfigurarRutasConRepositorio(r *gin.Engine, repo Repositorio, auth *Autent
 	avisos := NuevosAvisos(auth)
 	servicio := &Servicio{Repo: repo}
 	servicio.AvisarCon(avisos)
+	servicio.AvisarNuevosCon(avisos)
 	a := &API{Servicio: servicio, Autenticacion: auth}
 	r.GET("/ws", avisos.Conectar)
 	r.POST("/login", LimitarLogin(), a.Login)
